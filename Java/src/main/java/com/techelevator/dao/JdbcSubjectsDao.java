@@ -33,15 +33,20 @@ public class JdbcSubjectsDao implements  SubjectDao{
             List<Topics> topicsList = subject.getTopics();
             if(topicsList != null) {
                 for (Topics topics : topicsList) {
+                    if(!topics.getCode().isEmpty()){
                     sql = "INSERT INTO topics (subject_id, code, description) VALUES (?, ?, ?) RETURNING topic_id;";
                     int topicId = jdbcTemplate.queryForObject(sql, Integer.class, subjectId, topics.getCode(), topics.getDescription());
                     List<Lessons> lessons = topics.getLessons();
                     if(lessons != null) {
                         for (Lessons lesson : lessons) {
-                            sql = "INSERT INTO lessons (topic_id, code, description) \n" +
-                                    "\tVALUES (?, ?, ?);";
-                            jdbcTemplate.update(sql, topicId, lesson.getCode(), lesson.getDescription());
+                            if (!lesson.getCode().isEmpty()) {
+
+                                sql = "INSERT INTO lessons (topic_id, code, description) \n" +
+                                        "\tVALUES (?, ?, ?);";
+                                jdbcTemplate.update(sql, topicId, lesson.getCode(), lesson.getDescription());
+                            }
                         }
+                    }
                     }
                 }
             }

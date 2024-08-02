@@ -48,7 +48,7 @@ const routes = [
     component: ClassView,
   },
   {
-    path: "/subject/:subjectId",
+    path: "/class/:classId/subject/:subjectId",
     name: "subject-page",
     component: SubjectView,
   },  

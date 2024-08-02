@@ -147,7 +147,7 @@ archiveSubject(subjectId){
     .then(response => {
       if(response.status === 200){
         this.$store.commit('SET_NOTIFICATION', {message: 'Successfully archived this subject.', type: 'success'})
-        this.$rougter.go(0);
+        this.$router.go(0);
       }
     }).catch(error => {
       this.handleError(error, 'archiving');

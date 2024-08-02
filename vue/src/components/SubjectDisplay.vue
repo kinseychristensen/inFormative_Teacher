@@ -3,7 +3,7 @@
 
 <div class="subject-flex">
   <router-link v-for="subject in subjects" v-bind:key="subject.id"
-  v-bind:to="{name: 'subject-page', params: {subjectId: subject.id}}" class="subject-title">
+  v-bind:to="{name: 'subject-page', params: {subjectId: subject.id, classId: classId}}" class="subject-title">
   {{ subject.code }}
 </router-link></div>
 

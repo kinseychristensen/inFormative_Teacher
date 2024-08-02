@@ -7,15 +7,15 @@ import java.util.List;
 
 public interface SubjectDao {
 
-    public int createSubject (Subject subject, int classId);
-    public Subject getSubjectDetails (int subjectId);
-    public List<Subject> getClassSubjects (int classId);
-    public List<Subject> getArchivedClassSubjects (int classId);
-    public List<Subject> getAllSubjects ();
-    public boolean archiveSubject (int subjectId, int classId);
-    public boolean addSubject (int subjectId, int classId);
-    public boolean createLessons (List<Lessons> lessons, int topicId);
-    public int createTopic(Topics topic, int subjectId);
+     int createSubject (Subject subject, int classId);
+     Subject getSubjectDetails (int subjectId);
+     List<Subject> getClassSubjects (int classId);
+     List<Subject> getArchivedClassSubjects (int classId);
+     List<Subject> getAllSubjects ();
+     boolean archiveSubject (int subjectId, int classId);
+     boolean addSubject (int subjectId, int classId);
+     boolean createLessons (List<Lessons> lessons, int topicId);
+     int createTopic(Topics topic, int subjectId);
 
 
 }

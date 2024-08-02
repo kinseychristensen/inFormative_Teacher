@@ -1,0 +1,296 @@
+<template>
+
+    <div class="roster-container">
+        <NavTool class="nav-tool"/>
+        <div class = "roster-title-view">
+          <h1 class="page-title">Class Roster</h1>
+        </div>
+          <p class="description">Group rosters can be edited on the group roster page.</p>
+
+        <Logo class="roster-logo"/>
+  
+    <div class="form">
+    <div class="loading" v-if="isLoading">Loading...</div>
+    
+    <div v-else>
+      <form v-on:submit.prevent="addStudent" class="add-student-container">
+       
+        <label for="school-id" class="id-label">Student Id Number:</label> 
+        <input class="school-id" v-model="newStudent.schoolId"/>  
+        
+        <label for="first-name" class="first-name-label">Student First Name:</label> 
+        <input id="first-name" v-model="newStudent.firstName"/>
+
+        <label for="last-name" class="last-name-label">Student Last Name:</label> 
+        <input id="last-name" v-model="newStudent.lastName"/>
+                                    
+        <button id="submit-button" class="button-link">Add Student</button>
+
+        <div class="roster-display"> 
+
+            <div v-if="isRemoving" class="student-flex" >
+            <div v-for="student in students" v-bind:key="student.id" class="student-title" @click="removeStudent(student.schoolId)">
+                    {{student.schoolId}} - {{ student.firstName }} {{ student.lastName }} 
+            </div></div>
+
+                <div v-else class="student-flex">
+            <router-link v-for="student in students" v-bind:key="student.id"
+                v-bind:to="{name: 'student', params: {studentId: student.id}}" class="student-title">
+                    {{student.schoolId}} - {{ student.firstName }} {{ student.lastName }} 
+                </router-link></div>
+
+
+            </div>
+      
+<button id="finalize" class="button-link" @click="editRoster">Save Changes</button>
+
+<div id="remove-student" class="button-link" @click="toggleRemoving">{{removingMsg}}</div>
+
+
+
+      </form></div></div>
+
+     
+    </div>
+    </template>
+    
+    <script>
+    import Logo from '../components/Logo.vue';
+    import NavTool from '@/components/NavTool.vue';
+   import StudentService from '../services/StudentService';
+import { createNamespacedHelpers } from 'vuex';
+    
+    export default {
+      name: 'RosterView',
+      components: {
+        NavTool,
+        Logo
+    },
+    data() {
+      return {
+        newStudent: {
+          firstName: "",
+          lastName: "",
+          schoolId: 0,
+          id: 0,
+        },
+        isLoading: false,
+        students: [],
+        classId: 1,
+        isRemoving: false,
+        removingMsg: 'Remove Students From Class'
+        
+      };
+    },
+    methods: {
+      handleError(error, verb) {
+          if (error.response) {
+            this.$store.commit('SET_NOTIFICATION',
+              "Error " + verb + " deck list. Response received was '" + error.response.statusText + "'.");
+          } else if (error.request) {
+            this.$store.commit('SET_NOTIFICATION', "Error " + verb + " class roster. Server could not be reached.");
+          } else {
+            this.$store.commit('SET_NOTIFICATION', "Error " + verb + " class roster. Request could not be created.");
+          }
+        },
+
+    addStudent(){
+       
+        this.students.push({
+            firstName: this.newStudent.firstName, 
+            lastName: this.newStudent.lastName,
+            schoolId: this.newStudent.schoolId,
+            id: 0,
+        });
+        
+    },  
+
+    toggleRemoving(){
+      this.isRemoving = !this.isRemoving;
+      if(this.isRemoving){
+          this.removingMsg = "Cancel";
+      }else {
+        this.removingMsg = "Remove Students From Class";
+      }
+    },
+
+    removeStudent(schoolId){
+      const shouldRemove = confirm("Are you sure you want to remove this student?");
+
+      if(shouldRemove){
+        let updatedRoster = [];
+        for(let i = 0; i<this.students.length; i++){
+          if (this.students[i].schoolId != schoolId) {
+            updatedRoster.push(this.students[i]);
+          }
+        }
+        this.students = updatedRoster;  
+      }
+    },
+
+
+        async editRoster(){
+          try {
+            this.isLoading=true;
+            const response = await StudentService.editClassRoster(this.students, this.classId);
+            this.students = response.data;
+          }catch (error) {
+            this.handleError(error, 'editing');
+          }finally {
+            this.isLoading = false;
+          }
+        },
+
+      async retrieveStudents(){
+    try {
+      this.isLoading = true;
+      const response = await StudentService.getClassRoster(this.classId);
+      this.students = response.data;
+    }catch (error) {
+      this.handleError(error, 'retrieving');
+    }finally {
+      this.isLoading = false;
+    }
+    }, 
+},
+
+
+      created(){
+        this.isLoading=true;
+        const classId = parseInt(this.$route.params.classId);
+        this.classId = classId;
+        this.retrieveStudents();
+
+      }
+    }
+  
+    
+    
+    
+    </script>
+    
+    <style scoped>
+    .button-link{
+  background-color: #a4c2f4ff;
+  color: black;
+  text-align: center;
+  margin: 2px;
+  padding: 10px;
+  border-radius: 15px;
+  text-decoration: none;
+  width: 200px;
+}
+    .roster-container {
+        display: grid;
+        grid-template-columns: 200px 250px 1fr;
+        grid-template-areas: 
+          "nav title logo"
+          "nav description description"
+          "nav class class"
+          ". class class"
+          ;
+        gap: 15px;
+      }
+      
+      .description{
+        grid-area: description;
+
+      }
+      
+      .nav-tool {
+        grid-area: nav;
+        margin-right: 20px;
+      }
+      
+      .roster-logo {
+        grid-area: logo;
+        justify-self: right;
+      }
+      
+      .roster-title-view {
+        grid-area: title;
+        justify-content: center;
+        text-align: center;
+      }
+   .form{
+    grid-area: class;
+   }
+      .add-student-container{
+       
+        display: grid;
+        grid-template-columns: 200px 250px 1fr;
+        grid-template-areas: 
+        "id-label school-id remove-student"
+        "first-name-label first-name roster"
+        "last-name-label last-name roster"
+        ". submit  roster"
+        ". finalize roster"
+        ". . roster"
+        ;
+        gap: 15px;
+      }
+      #finalize{
+        grid-area: finalize;
+      }
+      .id-label {
+        grid-area: id-label;
+      }
+      .first-name-label{
+        grid-area: first-name-label;
+      }
+      .last-name-label{
+        grid-area: last-name-label;
+      }
+      .school-id{
+        grid-area: school-id
+      }
+      #first-name {
+        grid-area: first-name;
+      }
+      #last-name{
+        grid-area: last-name;
+      }
+     
+      #submit-button {
+        grid-area: submit;
+        text-align: center;
+      }
+      #remove-student{
+        grid-area: remove-student;
+      }
+      .roster-display{
+        grid-area: roster;
+      }
+      .student-flex{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    .student-title{
+  color: black;
+  text-align: center;
+  margin: 2px;
+  padding: 10px;
+  border-radius: 15px;
+  text-decoration: none;
+  font-size: larger;
+  min-width: 75px;
+  max-width: 150px;
+  
+}
+
+.student-title:nth-child(4n-3){
+  background-color: #dd7e6bff;
+}
+.student-title:nth-child(4n-2){
+  background-color: #f6b26bff;
+}
+.student-title:nth-child(4n-1){
+  background-color: #ffd966ff;
+}
+.student-title:nth-child(4n-0){
+  background-color: #93c47dff;
+}
+
+
+    </style>

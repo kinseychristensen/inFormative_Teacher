@@ -31,7 +31,7 @@ export default {
     },
     
     createNewArtifactType(artifactType){
-        return axios.post("/artifacts/new_type");
+        return axios.post("/artifacts/new_type", artifactType);
     },
 
     getArtifactTypes(){

@@ -15,7 +15,10 @@ import ArchiveView from '../views/ArchiveView.vue';
 import ProfileView from '../views/ProfileView.vue';
 import StudentView from '../views/StudentView.vue';
 import RosterView from '../views/ClassRosterView.vue';
-
+import CreateArtifactView from '../views/createArtifactView.vue';
+import ArtifactView from '../views/ArtifactView.vue';
+import ReportsView from '../views/ReportsView.vue';
+import AllSubjectsView from '../views/AllSubjectsView.vue';
 
 const routes = [
   {
@@ -78,6 +81,11 @@ const routes = [
     component: ProfileView,
   },
   {
+    path: "/subjects/all",
+    name: "all-subjects",
+    component: AllSubjectsView,
+  },
+  {
     path: "/student/:studentId",
     name: "student",
     component: StudentView,
@@ -86,6 +94,21 @@ const routes = [
     path: "/class/:classId/roster",
     name: "roster",
     component: RosterView,
+  },
+  {
+    path: "/class/:classId/subject/:subjectId/reports",
+    name: "reports",
+    component: ReportsView,
+  },
+  {
+    path: "/class/:classId/subject/:subjectId/artifacts",
+    name: "artifacts",
+    component: ArtifactView,
+  },
+  {
+    path: "/class/:classId/subject/:subjectId/artifacts/new",
+    name: "create-artifact",
+    component: CreateArtifactView,
   },
 
 

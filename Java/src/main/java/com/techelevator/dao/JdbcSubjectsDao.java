@@ -56,52 +56,7 @@ public class JdbcSubjectsDao implements  SubjectDao{
         }
     }
 
-    /*
-    @Override
-    public int createSubject(Subject subject, int classId) {
-        try{
-            String sql = "INSERT INTO subjects (code, description, not_attempted, below, approaching, proficient, mastered) \n" +
-                    "\tVALUES (?, ?, ?, ?, ?, ?, ?)\n" +
-                    "\tRETURNING subject_id;";
-            int subjectId = jdbcTemplate.queryForObject(sql, int.class, subject.getCode(), subject.getDescription(),
-            subject.getNotAttempted(), subject.getBelow(), subject.getApproaching(), subject.getProficient(), subject.getMastered());
-            sql = "INSERT INTO class_to_subject (subject_id, class_id) \n" +
-                    "\tVALUES (?, ?);";
-            jdbcTemplate.update(sql, subjectId, classId);
-        return subjectId;
 
-        }catch(DataAccessException e) {
-            throw new DaoException("Error retrieving student details", e);
-        }
-    }*/
-
-    @Override
-    public int createTopic(Topics topic, int subjectId) {
-        try{
-
-                String sql = "INSERT INTO topics (subject_id, code, description) VALUES (?, ?, ?) RETURNING topic_id;";
-                return  jdbcTemplate.queryForObject(sql, int.class, topic.getSubjectId(), topic.getCode(), topic.getDescription());
-
-
-        }catch(DataAccessException e) {
-            throw new DaoException("Error retrieving student details", e);
-        }
-    }
-
-    @Override
-    public boolean createLessons (List<Lessons> lessons, int topicId) {
-        try{
-                for (Lessons lesson : lessons) {
-                    String sql = "INSERT INTO lessons (topic_id, code, description) \n" +
-                            "\tVALUES (?, ?, ?);";
-                    jdbcTemplate.update(sql, topicId, lesson.getCode(), lesson.getDescription());
-                }
-            return true;
-
-        }catch(DataAccessException e) {
-            throw new DaoException("Error retrieving student details", e);
-        }
-    }
 
     @Override
     public Subject getSubjectDetails(int subjectId) {
@@ -184,14 +139,12 @@ public class JdbcSubjectsDao implements  SubjectDao{
     public List<Subject> getAllSubjects() {
         List<Subject> subjects = new ArrayList<>();
         try {
-            String sql= "SELECT * FROM class_to_subject;";
+            String sql= "SELECT * FROM subjects;";
             SqlRowSet rs = jdbcTemplate.queryForRowSet(sql);
-            List<Integer> subjectIds = new ArrayList<>();
             while(rs.next()){
-                subjectIds.add(rs.getInt("subject_id"));
-            }
-            for(int subjectId: subjectIds){
-                subjects.add(getSubjectDetails(subjectId));
+                Subject newSubject = mapRowToSubject(rs);
+               newSubject = getSubjectDetails(newSubject.getId());
+               subjects.add(newSubject);
             }
 
         }catch (DataAccessException e) {
@@ -228,7 +181,7 @@ return true;
 
     private Lessons mapRowToLesson(SqlRowSet rs){
         Lessons lesson = new Lessons();
-        lesson.setTopic_id(rs.getInt("lesson_id"));
+        lesson.setId(rs.getInt("lesson_id"));
         lesson.setCode(rs.getString("code"));
         lesson.setDescription(rs.getString("description"));
         return lesson;

@@ -14,10 +14,14 @@
     <div v-else class="class-field">
       <div class="sub-view-grid">
 
-       <div id="score-button" class="sub-button-link">Add Scores</div>
-        <div id="artifact-button" class="sub-button-link">Make an Artifact</div>
-        <div id="mastery-button" class="sub-button-link">View Class Mastery</div>
-        <div id="groups-button" class="sub-button-link">Groups</div>
+       <router-link id="score-button" class="sub-button-link" 
+          v-bind:to="{name: 'artifacts', params: {classId: this.classId, subjectId: this.subjectId}}">Add Scores</router-link>
+        <router-link id="artifact-button" class="sub-button-link"
+        v-bind:to="{name: 'create-artifact', params: {classId: this.classId, subjectId: this.subjectId}}">Make an Artifact</router-link>
+        <router-link id="mastery-button" class="sub-button-link"
+        v-bind:to="{name: 'reports', params: {classId: this.classId, subjectId: this.subjectId}}">View Class Mastery</router-link>
+        <router-link id="groups-button" class="sub-button-link"
+        v-bind:to="{name: 'groups', params: {classId: this.classId}}">Groups</router-link>
         <div id="archive-button" class="sub-button-link" @click="archiveSubject">Archive this Subject</div>
        
         <div id="syllabus">
@@ -171,7 +175,10 @@ if(shouldArchive){
       #mastery-button{
         grid-area: mastery-button;
         background-color: #93c47dff;
-      gap: 15px;
+      }
+      #archive-button{
+        grid-area: archive-button;
+        background-color: #f6b26bff;
       }
       #syllabus{
         grid-area: syllabus;

@@ -19,6 +19,9 @@
        <div v-if="isEditing" class="subject-field">
 
         <form class="form-field" v-on:submit.prevent="checkSubForm">
+          <div id="clone-search-label">Your work may already be done! Check to see if your subject standards are already in
+          <router-link id="search-subs" class="button-link"
+          v-bind:to="{ name: 'all-subjects'}">Our Database</router-link></div>
           <button class="complete-button">Complete</button>
           <label for="subject" class="sub-label">Title:</label>
           <input id="subject" v-model="newSubject.code"/>
@@ -338,6 +341,7 @@ if (this.newSubject.classId === 0) {
         display: grid;
         grid-template-columns: 250px 1fr 250px;
         grid-template-areas:
+        "search search search"
         "sub-label subject complete-button"
         "sub-desc-label sub-desc sub-desc"
         "mastery mastery mastery"
@@ -477,5 +481,8 @@ if (this.newSubject.classId === 0) {
 }
 #complete-confirm{
   background-color: #93c47dff;
+}
+#clone-search-label {
+  grid-area: search;
 }
     </style>

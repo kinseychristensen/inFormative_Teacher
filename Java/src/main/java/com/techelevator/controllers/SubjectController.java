@@ -26,18 +26,6 @@ public class SubjectController {
     public int createSubject (@RequestBody Subject subject, @PathVariable int classId){
         return subjectDao.createSubject(subject, classId);
     }
-    @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(path=BASE_URL +"/{subjectId}/topic/{topicId}", method = RequestMethod.POST)
-    public boolean createLessons (@RequestBody List<Lessons> lessons, @PathVariable int topicId, @PathVariable int subjectId){
-        return subjectDao.createLessons(lessons, topicId);
-    }
-
-    @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(path=BASE_URL +"/{subjectId}", method = RequestMethod.POST)
-    public int createTopic(@RequestBody Topics topic, @PathVariable int subjectId){
-        return subjectDao.createTopic(topic, subjectId);
-    }
-
 
     @RequestMapping(path=BASE_URL + "/{subjectId}", method = RequestMethod.GET)
     public Subject getSubjectDetails (@PathVariable int subjectId){

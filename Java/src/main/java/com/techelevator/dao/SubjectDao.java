@@ -14,8 +14,7 @@ public interface SubjectDao {
      List<Subject> getAllSubjects ();
      boolean archiveSubject (int subjectId, int classId);
      boolean addSubject (int subjectId, int classId);
-     boolean createLessons (List<Lessons> lessons, int topicId);
-     int createTopic(Topics topic, int subjectId);
+
 
 
 }

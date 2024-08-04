@@ -153,6 +153,9 @@
         grid-area: submit;
         text-align: center;
       }
-    
+      .error{
+        color: red;
+        font-size:x-large;
+      }
 
     </style>

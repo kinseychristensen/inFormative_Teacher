@@ -4,10 +4,11 @@
         <NavTool class="home-nav-tool"/>
         <div class = "home-title-view">
           <h1 class="page-title">Create Artifact</h1>
-          <p class="logged-in-title">Artifacts are moments when you are assessing a student's progress towards mastery.  
+          <div class="logged-in-title"><p>Artifacts are moments when you are assessing a student's progress towards mastery.  
             These can include physical evidence such as exit slips, worksheets, and practice tests.  They can also include behavioral
             observation such as small group work, class discussions, or one-to-one meetings.  Artifacts must be assinged to an individual 
             standard within the scope of the subject being taught.  If an assignment covers more than one standard, please make multiple artifacts. </p>
+          <div v-if="!isValid" class="error">{{ errorMessage }}</div></div>
         </div>
         <Logo class="home-logo"/>
     
@@ -18,7 +19,7 @@
       <form id="ca-form-grid-1" v-on:submit.prevent="addNewArtType">
 
         <label for="art-type" id="art-type-label">Artifact Type</label>
-        <select id="art-type" v-model="artifact.artifactType">Select Artifact Type 
+        <select id="art-type" v-model="artifact.artifactTypeInt">Select Artifact Type 
           <option v-bind:value="0">Please select an artifact type, or create a new one below.</option>
           <option v-for="artType in artifactTypeList" v-bind:key="artType.code" v-bind:value="artType.code">
             {{ artType.description }}
@@ -36,12 +37,18 @@
      <label for="art-title" id="art-title-label">Title/Description</label>
      <input type="text" id="art-title" placeholder="Title goes here" v-model="artifact.description"/>
      
-     <label for="art-lesson" id="art-lesson-label">Select Lesson Standard</label>   
-     <select id="art-lesson">select lesson</select>
+     <label for="art-lesson" id="art-lesson-label">Lesson Standard</label>   
+     <select id="art-lesson" v-model="artifact.lessonId">Select Lesson Standard
+      <option v-bind:value="0">Please select a lesson standard this artifact assesses.</option>
+      <option v-for="lesson in lessonsList" v-bind:key="lesson.id" v-bind:value="lesson.id">
+        {{ lesson.topic_id }} - {{ lesson.code }}: {{ lesson.description }}
+      </option>
+
+     </select>
   
      
      <label for="art-date" id="art-date-label">Assignment Date</label>
-     <input type="date" id="art-date" v-model="artifact.assignmentDate"/>
+     <input type="date" id="art-date" v-model="artifact.assignmentDateAsStr"/>
      
      <label for="art-trends" id="art-trends-label">Observed Trends</label>
      <textarea id="art-trends" v-model="artifact.trends">trends goes here</textarea>
@@ -52,10 +59,6 @@
      <button id="art-form-button">Submit</button>
     </form>
 
-     {{ newArtTypeDesc }}
-
-     <p></p>
-     {{ artifact }}
     </div>
     </div>
   </div>
@@ -77,19 +80,42 @@
     data() {
       return {
         artifact: {
-          artifactType: 0,
+          artifactTypeInt: 0,
           description: '',
           lessonId: 0,
-          assignmentDate: '2000-01-01',
+          assignmentDateAsStr: null,
           trends: '',
           comments: '',
+        },
+        subject: {
+          code: '',
+          description: '',
+          notAttempted: 0,
+          below: 1,
+          approaching: 2,
+          proficient: 3,
+          mastered: 4,
+          classId: 0,
+          topics: [
+          {
+            id: 0,
+          code: '',
+          description: '',
+          lessons: [ {
+            id: 0,
+          code: '',
+          description: '',
+          topic_id: 0,
+        }]}],
         },
         artifactTypeList: [],
         classId: 0,
         subjectId: 0,
         isLoading: true,
-        subject: {},
         newArtTypeDesc: {description: '', code: 0},
+        isValid: true,
+        errorMessage: '',
+        lessonsList: [],
       
       };
     },
@@ -123,7 +149,7 @@
     }catch (error) {
       this.handleError(error, 'retrieving');
     }finally {
-      this.isLoading = false;
+      this.getLessons();
     }
     }, 
     async addNewArtType(){
@@ -137,11 +163,32 @@
       this.retrieveArtifactTypes();
       this.artifact.artifactType = this.newArtTypeDesc.code;
       this.newArtTypeDesc = {code: 0, description: ''};
-      
     }
     }, 
 
+    checkArtifact(){
+      this.errorMessage = '';
+      this.isValid = true;
+      if(this.artifact.assignmentDateAsStr === null){
+        this.isValid = false;
+        this.errorMessage += "Please select a date.  ";
+      }if(this.artifact.description === ''){
+        this.isValid = false;
+        this.errorMessage += "Please provide a title for the artifact.  ";
+      }if(this.artifact.artifactTypeInt === 0){
+        this.isValid = false;
+        this.errorMessage += "Please choose an artifact type.  ";
+      }if(this.artifact.lessonId === 0){
+        this.isValid = false;
+        this.errorMessage += "Please choose a lesson standard.  ";
+      }
+    },
+
+
+
     async createArtifact(){
+      this.checkArtifact();
+      if (this.isValid){
     try {
       this.isLoading = true;
       const response = await ArtifactService.createArtifact(this.artifact);
@@ -149,10 +196,19 @@
       this.handleError(error, 'retrieving');
     }finally {
       this.$router.push({name: 'artifacts', params: {classId: this.classId, subjectId: this.subjectId}});
-      
     }
+  }
     }, 
       
+    getLessons(){
+     this.subject.topics.forEach(topic => {
+       topic.lessons.forEach(lesson => {
+        lesson.topic_id = topic.code;
+        this.lessonsList.push(lesson);
+      })
+     })
+      this.isLoading = false;
+    },
     
     },
     created(){
@@ -265,5 +321,9 @@
       }
       #art-type-button{
         grid-area: art-type-button;
+      }
+      .error{
+        color: red;
+        font-size:x-large;
       }
     </style>

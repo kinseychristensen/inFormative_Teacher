@@ -38,7 +38,7 @@ public class ArtifactsController {
 }
 
     @RequestMapping(path = BASE_URL + "/{artifactId}", method = RequestMethod.PUT)
-    public Artifact editArtifact (@RequestBody Artifact artifact){
+    public Artifact editArtifact (@RequestBody Artifact artifact, @PathVariable int artifactId){
    artifact.setAssignmentDate(LocalDate.parse(artifact.getAssignmentDateAsStr()));
     return artifactDao.editArtifact(artifact);
     }

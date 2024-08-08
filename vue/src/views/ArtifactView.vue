@@ -13,7 +13,20 @@
     
     <div v-else class="class-field">
         
-      <div id="sort-by">Sort By</div>
+        <form id="sort-by">
+          <label for="search-box" id="search-box-label">Search Assignment Names:</label>
+          <textarea v-model="searchTerm" id="search-box"></textarea>
+          <label for="lesson-select" id="lesson-select-label">Filter By Indicator:</label>
+          <select id="lesson-select" v-model="searchingLesson">Search Indicators
+      <option v-bind:value="0">All indicators </option>
+      <option v-for="lesson in lessonsList" v-bind:key="lesson.id" v-bind:value="lesson.id">
+        {{ lesson.topic_id }} - {{ lesson.code }}: {{ lesson.description }}
+      </option>
+
+     </select>
+
+        </form>
+ 
       <router-link id="make-art-link" class="art-button-link" 
       v-bind:to="{name: 'artifacts', params: {classId: this.classId, subjectId: this.subjectId}}">
         Make a New Artifact</router-link>
@@ -29,18 +42,18 @@
           <div id="artifact-title-desc">{{ artifact.description }}<p></p></div>
           <div id="artifact-type">{{ artifact.artifactType }}</div>
           <div id="artifact-date">{{ artifact.assignmentDate }}</div>
-          <div id="artifact-trends">{{  artifact.trends}}</div>
-          <div id="artifact-comments">{{ artifact.comments }}</div>
+          <div id="artifact-trends">Trends: {{  artifact.trends}}</div>
+          <div id="artifact-comments">Comments: {{ artifact.comments }}</div>
 
         </div>
 
-        <div class="art-button-link" id="score-buttons" >Scores</div>
+        <div class="art-button-link" id="score-buttons" @click="toggleScores(artifact.id)">Scores</div>
         <div id="score-show">
        
-          
-          
 
-       <AddScore :artifactId="artifact.id" :classId="classId" />
+          
+          <div v-if="artifact.isShowingScore">   
+       <AddScore :artifactId="artifact.id" :classId="classId"  /></div>
         </div>
       </div>
     </div>
@@ -48,6 +61,7 @@
     </div>
     </div>
   </div>
+
     </template>
     
     <script>
@@ -66,7 +80,8 @@
     },
     data() {
       return {
-        artifacts: [{
+  
+        unfilteredArtifacts: [{
           id: 0,
           artifactTypeInt: 0,
           artifactType: '',
@@ -79,7 +94,7 @@
           assignmentDateAsStr: null,
           trends: '',
           comments: '',
-          isShowingScore: false,
+          isShowingScore: true,
           
         },
         ],
@@ -88,12 +103,31 @@
         isLoading: true,
         subject: {},
         lessonsList: [],
+        searchingLesson: 0,
+        searchTerm: '',
         
       };
     },
     computed: {
+        artifacts() {
+            let artifacts = this.unfilteredArtifacts;
 
+            if(this.searchTerm != ''){
+                artifacts = artifacts.filter((item) => {
+                    return item.description.toLowerCase().includes(this.searchTerm.toLowerCase())
+                })
 
+            }
+          
+              if(this.searchingLesson != 0){  
+
+              artifacts = artifacts.filter((item)=> {
+                return (item.lessonId === this.searchingLesson);
+              }
+            )
+              }
+              return artifacts;
+            },
     },
 
     methods: {
@@ -108,7 +142,13 @@
           }
         },
 
-        
+        toggleScores(artifactId){
+          this.artifacts.forEach(artifact =>{
+        if(artifact.id === artifactId){
+            artifact.isShowingScore = !artifact.isShowingScore;
+        }})
+
+        },
  
       
         async retrieveSubject(){
@@ -137,7 +177,7 @@
     try {
       this.isLoading = true;
       const response = await ArtifactService.getAllArtifactsBySubject(this.subjectId);
-      this.artifacts = response.data;
+      this.unfilteredArtifacts = response.data;
     }catch (error) {
       this.handleError(error, 'retrieving');
     }finally {
@@ -156,7 +196,7 @@
         this.lessonsList.push(lesson);
       })
     })
-     this.artifacts.forEach(artifact =>{
+     this.unfilteredArtifacts.forEach(artifact =>{
       this.lessonsList.forEach(lesson =>{
         if(lesson.id === artifact.lessonId){
           artifact.topicCode = lesson.topicCode;
@@ -164,7 +204,7 @@
           artifact.topicDescription = lesson.topicDescription;
           artifact.lessonDescription = lesson.lessonDescription;
         }
-      })
+      }); artifact.isShowingScore = false;
     }); 
     this.isLoading = false;
   },
@@ -223,6 +263,24 @@
       }
       #sort-by{
         grid-area: sort-by;
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        grid-template-areas: 
+        "search-box-label search-box"
+        "lesson-select-label lesson-select"
+        ;
+      }
+      #search-box-label{
+        grid-area: search-box-label;
+      }
+      #search-box{
+        grid-area: search-box;
+      }
+      #lesson-select-label{
+        grid-area: lesson-select-label;
+      }
+      #lesson-select{
+        grid-area: lesson-select;
       }
       #make-art-link{
         grid-area: make-art-link;

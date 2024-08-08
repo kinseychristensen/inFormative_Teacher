@@ -97,7 +97,8 @@ public class JdbcArtifactsDao implements ArtifactsDao{
         try {
             String sql = "SELECT artifacts.artifact_id FROM artifacts\n" +
                     "JOIN scores ON artifacts.artifact_id = scores.artifact_id\n" +
-                    "\tWHERE scores.student_id = ? AND scores.score >= 0;";
+                    "\tWHERE scores.student_id = ? AND scores.score >= 0" +
+                    "ORDER BY artifacts.assignment_date;";
             SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, studentId);
             while (rs.next()){
                 int thisArtifactId = rs.getInt("artifact_id");
@@ -114,19 +115,21 @@ public class JdbcArtifactsDao implements ArtifactsDao{
     public List<Artifact> getArtifactsBySubject(int teacherId, int subjectId) {
         List<Artifact> artifacts = new ArrayList<>();
         try {
-            String sql = "select artifacts.artifact_id \n" +
+            String sql = "select * \n" +
                     "from artifacts\n" +
-                    " LEFT JOIN lessons\n" +
-                    "\t ON artifacts.lesson = lessons.lesson_id\n" +
-                    "\tLEFT JOIN topics \n" +
-                    "\tON lessons.topic_id = topics.topic_id\n" +
-                    "\tLEFT JOIN subjects \n" +
-                    "\tON topics.subject_id = subjects.subject_id\n" +
-                    "WHERE subjects.subject_id = ? AND artifacts.teacher_id = ?;";
+                    "LEFT JOIN lessons\n" +
+                    " ON artifacts.lesson = lessons.lesson_id\n" +
+                    "LEFT JOIN topics\n" +
+                    "ON lessons.topic_id = topics.topic_id\n" +
+                    "LEFT JOIN subjects\n" +
+                    "ON topics.subject_id = subjects.subject_id\n" +
+                    "WHERE subjects.subject_id = ? AND artifacts.teacher_id = ?\n" +
+                    "ORDER BY artifacts.assignment_date DESC;";
             SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, subjectId, teacherId);
             while (rs.next()){
                 int thisArtifactId = rs.getInt("artifact_id");
                 artifacts.add(getArtifact(thisArtifactId));
+
 
             }
         }catch (DataAccessException e) {

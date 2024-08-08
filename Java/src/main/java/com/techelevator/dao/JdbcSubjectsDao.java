@@ -73,8 +73,9 @@ public class JdbcSubjectsDao implements  SubjectDao{
                 while (rs.next()) {
                     topics.add(mapRowToTopics(rs));
                 }
-                List<Lessons> lessons = new ArrayList<>();
+
                 for (Topics topic : topics) {
+                    List<Lessons> lessons = new ArrayList<>();
                     sql = "SELECT * FROM lessons WHERE topic_id = ?;";
                     rs = jdbcTemplate.queryForRowSet(sql, topic.getId());
                     while (rs.next()) {
@@ -184,6 +185,7 @@ return true;
         lesson.setId(rs.getInt("lesson_id"));
         lesson.setCode(rs.getString("code"));
         lesson.setDescription(rs.getString("description"));
+        lesson.setTopic_id(rs.getInt("topic_id"));
         return lesson;
     }
 
@@ -193,6 +195,7 @@ return true;
         topic.setCode(rs.getString("code"));
         topic.setId(rs.getInt("topic_id"));
         topic.setDescription(rs.getString("description"));
+        topic.setSubject_id(rs.getInt("subject_id"));
         return topic;
     }
 

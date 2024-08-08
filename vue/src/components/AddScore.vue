@@ -46,7 +46,7 @@
     import ArtifactService from '../services/ArtifactService';
     
     export default {
-    props: ['classId', 'artifactId'],
+    props: ['classId', 'artifactId', 'subjectId'],
         
     data (){
         return {
@@ -102,8 +102,7 @@
             }catch(error){
                 this.handleError(error, 'saving');
             }finally {
-                this.artifact.isShowingScore = false;
-                this.isLoading=false;
+              this.$router.go(0);
             }
         },
 

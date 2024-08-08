@@ -23,7 +23,7 @@ public class JdbcStudentDao implements  StudentDao{
     public List<Student> getAllStudents(){
         List<Student> students = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM students;";
+            String sql = "SELECT * FROM students ORDER BY last_name, first_name;";
             SqlRowSet rs  = jdbcTemplate.queryForRowSet(sql);
 
             while (rs.next()){
@@ -82,7 +82,8 @@ public class JdbcStudentDao implements  StudentDao{
                     "FROM students \n" +
                     "JOIN student_to_class\n" +
                     "ON students.student_id = student_to_class.student_id\n" +
-                    "WHERE class_id = ?;";
+                    "WHERE class_id = ? " +
+                    "ORDER BY students.last_name, students.first_name;";
             SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, classId);
 
             while (rs.next()){
@@ -102,7 +103,8 @@ public class JdbcStudentDao implements  StudentDao{
                     "FROM students \n" +
                     "JOIN student_to_group\n" +
                     "ON students.student_id = student_to_group.student_id\n" +
-                    "WHERE group_id = ?;";
+                    "WHERE group_id = ?" +
+                    "ORDER BY students.last_name, students_first_name;";
             SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, groupId);
 
             while (rs.next()){
@@ -122,17 +124,21 @@ public class JdbcStudentDao implements  StudentDao{
             try {
                 String sql = "DELETE FROM student_to_class where class_id = ?;";
                 jdbcTemplate.update(sql, classId);
-
+                List<Student> newRoster = new ArrayList<>();
                 for (Student student : roster) {
                     sql = "SELECT * FROM students WHERE school_id = ? AND last_name = ? AND first_name = ?;";
                     SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, student.getSchoolId(), student.getLastName(),
-                                    student.getFirstName());
-                    if(!rs.next()) {
+                            student.getFirstName());
+                    if (!rs.next()) {
                         student = createStudent(student);
-                    }else {
+                    } else {
                         student = mapRowToStudent(rs);
                     }
-
+                    if (!(newRoster.contains(student))) {
+                        newRoster.add(student);
+                    }
+                }
+                for (Student student : newRoster) {
                     sql = "INSERT INTO student_to_class(student_id, class_id) VALUES (?, ?);";
                     jdbcTemplate.update(sql, student.getId(), classId);
                 }
@@ -148,20 +154,25 @@ public class JdbcStudentDao implements  StudentDao{
         try {
             String sql = "DELETE from student_to_group where group_id = ?;";
             jdbcTemplate.update(sql, groupId);
-
+List<Student> newRoster = new ArrayList<>();
             for (Student student : roster) {
 
                 sql = "SELECT * FROM students WHERE school_id = ? AND last_name = ? AND first_name = ?;";
                 SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, student.getSchoolId(), student.getLastName(),
                         student.getFirstName());
-                if(!rs.next()) {
+                if (!rs.next()) {
                     student = createStudent(student);
-                }else {
+                } else {
                     student = mapRowToStudent(rs);
+                    if (!(newRoster.contains(student))) {
+                        newRoster.add(student);
+                    }
                 }
-                sql = "INSERT INTO student_to_group(student_id, group_id) VALUES (?, ?);";
-                jdbcTemplate.update(sql, student.getId(), groupId);
             }
+                for (Student student : newRoster) {
+                    sql = "INSERT INTO student_to_group (student_id, class_id) VALUES (?, ?);";
+                    jdbcTemplate.update(sql, student.getId(), groupId);
+                }
         }catch (DataAccessException e) {
             throw new DaoException("Error updating student details", e);
         }

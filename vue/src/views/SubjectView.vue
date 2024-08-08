@@ -31,7 +31,8 @@
             <div class="standard">
               
               <div v-for="currLesson in currTopic.lessons" v-bind:key="currLesson.id">
-                {{ currLesson.code }} : {{ currLesson.description }}
+               {{ currLesson.code }} : {{ currLesson.description }} 
+
             </div>
             </div>
         </div>
@@ -44,6 +45,7 @@
     </div>
     </div>
     </div>    
+    {{ subject }}
     </template>
     
     <script>
@@ -96,7 +98,6 @@ if(shouldArchive){
       async getSubjectDetails(){
         try {
           this.isLoading = true;
-          console.log("TEST");
           const response = await SubjectService.getSubjectDetails(this.subjectId);
           this.subject = response.data;
         }catch (error) {

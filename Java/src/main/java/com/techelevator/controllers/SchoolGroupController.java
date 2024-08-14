@@ -31,12 +31,8 @@ public class SchoolGroupController {
 
     @RequestMapping(path = BASE_URL + "/class/{classId}", method = RequestMethod.GET)
     public List<SchoolGroup> getCurrentGroups (@PathVariable int classId){
-     List<SchoolGroup> currentGroups = schoolGroupDao.getCurrentGroups(classId);
 
-    for(SchoolGroup group : currentGroups){
-        group.setStudents(studentDao.getGroupRoster(group.getGroupId()));
-    }
-    return currentGroups;
+    return schoolGroupDao.getCurrentGroups(classId);
     }
 
     @RequestMapping(path = BASE_URL + "/{classId}/archive", method = RequestMethod.GET)

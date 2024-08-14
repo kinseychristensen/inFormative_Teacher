@@ -104,7 +104,7 @@ public class JdbcStudentDao implements  StudentDao{
                     "JOIN student_to_group\n" +
                     "ON students.student_id = student_to_group.student_id\n" +
                     "WHERE group_id = ?" +
-                    "ORDER BY students.last_name, students_first_name;";
+                    "ORDER BY students.last_name, students.first_name;";
             SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, groupId);
 
             while (rs.next()){

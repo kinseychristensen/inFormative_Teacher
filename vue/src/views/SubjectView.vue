@@ -45,7 +45,7 @@
     </div>
     </div>
     </div>    
-    {{ subject }}
+
     </template>
     
     <script>

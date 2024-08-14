@@ -7,21 +7,34 @@
           <p class="logged-in-title">description here</p>
         </div>
         <Logo class="home-logo"/>
-    </div>
-    <div class="class-container">
+
+    <div class="groups-container">
     <div class="loading" v-if="isLoading">Loading...</div>
     
-    <div v-else class="class-field">
+    <div v-else class="groups-field">
+        <div id="sub-loop-groups" v-for="subject in subjectsWithGroups" v-bind:key="subject.id" v-bind:value="subject.id">
+          <div id="sub-details-groups">{{ subject.code }} : {{ subject.description }} ID: {{ subject.id }}
+</div>
+          <div id="groups-loop" v-for="schoolGroup in subject.groups" v-bind:key="schoolGroup.groupId" v-bind:value="schoolGroup.groupId">
+            <div id="a-group">{{schoolGroup.groupName  }} : {{ schoolGroup.description }}
+          </div>
+        </div></div>
+
+
         This page is loaded.
-    </div>
-    </div>
     
+        
+    </div>
+    </div>
+    </div>
     </template>
     
     <script>
     import Logo from '../components/Logo.vue';
     import NavTool from '@/components/NavTool.vue';
-    import ClassService from '../services/ClassService';
+    import GroupService from '../services/GroupService';
+    import StudentService from '../services/StudentService';
+    import SubjectService from '../services/SubjectService';
     
     export default {
       name: 'GroupsView',
@@ -29,13 +42,45 @@
         NavTool,
         Logo
     },
+
+    computed: {
+
+      subjectsWithGroups() {
+        let subjects = this.subjects;
+
+        this.subjects.forEach(subject => {
+      
+          let myGroups = [];
+          this.CurrentGroups.forEach(curGroup => {
+            if(curGroup.subjectId === subject.id){
+              myGroups.push(curGroup);
+            }
+          })
+          subject.groups = myGroups;
+        })
+        return subjects;
+      },
+
+
+
+
+
+    },
+
     data() {
       return {
-        SchoolClasses: [],
+        CurrentGroups: [],
         isLoading: true,
-        teacherName: "",
+        classId: 0,
+        subjects: [{
+          id: 0,
+          code: "",
+          description: "",
+          topics: [],
+          groups: [{}],
+        }],
       };
-    },
+    }, 
     methods: {
       handleError(error, verb) {
           if (error.response) {
@@ -48,12 +93,22 @@
           }
         },
     
-      async retrieveClasses(){
+      async retrieveGroups(){
         try {
           this.isLoading = true;
-          console.log("TEST");
-          const response = await ClassService.getCurrentClasses();
-          this.SchoolClasses = response.data;
+          const response = await GroupService.getCurrentGroups(this.classId);
+          this.CurrentGroups = response.data;
+        }catch (error) {
+          this.handleError(error, 'retrieving');
+        }finally {
+          this.getSubjectDetails();
+        }
+        }, 
+        async getSubjectDetails(){
+        try {
+          this.isLoading = true;
+          const response = await SubjectService.getClassSubjects(this.classId);
+          this.subjects = response.data;
         }catch (error) {
           this.handleError(error, 'retrieving');
         }finally {
@@ -64,9 +119,11 @@
     
     },
     created(){
-    
+      
+      this.classId = parseInt(this.$route.params.classId);
      
       this.isLoading = false;
+      this.retrieveGroups();
       
     }
     }
@@ -103,7 +160,47 @@
         text-align: center;
       }
       
-      .class-container {
+      .groups-container {
         grid-area: class;
+        display: flex;
       }
+      #sub-loop-groups{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+        "subject"
+        "groups"
+          ;
+      }
+      #sub-details-groups{
+        grid-area: subject;
+        background-color: #d9d9d9ff;
+        color: black;
+        text-align: center;
+        margin: 10px;
+        padding: 10px;
+        border-radius: 15px;
+        text-decoration: none;
+      }
+
+      #group-loops{
+        grid-area: groups;
+        display: flex;
+        flex-wrap: wrap;
+        margin: 10px;
+      }
+      #a-group{
+        color: black;
+  text-align: center;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 15px;
+  text-decoration: none;
+  min-width: 100px;
+  min-height: 100px;
+  font-size: larger;
+  background-color: #dd7e6bff;
+}
+
+      
     </style>

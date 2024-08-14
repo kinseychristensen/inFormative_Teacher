@@ -66,12 +66,12 @@ public List<SchoolGroup> getCurrentGroups (int classId){
 public int createGroup(SchoolGroup newGroup) {
     int groupId = 0;
     try {
-        String sql = "INSERT INTO school_group (group_name, description, class_id) \n" +
-                "\tVALUES (?, ?, ?)\n" +
+        String sql = "INSERT INTO school_group (group_name, description, class_id, subject_id) \n" +
+                "\tVALUES (?, ?, ?, ?)\n" +
                 "\tRETURNING group_id;";
 
         groupId = jdbcTemplate.queryForObject(sql, int.class, newGroup.getGroupName(),
-                newGroup.getDescription(), newGroup.getClassId());
+                newGroup.getDescription(), newGroup.getClassId(), newGroup.getSubjectId());
         return groupId;
     } catch (DataAccessException e) {
         throw new DaoException("Error creating group", e);
@@ -83,10 +83,10 @@ public int createGroup(SchoolGroup newGroup) {
 public SchoolGroup editGroup(SchoolGroup editGroup) {
     try {
         String sql = "UPDATE school_group \n" +
-                "\tSET group_name = ?, description = ?, class_id=?, is_active = ?\n" +
+                "\tSET group_name = ?, description = ?, class_id=?, subject_id = ?, is_active = ?\n" +
                 "\tWHERE group_id = ?;";
         jdbcTemplate.update(sql, editGroup.getGroupName(), editGroup.getDescription(),
-                editGroup.getClassId(), editGroup.isActive(), editGroup.getGroupId());
+                editGroup.getClassId(), editGroup.getSubjectId(), editGroup.isActive(), editGroup.getGroupId());
         sql = "SELECT * FROM school_group WHERE group_id = ?;";
         SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, editGroup.getGroupId());
 
@@ -111,6 +111,7 @@ public SchoolGroup editGroup(SchoolGroup editGroup) {
         schoolGroup.setDescription(rs.getString("description"));
         schoolGroup.setClassId(rs.getInt("class_id"));
         schoolGroup.setActive(rs.getBoolean("is_active"));
+        schoolGroup.setSubjectId(rs.getInt("subject_id"));
         return schoolGroup;
 
     }

@@ -1,7 +1,7 @@
 BEGIN TRANSACTION;
 
-DROP TABLE IF EXISTS class_to_subject_archived, class_to_subject, scores, artifacts, lessons,  topics, subjects, artifact_type,
-student_to_group, student_to_class, students, school_group, class_to_teacher, school_class, users;
+DROP TABLE IF EXISTS class_to_subject_archived, class_to_subject, scores, artifacts, student_to_group, school_group, lessons,  topics, subjects, artifact_type,
+ student_to_class, students, class_to_teacher, school_class, users;
 
 CREATE TABLE users (
 	user_id SERIAL,
@@ -28,14 +28,7 @@ CREATE TABLE class_to_teacher (
     CONSTRAINT FK_class_id FOREIGN KEY (class_id) REFERENCES school_class(class_id)
 );
 
-CREATE TABLE school_group (
-    group_id SERIAL,
-    group_name varchar (50) NOT NULL,
-    description text,
-    class_id int NOT NULL,
-    is_active boolean default true,
-    CONSTRAINT PK_group_id PRIMARY KEY (group_id)
-    );
+
 
 CREATE TABLE students (
     student_id serial,
@@ -49,13 +42,6 @@ CREATE TABLE student_to_class (
     class_id int NOT NULL,
     student_id int NOT NULL,
     CONSTRAINT FK_class_id FOREIGN KEY (class_id) REFERENCES school_class(class_id),
-    CONSTRAINT FK_student_id FOREIGN KEY (student_id) REFERENCES students(student_id)
-    );
-
-CREATE TABLE student_to_group (
-    group_id int NOT NULL,
-    student_id int NOT NULL,
-    CONSTRAINT FK_group_id FOREIGN KEY (group_id) REFERENCES school_group(group_id),
     CONSTRAINT FK_student_id FOREIGN KEY (student_id) REFERENCES students(student_id)
     );
 
@@ -97,7 +83,24 @@ CREATE TABLE lessons (
      CONSTRAINT FK_topic_id FOREIGN KEY (topic_id) REFERENCES topics(topic_id)
     );
 
+CREATE TABLE school_group (
+    group_id SERIAL,
+    group_name varchar (50) NOT NULL,
+    description text,
+    class_id int NOT NULL,
+    subject_id int NOT NULL,
+    is_active boolean default true,
+    CONSTRAINT PK_group_id PRIMARY KEY (group_id),
+    CONSTRAINT FK_subject_id FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
+    );
 
+
+CREATE TABLE student_to_group (
+    group_id int NOT NULL,
+    student_id int NOT NULL,
+    CONSTRAINT FK_group_id FOREIGN KEY (group_id) REFERENCES school_group(group_id),
+    CONSTRAINT FK_student_id FOREIGN KEY (student_id) REFERENCES students(student_id)
+    );
 
 CREATE TABLE artifacts (
     artifact_id SERIAL,

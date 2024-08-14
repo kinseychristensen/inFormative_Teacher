@@ -31,10 +31,6 @@ INSERT INTO school_class (description, class_name, is_active) VALUES ('sample ar
 INSERT INTO class_to_teacher (class_id, teacher_id) VALUES (1, 1);
 INSERT INTO class_to_teacher (class_id, teacher_id) VALUES (2, 2);
 
-INSERT INTO school_group (group_name, description, class_id, is_active) VALUES ('#1', 'Reading groups', 1, true);
-INSERT INTO school_group (group_name, description, class_id, is_active) VALUES ('#7', 'Math group 7', 1, true);
-INSERT INTO school_group (group_name, description, class_id, is_active) VALUES ('Pull Out - Reading', 'Pull out for reading at 10:15', 1,  true);
-INSERT INTO school_group (group_name, description, class_id, is_active) VALUES ('Table Six', 'table six, math', 2, false);
 
 INSERT INTO student_to_class (class_id, student_id) VALUES (1 , 1);
 INSERT INTO student_to_class (class_id, student_id) VALUES (1 , 2);
@@ -60,6 +56,28 @@ INSERT INTO student_to_class (class_id, student_id) VALUES (2 , 4);
 INSERT INTO student_to_class (class_id, student_id) VALUES (2 , 5);
 INSERT INTO student_to_class (class_id, student_id) VALUES (2 , 6);
 
+INSERT INTO subjects (code, description, not_attempted, below, approaching, proficient, mastered) VALUES ('Math', '3rd Grade Math', 0, 1, 2, 3, 4);
+INSERT INTO subjects (code, description, not_attempted, below, approaching, proficient, mastered) VALUES ('L.A.', '3rd Grade Language Arts', 0, 1, 2, 3, 4);
+
+INSERT INTO topics (code, description, subject_id) VALUES ('1', 'Generalize Place Value Understanding', 1);
+INSERT INTO topics (code, description, subject_id) VALUES ('2', 'Math Topic #2', 1);
+INSERT INTO topics (code, description, subject_id) VALUES ('3', 'Math Topic # 3', 1);
+INSERT INTO topics (code, description, subject_id) VALUES ('Organize', 'Writing Standards 3', 2);
+
+INSERT INTO lessons (code, description, topic_id) VALUES ('1','Numbers Through One Million', 1);
+INSERT INTO lessons (code, description, topic_id) VALUES ('2','Place Value Relationships', 1);
+INSERT INTO lessons (code, description, topic_id) VALUES ('3','Compare Whole Numbers', 1);
+INSERT INTO lessons (code, description, topic_id) VALUES ('4','Round Whole Numbers', 1);
+INSERT INTO lessons (code, description, topic_id) VALUES ('5','Problem Solving', 1);
+INSERT INTO lessons (code, description, topic_id) VALUES ('Paragraph Structure','Can Students organize a paragraph with a topic sentence and evidence?', 4);
+INSERT INTO lessons (code, description, topic_id) VALUES ('Conclusion','Can students write a conclusion that summarizes arguments without introducing new information?', 4);
+INSERT INTO lessons (code, description, topic_id) VALUES ('Introduction','Can students write a compelling introduction that includes a topic sentence?', 4);
+
+INSERT INTO school_group (group_name, description, class_id, subject_id, is_active) VALUES ('#1', 'Reading groups', 1, 2, true);
+INSERT INTO school_group (group_name, description, class_id, subject_id, is_active) VALUES ('#7', 'Math group 7', 1, 1, true);
+INSERT INTO school_group (group_name, description, class_id, subject_id, is_active) VALUES ('Pull Out - Reading', 'Pull out for reading at 10:15', 1, 2, true);
+INSERT INTO school_group (group_name, description, class_id, subject_id, is_active) VALUES ('Table Six', 'table six, math', 2, 1, false);
+
 
 INSERT INTO student_to_group (group_id, student_id) VALUES (1, 3);
 INSERT INTO student_to_group (group_id, student_id) VALUES (1, 4);
@@ -73,24 +91,6 @@ INSERT INTO student_to_group (group_id, student_id) VALUES (4, 14);
 INSERT INTO student_to_group (group_id, student_id) VALUES (4, 10);
 INSERT INTO student_to_group (group_id, student_id) VALUES (4, 17);
 INSERT INTO student_to_group (group_id, student_id) VALUES (4, 16);
-
-INSERT INTO subjects (code, description, not_attempted, below, approaching, proficient, mastered) VALUES ('Math', '3rd Grade Math', 0, 1, 2, 3, 4);
-INSERT INTO subjects (code, description, not_attempted, below, approaching, proficient, mastered) VALUES ('L.A.', '3rd Grade Language Arts', 0, 1, 2, 3, 4);
-
-INSERT INTO topics (code, description, subject_id) VALUES ('1', 'Generalize Place Value Understanding', 1);
-INSERT INTO topics (code, description, subject_id) VALUES ('2', 'Math Topic #2', 1);
-INSERT INTO topics (code, description, subject_id) VALUES ('3', 'Math Topic # 3', 1);
-INSERT INTO topics (code, description, subject_id) VALUES ('Organize', 'Writing Standards 3', 2);
-
-
-INSERT INTO lessons (code, description, topic_id) VALUES ('1','Numbers Through One Million', 1);
-INSERT INTO lessons (code, description, topic_id) VALUES ('2','Place Value Relationships', 1);
-INSERT INTO lessons (code, description, topic_id) VALUES ('3','Compare Whole Numbers', 1);
-INSERT INTO lessons (code, description, topic_id) VALUES ('4','Round Whole Numbers', 1);
-INSERT INTO lessons (code, description, topic_id) VALUES ('5','Problem Solving', 1);
-INSERT INTO lessons (code, description, topic_id) VALUES ('Paragraph Structure','Can Students organize a paragraph with a topic sentence and evidence?', 4);
-INSERT INTO lessons (code, description, topic_id) VALUES ('Conclusion','Can students write a conclusion that summarizes arguments without introducing new information?', 4);
-INSERT INTO lessons (code, description, topic_id) VALUES ('Introduction','Can students write a compelling introduction that includes a topic sentence?', 4);
 
 INSERT INTO artifact_type (description) VALUES ('Quick Check');
 INSERT INTO artifact_type (description) VALUES ('Practice Buddy');

@@ -3,7 +3,7 @@
     <div class="home-container">
         <NavTool class="home-nav-tool"/>
         <div class = "home-title-view">
-          <h1 class="page-title">Create Artifact</h1>
+          <h1 class="page-title">Create Artifact for {{ subject.code }}</h1>
           <div class="logged-in-title"><p>Artifacts are moments when you are assessing a student's progress towards mastery.  
             These can include physical evidence such as exit slips, worksheets, and practice tests.  They can also include behavioral
             observation such as small group work, class discussions, or one-to-one meetings.  Artifacts must be assinged to an individual 
@@ -37,9 +37,9 @@
      <label for="art-title" id="art-title-label">Title/Description</label>
      <input type="text" id="art-title" placeholder="Title goes here" v-model="artifact.description"/>
      
-     <label for="art-lesson" id="art-lesson-label">Lesson Standard</label>   
-     <select id="art-lesson" v-model="artifact.lessonId">Select Lesson Standard
-      <option v-bind:value="0">Please select a lesson standard this artifact assesses.</option>
+     <label for="art-lesson" id="art-lesson-label">Indicator</label>   
+     <select id="art-lesson" v-model="artifact.lessonId">Select Indicator
+      <option v-bind:value="0">Please select the indicator that this artifact assesses.</option>
       <option v-for="lesson in lessonsList" v-bind:key="lesson.id" v-bind:value="lesson.id">
         {{ lesson.topic_id }} - {{ lesson.code }}: {{ lesson.description }}
       </option>

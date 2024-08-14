@@ -57,8 +57,8 @@
       
           <div class="topic-display"> 
             <div id="units-lessons">
-            <div id="units">Units</div>
-            <div id="lessons">Lesson Standards</div></div>
+            <div id="units">Category / Unit</div>
+            <div id="lessons">Indicators</div></div>
 
             <div class="topic-loop" v-for="currTopic in newSubject.topics" v-bind:key="currTopic.id">
             
@@ -68,11 +68,11 @@
             
 
               <form class="standard-form" v-on:submit.prevent="addLesson(currLesson, currTopic.id)">
-                <label for="lesson-code" class="less-code-label">Lesson Code:</label>
+                <label for="lesson-code" class="less-code-label">Indicator Code:</label>
                 <input id="lesson-code" v-model.lazy="currLesson.code"/>
-                <label for="lesson-desc" class="less-desc-label">Lesson Description:</label>
+                <label for="lesson-desc" class="less-desc-label">Indicator Description:</label>
                 <textarea id="less-desc" v-model.lazy="currLesson.description"></textarea>
-                <button class="add-lesson-button">Add Another Lesson</button>
+                <button class="add-lesson-button">Add Another Indicator</button>
               </form>
               </div></div>
             
@@ -81,7 +81,7 @@
               <input id="topic-code" v-model.lazy="currTopic.code"/></div>
              <div> <label for="topic-desc" class="top-desc-label">Description:</label><p></p>
               <textarea id="topic-desc" v-model.lazy="currTopic.description"></textarea></div>
-             <div> <button class="add-topic-button">Add Another Topic</button></div>
+             <div> <button class="add-topic-button">Add Another Category</button></div>
             </form>
           </div>
           </div>
@@ -108,8 +108,8 @@
             </div>
           </div>
           <div id="units-lessons">
-            <div id="units">Units</div>
-            <div id="lessons">Lesson Standards</div></div>
+            <div id="units">Category/Unit</div>
+            <div id="lessons">Indicators</div></div>
           <div class="topic-display"> 
             <div class="topic-loop" v-for="currTopic in newSubject.topics" v-bind:key="currTopic.id">
             {{ currTopic.code }} : {{ currTopic.description }}
@@ -121,7 +121,7 @@
             </div>
             </div>
             </div>
-            </div><p class="error">Important note: Incomplete rows will be ignored.  Please include both a short refrence code and a description for each unit and lesson you intend to use.</p>
+            </div><p class="error">Important note: Incomplete rows will be ignored.  Please include both a short refrence code and a description for each category and indicator you intend to use.</p>
           <button class="button-link" id="return-to-edit" @click="toggleReview">Return to Edit</button>
           <button class="button-link" id="complete-confirm" @click="createSubject">Confirm</button>
         </div>
@@ -188,19 +188,19 @@
             this.$store.commit('SET_NOTIFICATION',
               "Error " + verb + " deck list. Response received was '" + error.response.statusText + "'.");
           } else if (error.request) {
-            this.$store.commit('SET_NOTIFICATION', "Error " + verb + " deck list. Server could not be reached.");
+            this.$store.commit('SET_NOTIFICATION', "Error " + verb + " subject. Server could not be reached.");
           } else {
-            this.$store.commit('SET_NOTIFICATION', "Error " + verb + " deck list. Request could not be created.");
+            this.$store.commit('SET_NOTIFICATION', "Error " + verb + " subject. Request could not be created.");
           }
         },
        
         addLesson(currLesson, currTopicId){
           this.errorMessage='';
           if(currLesson.code ===''){
-            this.errorMessage += "Lesson must have a short code for refrence.  It may be letters or numbers.  ";
+            this.errorMessage += "Indicator must have a short code for refrence.  It may be letters or numbers.  ";
           }
           if(currLesson.description === ''){
-            this.errorMessage += "Lesson must have a description.  "
+            this.errorMessage += "Indicator must have a description.  "
           }
           if(this.errorMessage === ''){
            let newId = currLesson.id + 1;
@@ -211,10 +211,10 @@
         addTopic(currTopic){
           this.errorMessage='';
           if(currTopic.code ===''){
-            this.errorMessage += "Topic must have a short code for refrence.  It may be letters or numbers.  ";
+            this.errorMessage += "Category must have a short code for refrence.  It may be letters or numbers.  ";
           }
           if(currTopic.description === ''){
-            this.errorMessage += "Topic must have a description.  "
+            this.errorMessage += "Category must have a description.  "
           }
           if(this.errorMessage === ''){
             let newId = currTopic.id + 1;
@@ -238,7 +238,7 @@ if (this.newSubject.classId === 0) {
   this.errorMessage += "Subject must be assigned to a current class.  ";
  }
  if (this.newSubject.topics.length === 0) {
-  this.errorMessage += "Subject must have at least one topic.  ";
+  this.errorMessage += "Subject must have at least one category.  ";
  }
  if(this.errorMessage.length === 0){
   this.toggleReview();

@@ -10,7 +10,15 @@ public class SchoolGroup {
     private boolean isActive;
     private int classId;
     private List<Student> students;
+    private int subjectId;
 
+    public int getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(int subjectId) {
+        this.subjectId = subjectId;
+    }
 
     public int getGroupId() {
         return groupId;

@@ -285,6 +285,8 @@
       #make-art-link{
         grid-area: make-art-link;
         background-color: #ffd966ff;
+
+
       }
       #class-mast-link{
         grid-area: class-mast-link;

@@ -37,15 +37,15 @@ public class JdbcArtifactsDao implements ArtifactsDao{
         }
     }
 
-    //TODO: once the date issue is fixed, update this to have the same accuracy.
+
     @Override
     public Artifact editArtifact(Artifact artifact) {
         try {
             String sql = "\n" +
-                    "UPDATE artifacts SET artifact_type = ?, description = ?, lesson = ?, assignment_date = ?, trends= ?, comments=?\n" +
+                    "UPDATE artifacts SET artifact_type = ?, description = ?, lesson = ?, assignment_date = ?, comments=?\n" +
                     "\tWHERE artifact_id = ?;";
             jdbcTemplate.update(sql, artifact.getArtifactTypeInt(), artifact.getDescription(),
-                    artifact.getLessonId(),artifact.getAssignmentDate(), artifact.getTrends(),
+                    artifact.getLessonId(),artifact.getAssignmentDate(),
                     artifact.getComments(), artifact.getId());
 
             return getArtifact(artifact.getId());
@@ -178,7 +178,6 @@ public class JdbcArtifactsDao implements ArtifactsDao{
         artifact.setLessonId(rs.getInt("lesson"));
         artifact.setTeacherId(rs.getInt("teacher_id"));
         artifact.setAssignmentDate(rs.getDate("assignment_date").toLocalDate());
-        artifact.setTrends(rs.getString("trends"));
         artifact.setComments(rs.getString("comments"));
         return artifact;
 

@@ -60,7 +60,6 @@ CREATE TABLE artifact_type (
     approaching int default 2,
     proficient int default 3,
     mastered int default 4,
-
     CONSTRAINT PK_subject_id PRIMARY KEY (subject_id)
     );
 
@@ -89,7 +88,7 @@ CREATE TABLE school_group (
     description text,
     class_id int NOT NULL,
     subject_id int NOT NULL,
-    is_active boolean default true,
+   color int default 1,
     CONSTRAINT PK_group_id PRIMARY KEY (group_id),
     CONSTRAINT FK_subject_id FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
     );
@@ -109,7 +108,6 @@ CREATE TABLE artifacts (
     lesson int NOT NULL,
     teacher_id int NOT NULL,
     assignment_date DATE NOT NULL,
-    trends TEXT,
     comments TEXT,
     CONSTRAINT PK_artifact_id PRIMARY KEY (artifact_id),
     CONSTRAINT FK_artifact_type FOREIGN KEY (artifact_type) REFERENCES artifact_type(code),
@@ -131,6 +129,7 @@ CREATE TABLE scores (
     CREATE TABLE class_to_subject (
     class_id int NOT NULL,
     subject_id int NOT NULL,
+    color int default 1,
     CONSTRAINT FK_class_id FOREIGN KEY (class_id) REFERENCES school_class(class_id),
     CONSTRAINT FK_subject_id FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
     );

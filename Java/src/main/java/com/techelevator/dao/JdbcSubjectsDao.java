@@ -23,13 +23,15 @@ public class JdbcSubjectsDao implements  SubjectDao{
     @Override
     public int createSubject(Subject subject, int classId) {
         try{
-            String sql = "INSERT INTO subjects (code, description) \n" +
-                    "\tVALUES (?, ?)\n" +
+            String sql = "INSERT INTO subjects (code, description, not_attempted, below, approaching, proficient, mastered) \n" +
+                    "\tVALUES (?, ?, ?, ?, ?, ?, ?)\n" +
                     "\tRETURNING subject_id;";
-            int subjectId = jdbcTemplate.queryForObject(sql, Integer.class, subject.getCode(), subject.getDescription());
-            sql = "INSERT INTO class_to_subject (subject_id, class_id) \n" +
-                    "\tVALUES (?, ?);";
-            jdbcTemplate.update(sql, subjectId, classId);
+            int subjectId = jdbcTemplate.queryForObject(sql, Integer.class, subject.getCode(), subject.getDescription(),
+                 subject.getNotAttempted(), subject.getBelow(), subject.getApproaching(),
+                    subject.getProficient(), subject.getMastered());
+            sql = "INSERT INTO class_to_subject (subject_id, class_id, color) \n" +
+                    "\tVALUES (?, ?, ?);";
+            jdbcTemplate.update(sql, subjectId, classId, subject.getColor());
             List<Topics> topicsList = subject.getTopics();
             if(topicsList != null) {
                 for (Topics topics : topicsList) {
@@ -106,7 +108,11 @@ public class JdbcSubjectsDao implements  SubjectDao{
             for(int subjectId: subjectIds){
                 subjects.add(getSubjectDetails(subjectId));
             }
-
+        for(Subject subject: subjects){
+            sql = "SELECT color FROM class_to_subject WHERE class_id = ? and subject_id = ?";
+            int subColor = jdbcTemplate.queryForObject(sql, Integer.class, classId, subject.getId());
+            subject.setColor(subColor);
+        }
         }catch (DataAccessException e) {
             throw new DaoException("Error retrieving subject details", e);
         }
@@ -127,7 +133,6 @@ public class JdbcSubjectsDao implements  SubjectDao{
             for(int subjectId: subjectIds){
                 subjects.add(getSubjectDetails(subjectId));
             }
-
         }catch (DataAccessException e) {
             throw new DaoException("Error retrieving archived subject details", e);
         }
@@ -169,10 +174,10 @@ return true;
     }
 
     @Override
-    public boolean addSubject(int subjectId, int classId) {
+    public boolean addSubject(int subjectId, int classId, int color) {
         try{
-            String sql = "INSERT INTO class_to_subject (class_id, subject_id) VALUES (?, ?);";
-            jdbcTemplate.update(sql, classId, subjectId);
+            String sql = "INSERT INTO class_to_subject (class_id, subject_id, color) VALUES (?, ?, ?);";
+            jdbcTemplate.update(sql, classId, subjectId, color);
         }catch (DataAccessException e) {
             throw new DaoException("Error retrieving student details", e);
         }

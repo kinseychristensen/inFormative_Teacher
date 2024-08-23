@@ -12,7 +12,6 @@ public class Artifact {
     private int teacherId;
     private String assignmentDateAsStr;
     private LocalDate assignmentDate;
-    private String trends;
     private String comments;
 
     public int getId() {
@@ -77,14 +76,6 @@ public class Artifact {
 
     public void setAssignmentDate(LocalDate assignmentDate) {
         this.assignmentDate = assignmentDate;
-    }
-
-    public String getTrends() {
-        return trends;
-    }
-
-    public void setTrends(String trends) {
-        this.trends = trends;
     }
 
     public String getComments() {

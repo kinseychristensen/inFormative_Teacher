@@ -7,12 +7,9 @@
         <label for="cl-comment">Class Comments:</label>
         <textarea id="cl-comment" v-model="artifact.comments"></textarea>
     </div>
-    <div id="class-trends">
-        <label for="cl-trend">Class Trends:</label>
-        <textarea id="cl-trend" v-model="artifact.trends"></textarea>
-    </div>
+   
     <div id="student-labels">
-              <p>Student Name</p>
+              <p>Student Name</p>  
               <p>Score</p>
               <p>Comments</p>
             </div>
@@ -76,13 +73,12 @@
         },
 
         async saveScores1(){
-            let editedArtifact = {id:0, artifactTypeInt:0, description: '', lessonId: 0, assignmentDateAsStr: '', trends: '', comments: ''};
+            let editedArtifact = {id:0, artifactTypeInt:0, description: '', lessonId: 0, assignmentDateAsStr: '', comments: ''};
             editedArtifact.id = this.artifact.id;
             editedArtifact.artifactTypeInt = this.artifact.artifactTypeInt;
             editedArtifact.description = this.artifact.description;
             editedArtifact.lessonId = this.artifact.lessonId;
             editedArtifact.assignmentDateAsStr = this.artifact.assignmentDate;
-            editedArtifact.trends = this.artifact.trends;
             editedArtifact.comments = this.artifact.comments;
 
             try{
@@ -182,7 +178,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
-    "class-comments class-trends"
+    "class-comments class-comments"
     "student-labels student-labels"
     "student-loop student-loop"
     "save-score save-score"
@@ -201,12 +197,6 @@
   grid-template-columns: 1fr 2fr 1fr;
   background-color: rgb(192, 193, 222);
   gap: 3px;
-}
-#class-trends{
-  grid-area: class-trends;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
 }
 #student-flex{
     grid-area: student-loop;

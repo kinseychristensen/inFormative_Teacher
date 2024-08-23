@@ -29,8 +29,8 @@ export default {
     archiveSubject(subjectId, classId){
         return axios.put(`/subject/${subjectId}/${classId}/archive`)
     }, 
-    addSubject(subjectId, classId){
-        return axios.put(`/subject/${subjectId}/${classId}/add`)
+    addSubject(subjectId, classId, color){
+        return axios.put(`/subject/${subjectId}/${classId}/add/${color}`)
     }
 
 }

@@ -7,10 +7,18 @@ public class SchoolGroup {
     private int groupId;
     private String groupName;
     private String description;
-    private boolean isActive;
     private int classId;
     private List<Student> students;
     private int subjectId;
+    private int color;
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
 
     public int getSubjectId() {
         return subjectId;
@@ -34,14 +42,6 @@ public class SchoolGroup {
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
     }
 
     public String getDescription() {

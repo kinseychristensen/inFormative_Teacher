@@ -42,12 +42,12 @@
           <div id="artifact-title-desc">{{ artifact.description }}<p></p></div>
           <div id="artifact-type">{{ artifact.artifactType }}</div>
           <div id="artifact-date">{{ artifact.assignmentDate }}</div>
-          <div id="artifact-trends">Trends: {{  artifact.trends}}</div>
           <div id="artifact-comments">Comments: {{ artifact.comments }}</div>
 
         </div>
 
         <div class="art-button-link" id="score-buttons" @click="toggleScores(artifact.id)">Scores</div>
+        <div class="art-button-link" id="delete-art" @click="deleteArtifact(artifact.id)">Delete this Artifact</div>
         <div id="score-show">
        
 
@@ -208,6 +208,26 @@
     }); 
     this.isLoading = false;
   },
+
+    async deleteArtifact(artifactId){
+      const shouldDelete = confirm("Are you sure you want to delete this artifact?  All scores from the artifact will also be deleted.");
+    
+      if(shouldDelete){
+        try{
+          this.isLoading = true;
+          const response = await ArtifactService.deleteArtifact(artifactId);
+          let didDelete = response.data;
+        }catch (error) {
+            this.handleError(error, 'editing');
+          }finally {
+            this.$router.go(0);
+          }
+      }
+    
+    
+    
+    },
+
     
     },
     created(){
@@ -302,6 +322,7 @@
         grid-template-columns: 1fr 225px;
         grid-template-areas: 
         "artifact-details score-buttons"
+         "artifact-details delete-art"
         "score-show score-show"
         ;
       }
@@ -329,12 +350,15 @@
         "lesson-deets artifact-date"
         "artifact-title-desc artifact-title-desc"
         ". artifact-type "
-        "artifact-trends artifact-trends"
         "artifact-comments artifact-comments"
         ;
       }
       #score-buttons{
         grid-area: score-buttons;
+        background-color:  #f6b26bff;
+      }
+      #delete-art{
+        grid-area: delete-art;
         background-color: #dd7e6bff;
       }
 

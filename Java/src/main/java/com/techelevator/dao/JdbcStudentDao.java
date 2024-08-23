@@ -100,10 +100,10 @@ public class JdbcStudentDao implements  StudentDao{
         List<Student> students = new ArrayList<>();
         try {
             String sql = "SELECT students.student_id, students.last_name, students.first_name, students.school_id \n" +
-                    "FROM students \n" +
+                    "FROM students\n" +
                     "JOIN student_to_group\n" +
                     "ON students.student_id = student_to_group.student_id\n" +
-                    "WHERE group_id = ?" +
+                    "WHERE group_id = ?\n" +
                     "ORDER BY students.last_name, students.first_name;";
             SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, groupId);
 
@@ -155,22 +155,8 @@ public class JdbcStudentDao implements  StudentDao{
             String sql = "DELETE from student_to_group where group_id = ?;";
             jdbcTemplate.update(sql, groupId);
 List<Student> newRoster = new ArrayList<>();
-            for (Student student : roster) {
-
-                sql = "SELECT * FROM students WHERE school_id = ? AND last_name = ? AND first_name = ?;";
-                SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, student.getSchoolId(), student.getLastName(),
-                        student.getFirstName());
-                if (!rs.next()) {
-                    student = createStudent(student);
-                } else {
-                    student = mapRowToStudent(rs);
-                    if (!(newRoster.contains(student))) {
-                        newRoster.add(student);
-                    }
-                }
-            }
-                for (Student student : newRoster) {
-                    sql = "INSERT INTO student_to_group (student_id, class_id) VALUES (?, ?);";
+                for (Student student : roster) {
+                    sql = "INSERT INTO student_to_group (student_id, group_id) VALUES (?, ?);";
                     jdbcTemplate.update(sql, student.getId(), groupId);
                 }
         }catch (DataAccessException e) {

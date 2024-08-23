@@ -13,7 +13,7 @@ public interface SubjectDao {
      List<Subject> getArchivedClassSubjects (int classId);
      List<Subject> getAllSubjects ();
      boolean archiveSubject (int subjectId, int classId);
-     boolean addSubject (int subjectId, int classId);
+     boolean addSubject (int subjectId, int classId, int color);
 
 
 

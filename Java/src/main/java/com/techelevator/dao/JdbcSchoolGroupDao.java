@@ -35,7 +35,7 @@ public SchoolGroup getGroupDetails(int groupId) {
 @Override
 public List<SchoolGroup> getCurrentGroups (int classId){
     try {
-        String sql = "SELECT * FROM school_group WHERE class_id = ? AND is_active = true;";
+        String sql = "SELECT * FROM school_group WHERE class_id = ?;";
         SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, classId);
         List<SchoolGroup> groups = new ArrayList<>();
         while(rs.next()){
@@ -47,31 +47,16 @@ public List<SchoolGroup> getCurrentGroups (int classId){
     }
 }
 
-    @Override
-    public List<SchoolGroup> getArchivedGroups (int classId){
-        try {
-            String sql = "SELECT * FROM school_group WHERE class_id = ? AND is_active = false;";
-            SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, classId);
-            List<SchoolGroup> groups = new ArrayList<>();
-            while(rs.next()){
-                groups.add(mapRowToGroup(rs));
-            }
-            return groups;
-        }catch (DataAccessException e) {
-            throw new DaoException("Error retrieving group details", e);
-        }
-    }
-
 @Override
 public int createGroup(SchoolGroup newGroup) {
     int groupId = 0;
     try {
-        String sql = "INSERT INTO school_group (group_name, description, class_id, subject_id) \n" +
-                "\tVALUES (?, ?, ?, ?)\n" +
+        String sql = "INSERT INTO school_group (group_name, description, class_id, subject_id, color) \n" +
+                "\tVALUES (?, ?, ?, ?, ?)\n" +
                 "\tRETURNING group_id;";
 
         groupId = jdbcTemplate.queryForObject(sql, int.class, newGroup.getGroupName(),
-                newGroup.getDescription(), newGroup.getClassId(), newGroup.getSubjectId());
+                newGroup.getDescription(), newGroup.getClassId(), newGroup.getSubjectId(), newGroup.getColor());
         return groupId;
     } catch (DataAccessException e) {
         throw new DaoException("Error creating group", e);
@@ -80,13 +65,27 @@ public int createGroup(SchoolGroup newGroup) {
 }
 
 @Override
+public boolean deleteGroup(int groupId){
+        try {
+            String sql = "DELETE FROM student_to_group WHERE group_id = ?";
+            jdbcTemplate.update(sql, groupId);
+            sql = "DELETE FROM school_group WHERE group_id = ?";
+            jdbcTemplate.update(sql, groupId);
+
+            return true;
+        }catch(DataAccessException e) {
+            throw new DaoException("Error retrieving updating class details", e);
+        }
+}
+
+@Override
 public SchoolGroup editGroup(SchoolGroup editGroup) {
     try {
         String sql = "UPDATE school_group \n" +
-                "\tSET group_name = ?, description = ?, class_id=?, subject_id = ?, is_active = ?\n" +
+                "\tSET group_name = ?, description = ?, class_id=?, subject_id = ?, color = ?\n" +
                 "\tWHERE group_id = ?;";
         jdbcTemplate.update(sql, editGroup.getGroupName(), editGroup.getDescription(),
-                editGroup.getClassId(), editGroup.getSubjectId(), editGroup.isActive(), editGroup.getGroupId());
+                editGroup.getClassId(), editGroup.getSubjectId(), editGroup.getColor(), editGroup.getGroupId());
         sql = "SELECT * FROM school_group WHERE group_id = ?;";
         SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, editGroup.getGroupId());
 
@@ -110,7 +109,7 @@ public SchoolGroup editGroup(SchoolGroup editGroup) {
         schoolGroup.setGroupName(rs.getString("group_name"));
         schoolGroup.setDescription(rs.getString("description"));
         schoolGroup.setClassId(rs.getInt("class_id"));
-        schoolGroup.setActive(rs.getBoolean("is_active"));
+        schoolGroup.setColor(rs.getInt("color"));
         schoolGroup.setSubjectId(rs.getInt("subject_id"));
         return schoolGroup;
 

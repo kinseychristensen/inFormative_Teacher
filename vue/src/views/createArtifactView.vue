@@ -50,9 +50,6 @@
      <label for="art-date" id="art-date-label">Assignment Date</label>
      <input type="date" id="art-date" v-model="artifact.assignmentDateAsStr"/>
      
-     <label for="art-trends" id="art-trends-label">Observed Trends</label>
-     <textarea id="art-trends" v-model="artifact.trends">trends goes here</textarea>
-     
      <label for="art-comm" id="art-comm-label">Additional Comments</label>
      <textarea id="art-comm" v-model="artifact.comments">comments go here</textarea>
      
@@ -84,7 +81,6 @@
           description: '',
           lessonId: 0,
           assignmentDateAsStr: null,
-          trends: '',
           comments: '',
         },
         subject: {
@@ -274,7 +270,6 @@
         "art-title-label  art-title"
         "art-lesson-label art-lesson"
         "art-date-label art-date"
-        "art-trends-label art-trends"
         "art-comm-label art-comm"
         "submit submit";
        gap: 5px;
@@ -297,12 +292,6 @@
       }
       #art-date{
         grid-area: art-date;
-      }
-      #art-trends-label{
-        grid-area: art-trends-label;
-      }
-      #art-trends{
-        grid-area: art-trends;
       }
       #art-comm-label{
         grid-area: art-comm-label;

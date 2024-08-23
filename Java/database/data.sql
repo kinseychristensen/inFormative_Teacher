@@ -73,10 +73,10 @@ INSERT INTO lessons (code, description, topic_id) VALUES ('Paragraph Structure',
 INSERT INTO lessons (code, description, topic_id) VALUES ('Conclusion','Can students write a conclusion that summarizes arguments without introducing new information?', 4);
 INSERT INTO lessons (code, description, topic_id) VALUES ('Introduction','Can students write a compelling introduction that includes a topic sentence?', 4);
 
-INSERT INTO school_group (group_name, description, class_id, subject_id, is_active) VALUES ('#1', 'Reading groups', 1, 2, true);
-INSERT INTO school_group (group_name, description, class_id, subject_id, is_active) VALUES ('#7', 'Math group 7', 1, 1, true);
-INSERT INTO school_group (group_name, description, class_id, subject_id, is_active) VALUES ('Pull Out - Reading', 'Pull out for reading at 10:15', 1, 2, true);
-INSERT INTO school_group (group_name, description, class_id, subject_id, is_active) VALUES ('Table Six', 'table six, math', 2, 1, false);
+INSERT INTO school_group (group_name, description, class_id, subject_id, color) VALUES ('#1', 'Reading groups', 1, 2, 1);
+INSERT INTO school_group (group_name, description, class_id, subject_id, color) VALUES ('#7', 'Math group 7', 1, 1, 2);
+INSERT INTO school_group (group_name, description, class_id, subject_id, color) VALUES ('Pull Out - Reading', 'Pull out for reading at 10:15', 1, 2, 3);
+INSERT INTO school_group (group_name, description, class_id, subject_id, color) VALUES ('Table Six', 'table six, math', 2, 1, 4);
 
 
 INSERT INTO student_to_group (group_id, student_id) VALUES (1, 3);
@@ -100,20 +100,19 @@ INSERT INTO artifact_type (description) VALUES ('Practice Page With Partner');
 INSERT INTO artifact_type (description) VALUES ('Exit Ticket');
 INSERT INTO artifact_type (description) VALUES ('Retest');
 
-INSERT INTO artifacts (artifact_type, description, lesson, teacher_id, assignment_date, trends, comments)
-VALUES (1, 'Quick Check # 6', 1, 1, '01/01/2024', 'no trends', '#1 - # 3 completed as class');
+INSERT INTO artifacts (artifact_type, description, lesson, teacher_id, assignment_date, comments)
+VALUES (1, 'Quick Check # 6', 1, 1, '01/01/2024', '#1 - # 3 completed as class');
 
-INSERT INTO artifacts (artifact_type, description, lesson, teacher_id, assignment_date, trends, comments)
-VALUES (2, 'partners', 5, 1, '10/10/2023', 'had to reteach word problem vocabulary', 'fire drill day');
+INSERT INTO artifacts (artifact_type, description, lesson, teacher_id, assignment_date, comments)
+VALUES (2, 'partners', 5, 1, '10/10/2023', 'had to reteach word problem vocabulary');
 
 INSERT INTO artifacts (artifact_type, description, lesson, teacher_id, assignment_date, comments)
 VALUES (3, '-', 6, 1, '02/14/2024', 'valentines cut group time to 10 minutes');
-
 INSERT INTO artifacts (artifact_type, description, lesson, teacher_id, assignment_date)
 VALUES (7, 'lunch retest for Timmy', 3, 1, '02/16/2023');
 
-INSERT INTO artifacts (artifact_type, description, lesson, teacher_id, assignment_date, trends, comments)
-VALUES (6, 'number sort', 3, 1, '02/22/2024', 'some students struggling with thousands vs ten thousands', 'sub');
+INSERT INTO artifacts (artifact_type, description, lesson, teacher_id, assignment_date, comments)
+VALUES (6, 'number sort', 3, 1, '02/22/2024', 'some students struggling with thousands vs ten thousands');
 
 
 INSERT INTO scores (student_id, artifact_id, score, comments, is_waived) VALUES (1, 1, 0, 'pulled for band', true);
@@ -155,10 +154,10 @@ INSERT INTO scores (student_id, artifact_id, score, comments, is_waived) VALUES 
 
 INSERT INTO scores (student_id, artifact_id, score, comments, is_waived) VALUES (3, 3, 3, 'did whiteboarding questions', false);
 
-INSERT INTO class_to_subject (class_id, subject_id) VALUES (1, 1);
-INSERT INTO class_to_subject (class_id, subject_id) VALUES (1, 2);
-INSERT INTO class_to_subject (class_id, subject_id) VALUES (2, 1);
-INSERT INTO class_to_subject (class_id, subject_id) VALUES (2, 2);
+INSERT INTO class_to_subject (class_id, subject_id, color) VALUES (1, 1, 2);
+INSERT INTO class_to_subject (class_id, subject_id, color) VALUES (1, 2, 3);
+INSERT INTO class_to_subject (class_id, subject_id, color) VALUES (2, 1, 4);
+INSERT INTO class_to_subject (class_id, subject_id, color) VALUES (2, 2, 5);
 
 
 COMMIT TRANSACTION;

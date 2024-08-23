@@ -49,9 +49,9 @@ public class SubjectController {
     public boolean archiveSubject (@PathVariable int subjectId, @PathVariable int classId){
         return subjectDao.archiveSubject(subjectId, classId);
     }
-    @RequestMapping(path=BASE_URL + "/{subjectId}/{classId}/add", method = RequestMethod.PUT)
-    public boolean addSubject (@PathVariable int subjectId, @PathVariable int classId){
-        return subjectDao.addSubject(subjectId, classId);
+    @RequestMapping(path=BASE_URL + "/{subjectId}/{classId}/add/{color}", method = RequestMethod.PUT)
+    public boolean addSubject (@PathVariable int subjectId, @PathVariable int classId, @PathVariable int color){
+        return subjectDao.addSubject(subjectId, classId, color);
     }
 
 

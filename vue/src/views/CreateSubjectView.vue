@@ -46,14 +46,25 @@
               <input v-model.number="newSubject.mastered"/></div>
           </div>
 
-          <label for="class-select" class="class-sel-label">Add Subject To:</label>
+          <label for="class-select" id="class-sel-label">Add Subject To:</label>
           <select name="classToAddTo" id="class-select" v-model="newSubject.classId">
             <option v-bind:value="0">Please Select a Class</option>
             <option v-for="schoolClass in schoolClasses" v-bind:key="schoolClass.classId" v-bind:value="schoolClass.classId">{{ schoolClass.className }}</option>
 
           </select>
+          <label for="sub-color" id="sub-color-label">Subject Color:</label>
+          <select id="sub-color" v-model="newSubject.color">
+            <option v-for="color in colors" v-bind:key="color.val" v-bind:value="color.val">{{color.colorName}}</option>
+            
+          </select>
+
+          <div id="color-display">
+          <div v-for="color in colors" v-bind:key="color.val" :class="theClass(color.val)">{{ color.colorName }}</div>
+         
+        </div>
 
         </form>
+      
       
           <div class="topic-display"> 
             <div id="units-lessons">
@@ -90,6 +101,8 @@
         <div v-else> 
           <div>Subject Title: {{ newSubject.code }}</div>
           <div>Subject Description: {{ newSubject.description }}</div>
+          <div>Subject Color: {{ newSubjectColor}}</div>
+          <div>Class: {{ newSubjectClass }}</div>
             <div class="mastery">
             <div class="mastery-item">
               <p>Not Attempted: {{ newSubject.notAttempted }}</p>
@@ -158,6 +171,7 @@
           approaching: 2,
           proficient: 3,
           mastered: 4,
+          color: 1,
           classId: 0,
           topics: [
           {
@@ -178,10 +192,46 @@
         newSubjectId: 0,
        errorMessage: '',
        isEditing: true,
+       colors: [
+        {val: 1, colorName: 'Pink'},
+        {val: 2, colorName: 'Red'},
+        {val: 3, colorName: 'Orange'},
+        {val: 4, colorName: 'Yellow'},
+        {val: 5, colorName: 'Green'},
+        {val: 6, colorName: 'Blue'},
+        {val: 7, colorName: 'Purple'},
+        {val: 8, colorName: 'Gray'},
+       ]
  
-       
+
+
       };
     },
+
+    computed: {
+      newSubjectClass(){
+        let className = '';
+        this.schoolClasses.forEach((schoolClass) => {
+          console.log(schoolClass.className + schoolClass.classId);
+            if(schoolClass.classId == this.newSubject.classId){
+              className = schoolClass.className;
+            }
+        }); 
+        return className;
+      },
+
+      newSubjectColor(){
+        let colorPicked = '';
+        this.colors.forEach((color) => {
+          if(color.val === this.newSubject.color){
+            colorPicked = color.colorName;
+          }
+        }); return colorPicked;
+      }
+    },
+
+
+
     methods: {
       handleError(error, verb) {
           if (error.response) {
@@ -193,6 +243,18 @@
             this.$store.commit('SET_NOTIFICATION', "Error " + verb + " subject. Request could not be created.");
           }
         },
+
+        theClass(colorVal){
+          if(colorVal === 1)return "pink";
+          else if(colorVal === 2) return "red";
+          else if(colorVal === 3) return "orange";
+          else if(colorVal === 4) return "yellow";
+          else if(colorVal === 5) return "green";
+          else if(colorVal === 6) return "blue";
+          else if(colorVal === 7) return "purple";
+          else return "gray";
+        },
+
        
         addLesson(currLesson, currTopicId){
           this.errorMessage='';
@@ -344,10 +406,28 @@ if (this.newSubject.classId === 0) {
         "search search search"
         "sub-label subject complete-button"
         "sub-desc-label sub-desc sub-desc"
+        "class-sel-label class-select class-select"
         "mastery mastery mastery"
+        ". color-display color-display"
+        "sub-color-label sub-color sub-color"
+       
         ;
         gap: 15px;
       }
+      #sub-color-label{
+        grid-area: sub-color-label;
+      }
+      #sub-color{
+        grid-area: sub-color;
+      }
+
+      #class-sel-label{
+        grid-area: class-sel-label;
+      }
+      #class-select{
+        grid-area: class-select;
+      }
+
 
       .mastery{
         grid-area: mastery;
@@ -363,19 +443,19 @@ if (this.newSubject.classId === 0) {
         border: black;
         border-radius: 25px;
       }
-      .mastery-item:nth-child(5n-4){
+      .mastery-item:nth-child(5n-0){
        background-color: #a4c2f4ff;
       }
-      .mastery-item:nth-child(5n-3){
+      .mastery-item:nth-child(5n-4){
        background-color: #dd7e6bff;
       }
-      .mastery-item:nth-child(5n-2){
+      .mastery-item:nth-child(5n-3){
        background-color: #f6b26bff;
       }
-      .mastery-item:nth-child(5n-1){
+      .mastery-item:nth-child(5n-2){
        background-color: #ffd966ff;
       }
-      .mastery-item:nth-child(5n-0){
+      .mastery-item:nth-child(5n-1){
        background-color: #93c47dff;
       }
       .sub-label{
@@ -485,4 +565,49 @@ if (this.newSubject.classId === 0) {
 #clone-search-label {
   grid-area: search;
 }
+#color-display{
+  grid-area: color-display;
+  display: flex;
+  flex-wrap: nowrap;
+  align-content: space-between;
+  gap: 3px;
+}
+
+
+.pink{
+  background-color: rgb(237, 82, 139);
+  min-width: 50px;
+}
+.red{
+  background-color: red;
+  min-width: 50px;
+}
+.orange{
+  background-color: rgb(255, 115, 0);
+  min-width: 50px;
+}
+.yellow{
+  background-color: rgb(246, 255, 0);
+  min-width: 50px;
+}
+.green{
+  background-color: rgb(94, 255, 0);
+  min-width: 50px;
+}
+.blue{
+  background-color: rgb(0, 136, 255);
+  min-width: 50px;
+}
+.purple{
+  background-color: rgb(149, 35, 144);
+  min-width: 50px;
+}
+.gray{
+  background-color: rgb(136, 117, 117);
+  min-width: 50px;
+}
+
+
+
+
     </style>

@@ -9,11 +9,11 @@ public interface SchoolGroupDao {
 
     public List<SchoolGroup> getCurrentGroups (int classId);
 
-    public List<SchoolGroup> getArchivedGroups (int classId);
-
     public int createGroup(SchoolGroup newGroup);
 
     public SchoolGroup editGroup(SchoolGroup editGroup);
+    public boolean deleteGroup(int groupId);
+
 
 
 

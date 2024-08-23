@@ -13,15 +13,37 @@
     
     <div v-else class="groups-field">
         <div id="sub-loop-groups" v-for="subject in subjectsWithGroups" v-bind:key="subject.id" v-bind:value="subject.id">
-          <div id="sub-details-groups">{{ subject.code }} : {{ subject.description }} ID: {{ subject.id }}
-</div>
-          <div id="groups-loop" v-for="schoolGroup in subject.groups" v-bind:key="schoolGroup.groupId" v-bind:value="schoolGroup.groupId">
-            <div id="a-group">{{schoolGroup.groupName  }} : {{ schoolGroup.description }}
+          <router-link v-bind:to="{name: 'subject-page', params: {subjectId: subject.id, classId: classId}}" 
+          id="sub-details-groups">{{ subject.code }} : {{ subject.description }} ID: {{ subject.id }}
+          </router-link>
+          <div id="groups-edit-buttons">
+             <button @click="toggleAdd(subject.id)" v-if="!subject.addGroup">Add Group</button>
+             <button @click="toggleAdd(subject.id)" v-else>Cancel Adding Group</button>
+              <button @click="toggleRemove(subject.id)" v-if="!subject.removeGroup">Remove Group</button>
+             <button @click="toggleRemove(subject.id)" v-else>Cancel Removing Group</button>
+           </div>
+
+          <div class="flex-the-groups">
+
+        <div v-if="subject.addGroup"><CreateGroup :classId="this.classId" :subjectId="subject.id"/></div>
+
+          <div id="groups-active" class="groups-loop" v-if="!subject.removeGroup">
+              <div v-for="schoolGroup in subject.groups" v-bind:key="schoolGroup.groupId" v-bind:value="schoolGroup.groupId">
+                  <div class="a-group">{{schoolGroup.groupName  }} : {{ schoolGroup.description }}
+                    <div><GroupRoster :classId="this.classId" :groupId="schoolGroup.groupId"/></div>
+                 </div>
+              </div>
           </div>
-        </div></div>
+          <div id="groups-deleting" class="groups-loop" v-else>
+            <div v-for="schoolGroup in subject.groups" v-bind:key="schoolGroup.groupId" v-bind:value="schoolGroup.groupId">
+              <div class="a-group">{{schoolGroup.groupName  }} : {{ schoolGroup.description }}
+                  <button @click="deleteGroup(schoolGroup.groupId)">DELETE THIS GROUP</button>
+              </div> 
+            </div>
+          </div>
 
-
-        This page is loaded.
+      </div>
+    </div>
     
         
     </div>
@@ -35,12 +57,17 @@
     import GroupService from '../services/GroupService';
     import StudentService from '../services/StudentService';
     import SubjectService from '../services/SubjectService';
+    import CreateGroup from '../components/CreateGroup.vue';
+    import GroupRoster from '../components/GroupRoster.vue';
+
     
     export default {
       name: 'GroupsView',
       components: {
         NavTool,
-        Logo
+        Logo,
+        CreateGroup,
+        GroupRoster,
     },
 
     computed: {
@@ -61,10 +88,6 @@
         return subjects;
       },
 
-
-
-
-
     },
 
     data() {
@@ -78,6 +101,8 @@
           description: "",
           topics: [],
           groups: [{}],
+          addGroup: false,
+          removeGroup: false,
         }],
       };
     }, 
@@ -87,12 +112,46 @@
             this.$store.commit('SET_NOTIFICATION',
               "Error " + verb + " deck list. Response received was '" + error.response.statusText + "'.");
           } else if (error.request) {
-            this.$store.commit('SET_NOTIFICATION', "Error " + verb + " deck list. Server could not be reached.");
+            this.$store.commit('SET_NOTIFICATION', "Error " + verb + " groups. Server could not be reached.");
           } else {
-            this.$store.commit('SET_NOTIFICATION', "Error " + verb + " deck list. Request could not be created.");
+            this.$store.commit('SET_NOTIFICATION', "Error " + verb + " groups. Request could not be created.");
           }
         },
     
+        toggleAdd(subjectId){
+          this.subjects.forEach(subject =>{
+            if(subject.id === subjectId){
+              subject.addGroup = !subject.addGroup;
+            }
+          })
+        },
+
+        toggleRemove(subjectId){
+          this.subjects.forEach(subject =>{
+            if(subject.id === subjectId){
+              subject.removeGroup = !subject.removeGroup;
+            }
+          })
+        },
+
+        async deleteGroup(groupId){
+          const shouldDelete = confirm("Are you sure you want to remove this group?");
+          if(shouldDelete){
+            try{
+              this.isLoading = true;
+              const response = await GroupService.deleteGroup(groupId);
+              let itWorked = response.data;
+            }catch (error) {
+            this.handleError(error, 'editing');
+          }finally {
+            this.$router.go(0);
+          }
+          }
+
+
+        },
+
+      
       async retrieveGroups(){
         try {
           this.isLoading = true;
@@ -162,7 +221,7 @@
       
       .groups-container {
         grid-area: class;
-        display: flex;
+ 
       }
       #sub-loop-groups{
         display: grid;
@@ -171,6 +230,11 @@
         "subject"
         "groups"
           ;
+      }
+      .flex-the-groups{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
       }
       #sub-details-groups{
         grid-area: subject;
@@ -182,22 +246,32 @@
         border-radius: 15px;
         text-decoration: none;
       }
+      #groups-edit-buttons{
+        display: flex;
+        flex-direction: row;
+        align-self: center;
+        gap: 5px;
+        margin-left: 20px;
+      }
 
-      #group-loops{
+      .groups-loop{
         grid-area: groups;
         display: flex;
+        flex-direction: row;
         flex-wrap: wrap;
         margin: 10px;
       }
-      #a-group{
+      .a-group{
         color: black;
   text-align: center;
   margin: 20px;
   padding: 20px;
   border-radius: 15px;
   text-decoration: none;
-  min-width: 100px;
-  min-height: 100px;
+  min-width: 175px;
+  max-width: 350px;
+  min-height: 75px;
+
   font-size: larger;
   background-color: #dd7e6bff;
 }

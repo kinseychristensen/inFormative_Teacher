@@ -23,6 +23,9 @@ createGroup(newGroup){
 },
 editGroup(editGroup, groupId){
     return axios.put(`/group/${groupId}`, editGroup);
+},
+deleteGroup(groupId){
+    return axios.delete(`/group/${groupId}`);
 }
 
 }

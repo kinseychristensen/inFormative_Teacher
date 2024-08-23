@@ -19,13 +19,22 @@
                 <div id="sub-code">{{ sub.code }}</div>
                 <div id="sub-desc">{{ sub.description }}</div>
                 <div id="class-selector">
-                    <form v-on:submit.prevent="makeClone(sub.id, selectedClassId)">
+                    <form id="flex-sub-clone" v-on:submit.prevent="makeClone(sub.id, selectedClassId)">
                     <label for="class-select" class="class-sel-label">Add Subject To:</label>
                     <select name="classToAddTo" id="class-select" v-model="selectedClassId">
                     <option v-bind:value="0">Please Select a Class</option>
                      <option v-for="schoolClass in schoolClasses" v-bind:key="schoolClass.classId" 
                         v-bind:value="schoolClass.classId">{{ schoolClass.className }}</option>
                     </select>
+             
+          <label for="sub-color" id="sub-color-label">Subject Color:</label>
+          <select id="sub-color" v-model="colorPicked">
+            <option v-for="color in colors" v-bind:key="color.val" v-bind:value="color.val">{{color.colorName}}</option>
+            
+          </select>
+
+
+
                     <button class="button-link" id="clone">Clone</button>
                     </form>
                 </div>
@@ -63,8 +72,19 @@
         schoolClasses: [],
         isLoading: true,
         selectedClassId: 0,
+        colorPicked: 0,
         searchTerm: '',
         unfilteredSubjects: [{id: 0, code: ' ', description: ' '}],
+        colors: [
+        {val: 1, colorName: 'Pink'},
+        {val: 2, colorName: 'Red'},
+        {val: 3, colorName: 'Orange'},
+        {val: 4, colorName: 'Yellow'},
+        {val: 5, colorName: 'Green'},
+        {val: 6, colorName: 'Blue'},
+        {val: 7, colorName: 'Purple'},
+        {val: 8, colorName: 'Gray'},
+       ]
       };
     },
     computed: {
@@ -99,7 +119,7 @@
 async makeClone(subjectId, classId){
     if(this.selectedClassId != 0){
     try {
-        const response = await SubjectService.addSubject(subjectId, classId);
+        const response = await SubjectService.addSubject(subjectId, classId, this.colorPicked);
 
     }catch (error) {
         this.handleError(error, 'cloning');
@@ -229,7 +249,28 @@ async makeClone(subjectId, classId){
 #class-selector{
     grid-area: class-selector;
 }
-
+#flex-sub-clone{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+    "class-sel-label"
+    "class-select"
+    "sub-color-label"
+    "sub-color"
+    "clone"
+}
+#class-sel-label{
+  grid-area: class-sel-label;
+}
+#class-select{
+  grid-area: class-select;
+}
+#sub-color-label{
+  grid-area: sub-color-label;
+}
+#sub-color{
+  grid-area: sub-color;
+}
 
     .button-link{
         background-color: #a4c2f4ff;
@@ -253,6 +294,7 @@ async makeClone(subjectId, classId){
 }
 #clone{
         background-color:  #ffd966ff;
+        grid-area: clone;
 }
 #sub-tops{
     grid-area: sub-tops;
@@ -265,5 +307,6 @@ async makeClone(subjectId, classId){
     display: flexbox;
     padding: 5px;
 }
+
 
     </style>

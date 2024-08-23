@@ -7,21 +7,21 @@ public class Subject {
     private String code;
     private String description;
     private List<Topics> topics;
-    private int classId;
     private int notAttempted;
     private int below;
     private int approaching;
     private int proficient;
     private int mastered;
+    private int color;
 
-
-    public int getClassId() {
-        return classId;
+    public int getColor() {
+        return color;
     }
 
-    public void setClassId(int classId) {
-        this.classId = classId;
+    public void setColor(int color) {
+        this.color = color;
     }
+
 
     public int getId() {
         return id;

@@ -7,14 +7,20 @@
         <label for="cl-comment">Class Comments:</label>
         <textarea id="cl-comment" v-model="artifact.comments"></textarea>
     </div>
-   
+   <label for="group-sel" id="group-sel-label">Filter By Group:</label>
+    <select id="group-sel" v-model="groupSel">
+      <option v-bind:value="0">All Students</option>
+      <option v-for="group in groups" v-bind:key="group.groupId" v-bind:value="group.groupId">
+        {{ group.groupName }} : {{ group.description }}</option>
+    </select>
+
     <div id="student-labels">
               <p>Student Name</p>  
               <p>Score</p>
               <p>Comments</p>
             </div>
             <div id="student-flex">
-    <div id="student-loop" v-for="studentScore in newScores" v-bind:key="studentScore.studentId">
+    <div id="student-loop" v-for="studentScore in scoresForGroup" v-bind:key="studentScore.studentId">
         <div id="student-name">{{ studentScore.firstName }} {{ studentScore.lastName }}</div>
        <div id="student-score">
         <input type="number" id="score" v-model="studentScore.score"/>
@@ -30,6 +36,13 @@
 
         <button id="save-score" >Save Scores</button>
     </form>
+   {{ groups }}
+
+   **********************************
+   {{ newScores }}
+
+    ********************
+    {{scoresForGroup}}
    
 
 </div>
@@ -41,6 +54,7 @@
     import ScoreService from '../services/ScoreService';
     import StudentService from '../services/StudentService';
     import ArtifactService from '../services/ArtifactService';
+    import GroupService from '../services/GroupService';
     
     export default {
     props: ['classId', 'artifactId', 'subjectId'],
@@ -48,14 +62,39 @@
     data (){
         return {
             isLoading: true,
-            students: [],
+            allStudents: [],
             scores: [],
             foundScore: false,
             newScores: [],
             artifact:{},
-        
+            groups: [],
+            groupSel: 0,
+            currGroupStudents: [],
         };
     },
+    computed: {
+      scoresForGroup() {
+        let selectScores = [];
+        if(this.groupSel ===0){
+         selectScores = this.newScores;}
+        if(this.groupSel != 0){
+
+            let thisGroupInd = this.groups.findIndex((currGroup) => currGroup.groupId === this.groupSel);
+              let studentsInGroup = this.groups[thisGroupInd].students;
+
+          studentsInGroup.forEach(groupStudent => {
+            let studentScore = this.newScores.findIndex((item) => {
+              return(item.studentId === groupStudent.id);
+            })
+            console.log(studentScore);
+            selectScores.push(studentsInGroup[studentScore]);
+          })
+          }
+        return selectScores;
+
+
+    },
+  },
     methods: {
         handleError(error, verb) {
           if (error.response) {
@@ -107,7 +146,7 @@
         try {
           this.isLoading = true;
           const response = await StudentService.getClassRoster(this.classId);
-          this.students = response.data;
+          this.allStudents = response.data;
         }catch (error) {
           this.handleError(error, 'retrieving');
         }finally {
@@ -138,7 +177,7 @@
 
     buildNewScores() {
         
-        this.students.forEach(student => {
+        this.allStudents.forEach(student => {
             let newScore = {};
             newScore.score = 0;
            newScore.comments = '';
@@ -159,8 +198,20 @@
                 this.newScores.push(newScore);
             
         })
+        this.retrieveGroups();
+    },
+
+    async retrieveGroups(){
+      try {
+      this.isLoading = true;
+      const response = await GroupService.getCurrentGroups(this.classId);
+      this.groups = response.data;
+    }catch (error) {
+      this.handleError(error, 'retrieving');
+    }finally {
         this.isLoading = false;
     }
+    },
 
     },
     
@@ -179,10 +230,18 @@
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
     "class-comments class-comments"
+    "group-sel-label group-sel"
     "student-labels student-labels"
     "student-loop student-loop"
     "save-score save-score"
     ;
+    gap: 3px;
+}
+#group-sel-label{
+  grid-area: group-sel-label;
+}
+#group-sel{
+  grid-area: group-sel;
 }
 
 #class-comments{

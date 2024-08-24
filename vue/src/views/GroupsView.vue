@@ -28,8 +28,8 @@
         <div v-if="subject.addGroup"><CreateGroup :classId="this.classId" :subjectId="subject.id"/></div>
 
           <div id="groups-active" class="groups-loop" v-if="!subject.removeGroup">
-              <div v-for="schoolGroup in subject.groups" v-bind:key="schoolGroup.groupId" v-bind:value="schoolGroup.groupId">
-                  <div class="a-group">{{schoolGroup.groupName  }} : {{ schoolGroup.description }}
+              <div v-for="schoolGroup in subject.groups" v-bind:key="schoolGroup.groupId" v-bind:value="schoolGroup.groupId" >
+                  <div class="a-group" :class="theClass(schoolGroup.color)">{{schoolGroup.groupName  }} : {{ schoolGroup.description }}
                     <div><GroupRoster :classId="this.classId" :groupId="schoolGroup.groupId"/></div>
                  </div>
               </div>
@@ -104,6 +104,17 @@
           addGroup: false,
           removeGroup: false,
         }],
+        colors: [
+        {val: 1, colorName: 'Pink'},
+        {val: 2, colorName: 'Red'},
+        {val: 3, colorName: 'Orange'},
+        {val: 4, colorName: 'Yellow'},
+        {val: 5, colorName: 'Green'},
+        {val: 6, colorName: 'Blue'},
+        {val: 7, colorName: 'Purple'},
+        {val: 8, colorName: 'Gray'},
+       ]
+ 
       };
     }, 
     methods: {
@@ -124,6 +135,17 @@
               subject.addGroup = !subject.addGroup;
             }
           })
+        },
+
+        theClass(colorVal){
+          if(colorVal === 1)return "pink";
+          else if(colorVal === 2) return "red";
+          else if(colorVal === 3) return "orange";
+          else if(colorVal === 4) return "yellow";
+          else if(colorVal === 5) return "green";
+          else if(colorVal === 6) return "blue";
+          else if(colorVal === 7) return "purple";
+          else return "gray";
         },
 
         toggleRemove(subjectId){
@@ -275,6 +297,40 @@
   font-size: larger;
   background-color: #dd7e6bff;
 }
+
+.pink{
+  background-color: rgb(237, 82, 139);
+  min-width: 50px;
+}
+.red{
+  background-color: red;
+  min-width: 50px;
+}
+.orange{
+  background-color: rgb(255, 115, 0);
+  min-width: 50px;
+}
+.yellow{
+  background-color: rgb(246, 255, 0);
+  min-width: 50px;
+}
+.green{
+  background-color: rgb(94, 255, 0);
+  min-width: 50px;
+}
+.blue{
+  background-color: rgb(0, 136, 255);
+  min-width: 50px;
+}
+.purple{
+  background-color: rgb(149, 35, 144);
+  min-width: 50px;
+}
+.gray{
+  background-color: rgb(136, 117, 117);
+  min-width: 50px;
+}
+
 
       
     </style>

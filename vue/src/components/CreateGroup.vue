@@ -5,6 +5,12 @@
           <input type="text" v-model="newGroup.groupName" id="new-group-name"/>
           <label for="new-group-desc">Group Description:</label>
           <textarea id="new-group-desc" v-model="newGroup.description"></textarea>
+          <label for="group-color" id="group-color-label">Subject Color:</label>
+          <select id="group-color" v-model="newGroup.color">
+            <option v-for="color in colors" v-bind:key="color.val" v-bind:value="color.val">{{color.colorName}}</option>
+            
+          </select>
+
           <button>Create Group</button>
         </form>
     </div>
@@ -25,7 +31,18 @@ export default {
           description: '',
           classId: 0,
           subjectId: 0,
+          color: 0,
         },
+        colors: [
+        {val: 1, colorName: 'Pink'},
+        {val: 2, colorName: 'Red'},
+        {val: 3, colorName: 'Orange'},
+        {val: 4, colorName: 'Yellow'},
+        {val: 5, colorName: 'Green'},
+        {val: 6, colorName: 'Blue'},
+        {val: 7, colorName: 'Purple'},
+        {val: 8, colorName: 'Gray'},
+       ]
         };
     },
     methods: {
@@ -40,6 +57,7 @@ export default {
           }
         },
 
+        
        async  addNewGroup(){
             this.newGroup.classId = this.classId;
             this.newGroup.subjectId = this.subjectId;

@@ -70,6 +70,7 @@
     import SubjectService from '../services/SubjectService';
     import ArtifactService from '../services/ArtifactService';
  import AddScore from '../components/AddScore.vue';
+
     
     export default {
       name: 'ArtifactView',

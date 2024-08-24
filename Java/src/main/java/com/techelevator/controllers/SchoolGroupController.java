@@ -30,7 +30,11 @@ public class SchoolGroupController {
 
     @RequestMapping(path = BASE_URL + "/class/{classId}", method = RequestMethod.GET)
     public List<SchoolGroup> getCurrentGroups(@PathVariable int classId) {
-        return schoolGroupDao.getCurrentGroups(classId);
+        List<SchoolGroup> groups = schoolGroupDao.getCurrentGroups(classId);
+        for(SchoolGroup group : groups){
+            group.setStudents(studentDao.getGroupRoster(group.getGroupId()));
+        }
+        return groups;
     }
 
     @ResponseStatus(HttpStatus.CREATED)

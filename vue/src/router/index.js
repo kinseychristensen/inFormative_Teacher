@@ -19,10 +19,24 @@ import CreateArtifactView from '../views/createArtifactView.vue';
 import ArtifactView from '../views/ArtifactView.vue';
 import ReportsView from '../views/ReportsView.vue';
 import AllSubjectsView from '../views/AllSubjectsView.vue';
+import RootView from '../views/RootView.vue';
+import NewPasswordView from '../views/NewPasswordView.vue';
 
 const routes = [
   {
     path: '/',
+    name: 'root',
+    component: RootView,
+    
+  },
+ {
+  path: '/reset',
+  name: 'password-reset',
+  component: NewPasswordView,
+ },
+ 
+  {
+    path: '/home',
     name: 'home',
     component: HomeView,
     

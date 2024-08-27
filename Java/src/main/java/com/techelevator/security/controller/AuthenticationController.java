@@ -80,5 +80,32 @@ public class AuthenticationController {
 
     }
 
+    @RequestMapping(path= "/user", method=RequestMethod.GET)
+    public User getUser(Principal principal){
+        User user = userDao.getUserByUsername(principal.getName());
+        user.setPassword("");
+        return user;
+    }
+
+
+    @RequestMapping(path= "/id/{userName}", method=RequestMethod.GET)
+    public int getId(@PathVariable String userName){
+        User user = userDao.getUserByUsername(userName);
+        if(user != null){
+            return user.getId();
+        }
+        return 0;
+    }
+
+
+
+    @RequestMapping(path="/update-password/{userId}", method=RequestMethod.PUT)
+    public boolean updatePassword (@RequestBody RegisterUserDto user, @PathVariable int userId) {
+        return userDao.updatePassword(user, userId);
+    }
+    @RequestMapping(path="/update-user/{userId}", method=RequestMethod.PUT)
+    public boolean updateUser (@RequestBody RegisterUserDto user, @PathVariable int userId) {
+     return userDao.updateUser(user, userId);
+    }
 }
 

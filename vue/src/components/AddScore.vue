@@ -21,6 +21,7 @@
             </div>
             <div id="student-flex">
     <div id="student-loop" v-for="studentScore in scoresForGroup" v-bind:key="studentScore.studentId">
+        <div  id="student-loop-if" v-if="studentScore.inGroup">
         <div id="student-name">{{ studentScore.firstName }} {{ studentScore.lastName }}</div>
        <div id="student-score">
         <input type="number" id="score" v-model="studentScore.score"/>
@@ -33,16 +34,10 @@
         <textarea id="student-comments" v-model="studentScore.comments"></textarea>
         </div>
         </div>
-
+      </div>
         <button id="save-score" >Save Scores</button>
     </form>
-   {{ groups }}
 
-   **********************************
-   {{ newScores }}
-
-    ********************
-    {{scoresForGroup}}
    
 
 </div>
@@ -74,22 +69,31 @@
     },
     computed: {
       scoresForGroup() {
-        let selectScores = [];
-        if(this.groupSel ===0){
-         selectScores = this.newScores;}
+        let selectScores  = this.newScores;
+
         if(this.groupSel != 0){
+          selectScores.forEach(score => { 
+                score.inGroup = false;
+              }
+            )
 
             let thisGroupInd = this.groups.findIndex((currGroup) => currGroup.groupId === this.groupSel);
               let studentsInGroup = this.groups[thisGroupInd].students;
 
           studentsInGroup.forEach(groupStudent => {
-            let studentScore = this.newScores.findIndex((item) => {
-              return(item.studentId === groupStudent.id);
+            selectScores.forEach(score => {
+              if(groupStudent.id === score.studentId){
+                score.inGroup = true;
+              }
             })
-            console.log(studentScore);
-            selectScores.push(studentsInGroup[studentScore]);
           })
-          }
+        }else {
+          selectScores.forEach(score => { 
+                score.inGroup = true;
+              }
+            )
+        }
+            
         return selectScores;
 
 
@@ -186,6 +190,7 @@
             newScore.firstName = student.firstName;
             newScore.lastName = student.lastName;
            newScore.studentId = student.id;
+           newScore.inGroup = true;
 
             this.scores.forEach(score => {
                 if(student.id === score.studentId){
@@ -263,7 +268,7 @@
     flex-direction: column;
     gap: 2px;
 }
-    #student-loop{
+    #student-loop-if{
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   grid-template-areas: 

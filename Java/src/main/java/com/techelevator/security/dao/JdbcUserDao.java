@@ -87,6 +87,41 @@ public class JdbcUserDao implements UserDao {
         return newUser;
     }
 
+    @Override
+    public boolean updateUser (RegisterUserDto user, int userId) {
+
+        String insertUserSql = "UPDATE users SET username=?, password_hash=?, first_name=?, last_name=? WHERE user_id=?;";
+        String password_hash = new BCryptPasswordEncoder().encode(user.getPassword());
+        try {
+          jdbcTemplate.update(insertUserSql, user.getUsername(), password_hash, user.getFirstName(), user.getLastName(), userId);
+
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean updatePassword (RegisterUserDto user, int userId) {
+
+        String insertUserSql = "UPDATE users SET password_hash=?  WHERE user_id=?;";
+        String password_hash = new BCryptPasswordEncoder().encode(user.getPassword());
+        try {
+            jdbcTemplate.update(insertUserSql, password_hash, userId);
+
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
+        return true;
+    }
+
+
+
+
     private User mapRowToUser(SqlRowSet rs) {
         User user = new User();
         user.setId(rs.getInt("user_id"));

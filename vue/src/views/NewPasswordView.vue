@@ -42,6 +42,7 @@
 
 <script>
 import authService from '../services/AuthService';
+import emailjs from 'emailjs-com';
 
 export default {
   data() {
@@ -62,10 +63,26 @@ export default {
       },
       registrationErrors: false,
       registrationErrorMsg: 'There were problems registering this user.',
+      serviceId: 'service_m0f0fzn',
+      templateId: 'template_du2hefc',
+      publicKey: '4SKTEiyCvMDGCUS_r',
     };
   },
+ 
   methods: {
     sendReset(){
+        console.log('HERE')
+            emailjs.send(this.serviceId, this.templateId, {
+                email: this.userEmail,
+                message: this.sentCode,
+            }, this.publicKey)
+            .then((response) => { 
+                console.log("Email successfully sent!", response.status, response.text)
+            },
+     (error) => {
+        console.log('Failed to send email:', error)
+     })   
+        console.log("THERE");
         this.emailSent = true;
         this.starting = false;
     },
@@ -141,6 +158,7 @@ export default {
 };
 </script>
 
+
 <style scoped>
 .reset-container{
   display: flex;
@@ -211,7 +229,7 @@ img{
   
 }
 #loginlink {
-    text-decoration: ;
+    text-decoration: none;
 }
 
 </style>

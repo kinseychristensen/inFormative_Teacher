@@ -97,35 +97,35 @@ gap: 5px;
 
 
 .pink{
-  background-color: rgb(237, 82, 139);
+  background-color: #f3c0bd;
   min-width: 50px;
 }
 .red{
-  background-color: red;
+  background-color: #ee8f8d;
   min-width: 50px;
 }
 .orange{
-  background-color: rgb(255, 115, 0);
+  background-color: #f1ac8d;
   min-width: 50px;
 }
 .yellow{
-  background-color: rgb(246, 255, 0);
+  background-color:#f7d18a;
   min-width: 50px;
 }
 .green{
-  background-color: rgb(94, 255, 0);
+  background-color: #b2c8a5;
   min-width: 50px;
 }
 .blue{
-  background-color: rgb(0, 136, 255);
+  background-color: #93caef;
   min-width: 50px;
 }
 .purple{
-  background-color: rgb(149, 35, 144);
+  background-color: #d0aee6;
   min-width: 50px;
 }
 .gray{
-  background-color: rgb(136, 117, 117);
+  background-color: #bfc5c9;
   min-width: 50px;
 }
 

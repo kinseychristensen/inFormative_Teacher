@@ -2,9 +2,9 @@
 
 
 <div class="subject-flex">
-  <router-link v-for="subject in subjects" v-bind:key="subject.id" :class="theClass(subject.color)"
-  v-bind:to="{name: 'subject-page', params: {subjectId: subject.id, classId: classId}}" class="subject-title">
-  {{ subject.code }}
+  <router-link v-for="subject in subjects" v-bind:key="subject.id" id="sub-box" :class="theClass(subject.color)"
+  v-bind:to="{name: 'subject-page', params: {subjectId: subject.id, classId: classId}}" >
+  <a id="sub-text">{{ subject.code }}</a>
 </router-link></div>
 
 
@@ -73,60 +73,63 @@ created(){
 </script>
 <style>
 
-.subject-title{
-  color: black;
-  text-align: center;
-  margin: 2px;
-  padding: 10px;
-  border-radius: 15px;
-  text-decoration: none;
-  font-size: larger;
-  min-width: 75px;
-  max-width: 150px;
-  min-height: 75px;
-  max-height: 150px;
-  gap: 5px;
-  
-}
 
 .subject-flex{
 display: flex;
 flex-wrap: wrap;
+justify-content: space-around;
 gap: 5px;
 }
+#sub-box{
+  min-width: 100px;
+  min-height: 100px;
+  border-radius: 15px;
+  text-align: center;
+  text-decoration: none;
+}
 
+#sub-text {
+  vertical-align: middle;
+  color: black;
+  text-decoration: none;
+  line-height: 100px;
+  height: 100px;
+  text-align: center;
+
+}
 
 .pink{
   background-color: #f3c0bd;
-  min-width: 50px;
+ 
+
 }
 .red{
   background-color: #ee8f8d;
-  min-width: 50px;
+
 }
 .orange{
   background-color: #f1ac8d;
-  min-width: 50px;
+ 
 }
 .yellow{
   background-color:#f7d18a;
-  min-width: 50px;
+
 }
 .green{
   background-color: #b2c8a5;
-  min-width: 50px;
+
 }
 .blue{
   background-color: #93caef;
-  min-width: 50px;
+
 }
 .purple{
   background-color: #d0aee6;
-  min-width: 50px;
+
 }
 .gray{
   background-color: #bfc5c9;
-  min-width: 50px;
+
 }
 
 

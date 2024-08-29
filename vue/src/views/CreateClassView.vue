@@ -1,16 +1,14 @@
 <template>
 
-    <div class="setup-class-container">
-        <NavTool class="nav-tool"/>
-        <div class = "create-title-view">
+    <div id="create-class">
           <h1 class="page-title">Set Up A Class</h1>
-        </div>
+        
           <p class="description">Classes are based on student rosters.  
             Subjects are based on curriculum standards.  Subjects may be cloned to additional classes, so there's no need to place multiple student 
             rosters into a single class. The class name will display on the main menu as a way to identify the course.  We recommend you use an easily 
             recognizable descriptor such as "3rd Period" or "2023-2024."</p>
 
-        <Logo class="create-logo"/>
+       
   
     <div class="form">
     <div class="loading" v-if="isLoading">Loading...</div>
@@ -25,7 +23,7 @@
 
       
 <label for="class-description" class="description-label">Description:</label> 
-<textarea class="class-description" v-model="newClass.description"/>
+<textarea id="class-description" v-model="newClass.description"/>
        
                                              
 <button class="submit-button">Continue to Add Students</button>
@@ -36,20 +34,16 @@
 
     </div>
     </div>
-    </div>
+  </div>
     </template>
     
     <script>
-    import Logo from '../components/Logo.vue';
-    import NavTool from '@/components/NavTool.vue';
+   
     import ClassService from '../services/ClassService';
     
     export default {
       name: 'ClassView',
-      components: {
-        NavTool,
-        Logo
-    },
+     
     data() {
       return {
         newClass: {
@@ -92,32 +86,14 @@
     </script>
     
     <style scoped>
-    .setup-class-container {
-        display: grid;
-        grid-template-columns: 200px 250px 1fr;
-        grid-template-areas: 
-          "nav title logo"
-          "nav description description"
-          "nav class class"
-          ". class class"
-          ;
-        gap: 15px;
-      }
+   
       
       .description{
-        grid-area: description;
+       max-width: 1000px;
       
       }
       
-      .nav-tool {
-        grid-area: nav;
-        margin-right: 20px;
-      }
-      
-      .create-logo {
-        grid-area: logo;
-        justify-self: right;
-      }
+    
       
       .create-title-view {
         grid-area: title;
@@ -125,7 +101,9 @@
         text-align: center;
       }
    
-      .setup-form-container{
+      @media screen and (min-width: 601px){
+        .setup-form-container{
+          margin: 40px;
         display: grid;
         grid-template-columns: 200px 250px 200px;
         grid-template-areas: 
@@ -135,8 +113,28 @@
         ;
         gap: 15px;
       }
+      #create-class {
+        margin: 100px;
+      }
+}
 
-      .class-name {
+@media screen and (max-width: 600px) {
+  
+  .setup-form-container{
+        display: grid;
+        grid-template-columns: 200px 250px 200px;
+        grid-template-areas: 
+        "name-label name name"
+        "description-label class-description class-description"
+        ". submit ."
+        ;
+        gap: 15px;
+      }
+}
+
+
+
+      #class-name {
         grid-area: name;
       }
       .name-label{
@@ -145,7 +143,7 @@
       .description-label{
         grid-area: description-label;
       }
-      .class-description{
+      #class-description{
         grid-area: class-description;
       }
      

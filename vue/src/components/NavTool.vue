@@ -16,21 +16,23 @@ export default {
 <style scoped>
 .nav-tool {
   display: flex;
-  flex-direction: column;
-  width: 200px; 
+  flex-direction: row;
+  justify-content: space-between;
+  width: 66vw;
 }
 
 .nav-button {
-  background-color: #f1c232ff;
+  background-color:  #d9d9d9ff;
   color: black;
   text-align: center;
   margin: 10px;
-  padding: 35px;
-  border-radius: 25px;
+  padding: 15px;
+  width: 150px;
+  border-radius: 15px;
   text-decoration: none;
 }
 
 .nav-button:hover {
-  background-color: rgb(4, 157, 217, 1);
+  background-color:  #93caef;;
 }
 </style>

@@ -1,14 +1,9 @@
 <template>
-  <div class="home-container">
-    <NavTool class="nav-tool"/>
-    <div class = "home-title-view">
+ 
       <h1 class="page-title">Welcome, {{teacherName}}!</h1>
       <p class="logged-in-title">Please choose a class or subject below to get started.</p>
-    </div>
-    <Logo class="home-logo"/>
 
-
-    <div class="classes-container">
+  
 <div class="loading" v-if="isLoading">Loading...</div>
 
 <div v-else id="school-classes-loop" v-for="schoolClass in SchoolClasses" v-bind:key="schoolClass.classId" >
@@ -34,20 +29,15 @@
 
 <p></p>
 <router-link class="new-class" v-bind:to="{name: 'create-class'}">Add a New Class</router-link>
-</div>
 
 
-
-
-  </div>
 
 </template>
 
 
 
 <script>
-import Logo from '../components/Logo.vue';
-import NavTool from '@/components/NavTool.vue';
+
 import ClassService from '../services/ClassService';
 import AuthService from '../services/AuthService';
 import SubjectDisplay from '../components/SubjectDisplay.vue';
@@ -55,8 +45,7 @@ import SubjectDisplay from '../components/SubjectDisplay.vue';
 export default {
   name: 'HomeView',
   components: {
-    NavTool,
-    Logo,
+
     SubjectDisplay,
 },
 data() {
@@ -115,30 +104,8 @@ created(){
 
 <style scoped>
 
-.home-container {
-  display: grid;
-  grid-template-columns: 250px 1fr 1fr;
-  grid-template-areas: 
-    "nav title logo"
-    "nav classes classes"
-    ". classes classes"
-    ;
-  gap: 15px;
-}
-
-
-.nav-tool {
-  grid-area: nav;
-  margin-right: 20px;
-}
-
-.home-logo {
-  grid-area: logo;
-  justify-self: right;
-}
 
 .home-title-view {
-  grid-area: title;
   justify-content: center;
   text-align: center;
 }
@@ -150,33 +117,7 @@ created(){
 .subject-flex{
 display: flex;
 flex-wrap: wrap;
-margin: 10px;
-}
-
-.subject-title{
-  color: black;
-  text-align: center;
-  margin: 20px;
-  padding: 20px;
-  border-radius: 15px;
-  text-decoration: none;
-  min-width: 100px;
-  min-height: 100px;
-  font-size: larger;
-  
-}
-
-.subject-title:nth-child(4n-3){
-  background-color: #dd7e6bff;
-}
-.subject-title:nth-child(4n-2){
-  background-color: #f6b26bff;
-}
-.subject-title:nth-child(4n-1){
-  background-color: #ffd966ff;
-}
-.subject-title:nth-child(4n-0){
-  background-color: #93c47dff;
+margin-top: 10px;
 }
 
 
@@ -192,7 +133,7 @@ margin: 10px;
 }
 
 .groups-link{
-  background-color: #a4c2f4ff;
+  background-color:  #93caef;;
   color: black;
   text-align: center;
   margin: 10px;
@@ -210,6 +151,7 @@ margin: 10px;
   padding: 10px;
   border-radius: 15px;
   text-decoration: none;
+  margin-top: 20px;
 }
 
 .class-title {
@@ -217,6 +159,7 @@ margin: 10px;
   color: black;
   text-align: center;
   margin: 10px;
+
   padding: 10px;
   border-radius: 15px;
   text-decoration: none;

@@ -611,7 +611,6 @@ if (this.newSubject.classId === 0) {
 @media screen and (max-width: 600px) {
 
   .class-container {
-        grid-area: class;
         max-width: 100vw;
 
       }

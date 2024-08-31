@@ -90,10 +90,9 @@ public class JdbcUserDao implements UserDao {
     @Override
     public boolean updateUser (RegisterUserDto user, int userId) {
 
-        String insertUserSql = "UPDATE users SET username=?, password_hash=?, first_name=?, last_name=? WHERE user_id=?;";
-        String password_hash = new BCryptPasswordEncoder().encode(user.getPassword());
+        String insertUserSql = "UPDATE users SET username=?, first_name=?, last_name=? WHERE user_id=?;";
         try {
-          jdbcTemplate.update(insertUserSql, user.getUsername(), password_hash, user.getFirstName(), user.getLastName(), userId);
+          jdbcTemplate.update(insertUserSql, user.getUsername(), user.getFirstName(), user.getLastName(), userId);
 
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);

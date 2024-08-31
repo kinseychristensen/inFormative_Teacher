@@ -1,14 +1,12 @@
 <template>
 
-    <div class="home-container">
-        <NavTool class="home-nav-tool"/>
+<div class="class-container">
         <div class = "home-title-view">
           <h1 class="page-title">Subject Database</h1>
           <p class="logged-in-title">Here is a list of all completed subjects in our database.  Scroll or use the search bar to find what you need. </p>
         </div>
-        <Logo class="home-logo"/>
-   
-    <div class="class-container">
+        
+  
     <div class="loading" v-if="isLoading">Loading...</div>
     
     <div v-else class="all-subjects-field">
@@ -40,7 +38,7 @@
                 </div>
                 <div id="sub-tops">
                     <div v-for="tops in sub.topics" v-bind:key="tops.id">
-                        {{ tops.code }} : {{ tops.description }}
+                        <div id="topic-line">{{ tops.code }} : {{ tops.description }}</div>
                         <div id="sub-lessons">
                     <div v-for="lesson in tops.lessons" v-bind:key="lesson.id">
                         <div>{{ lesson.code }}: {{ lesson.description }}</div>
@@ -52,21 +50,17 @@
         </div>
     </div>
     </div>
-    </div>
+  
     </template>
     
     <script>
-    import Logo from '../components/Logo.vue';
-    import NavTool from '@/components/NavTool.vue';
+   
    import SubjectService from '../services/SubjectService';
    import ClassService from '../services/ClassService';
     
     export default {
       name: 'AllSubjectsView',
-      components: {
-        NavTool,
-        Logo
-    },
+     
     data() {
       return {
         schoolClasses: [],
@@ -273,7 +267,7 @@ async makeClone(subjectId, classId){
 }
 
     .button-link{
-        background-color: #a4c2f4ff;
+        background-color:#93caef;;
         color: black;
         text-align: center;
         margin: 2px;
@@ -307,6 +301,22 @@ async makeClone(subjectId, classId){
     display: flexbox;
     padding: 5px;
 }
+#topic-line {
+      background-color: #b2c8a5;
+    }
 
-
+@media screen and (max-width: 600px){
+.sub-grid{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: 
+        "sub-code  sub-desc"
+        "sub-tops sub-tops"
+        "class-selector class-selector"
+       
+        ;
+       
+    }
+  
+  }
     </style>

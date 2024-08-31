@@ -3,13 +3,13 @@
 <div id="group-roster-grid">
     <div id="instructions">To remove a student from group, click their name.</div>
 <div class="roster"><div class="roster-flex" v-for="student in currentGroupStudents" v-bind:key="student.id" @click="removeStudent(student.schoolId)">
-    {{ student.firstName }} {{ student.lastName }}
+    {{ student.firstName }} {{ student.lastName }}, 
 </div></div>
 
 <form id="add-student" v-on:submit.prevent=""><select v-model="addingStudent">
     <option v-bind:value="0">Select Student</option>
     <option v-for="student in studentsNotInGroup" v-bind:key="student.id" v-bind:value="student.id">
-        {{ student.firstName }} {{ student.lastName }}</option>
+        {{ student.firstName }} {{ student.lastName }}, </option>
 </select>
 <button @click="addStudent">Add Student</button>
 </form>
@@ -168,8 +168,8 @@ export default {
     flex-wrap: nowrap;
     color: black;
   text-align: center;
-  margin: 20px;
-  padding: 20px;
+  margin: 10px;
+  padding: 10px;
   border-radius: 15px;
   text-decoration: none;
   background-color: white;
@@ -183,6 +183,9 @@ export default {
 }
 #save-notes{
     grid-area: save-notes;
+}
+.roster-flex{
+    padding: 3px;
 }
 
 </style>

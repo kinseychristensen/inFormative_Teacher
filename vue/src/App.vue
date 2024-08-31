@@ -5,16 +5,17 @@
    
     <div id="banner">
      
-    <img  id="big-logo" src="src/assets/desktop_pixel_logo.png" alt="inFormative Logo"/>
-    <img  id="small-logo" src="src/assets/phone_dots.png" alt="inFormative Logo"/>
+    <img  class="big-logo" src="@/assets/desktop_pixel_logo.png" alt="inFormative Logo"/>
+    <img  class="small-logo" src="@/assets/phone_dots.png" alt="inFormative Logo"/>
   </div>
   <div id="nav" v-if="this.$store.state.token != ''">
    <NavTool/>
 
   </div>
      
-  
-    <router-view id="r-view"/>
+    <div class="r-view">
+    <router-view/>
+    </div>
     
     <div id="nav-2">
       
@@ -61,27 +62,27 @@ div{
 #capstone-app{
  display: flexbox;
 }
-#r-view{
+.r-view{
  width: 100vw;
 height: auto;
  
 }
 
 
-#small-logo, #big-logo {
+.small-logo, .big-logo {
   width: 100vw;
   height: auto;
 }
 
 @media screen and (min-width: 601px){
-#small-logo{
+.small-logo{
   display: none;
 }
 }
 
 @media screen and (max-width: 600px) {
   
-#big-logo {
+.big-logo {
   display: none;
 }
 }

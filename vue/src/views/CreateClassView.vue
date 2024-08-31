@@ -113,22 +113,21 @@
         ;
         gap: 15px;
       }
-      #create-class {
-        margin: 100px;
-      }
+      
 }
 
 @media screen and (max-width: 600px) {
   
   .setup-form-container{
         display: grid;
-        grid-template-columns: 200px 250px 200px;
+        grid-template-columns: 1fr 2fr;
         grid-template-areas: 
         "name-label name name"
         "description-label class-description class-description"
         ". submit ."
         ;
         gap: 15px;
+        margin-bottom: 2px;
       }
 }
 
@@ -136,6 +135,7 @@
 
       #class-name {
         grid-area: name;
+        margin-bottom: 2px;
       }
       .name-label{
         grid-area: name-label;
@@ -145,6 +145,7 @@
       }
       #class-description{
         grid-area: class-description;
+        margin-bottom: 2px;
       }
      
       .submit-button {

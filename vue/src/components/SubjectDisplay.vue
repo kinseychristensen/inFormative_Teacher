@@ -78,8 +78,15 @@ created(){
 display: flex;
 flex-wrap: wrap;
 justify-content: space-around;
-gap: 5px;
+gap: 15px;
 }
+
+@media screen and (min-width: 601px){
+  .subject-flex{
+    justify-content: space-between;
+  }
+}
+
 #sub-box{
   min-width: 100px;
   min-height: 100px;
@@ -132,6 +139,17 @@ gap: 5px;
 
 }
 
+
+@media screen and (min-width: 601px){
+  .subject-flex{
+    justify-content: space-between;
+  }
+  #sub-box{
+  min-width: 150px;
+  min-height: 150px;
+  font-size: larger;
+}
+}
 
 
 

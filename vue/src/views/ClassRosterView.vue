@@ -1,13 +1,12 @@
 <template>
 
-    <div class="roster-container">
-        <NavTool class="nav-tool"/>
-        <div class = "roster-title-view">
+    
+   
           <h1 class="page-title">Class Roster</h1>
-        </div>
+       
           <p class="description">Group rosters can be edited on the group roster page.</p>
 
-        <Logo class="roster-logo"/>
+      
   
     <div class="form">
     <div class="loading" v-if="isLoading">Loading...</div>
@@ -16,7 +15,7 @@
       <form v-on:submit.prevent="addStudent" class="add-student-container">
        
         <label for="school-id" class="id-label">Student Id Number:</label> 
-        <input class="school-id" v-model="newStudent.schoolId"/>  
+        <input type="number" class="school-id" v-model="newStudent.schoolId"/>  
         
         <label for="first-name" class="first-name-label">Student First Name:</label> 
         <input id="first-name" v-model="newStudent.firstName"/>
@@ -44,28 +43,26 @@
       
 <button id="finalize" class="button-link" @click="editRoster">Save Changes</button>
 
-<div id="remove-student" class="button-link" @click="toggleRemoving">{{removingMsg}}</div>
+
+<div id="remove-student" class="button-link" @click="toggleRemoving" v-if="this.students.length != 0">{{removingMsg}}</div>
 
 
 
       </form></div></div>
 
      
-    </div>
+ 
     </template>
     
     <script>
-    import Logo from '../components/Logo.vue';
-    import NavTool from '@/components/NavTool.vue';
-   import StudentService from '../services/StudentService';
-import { createNamespacedHelpers } from 'vuex';
+    
+   import { getTransitionRawChildren } from 'vue';
+import StudentService from '../services/StudentService';
+
     
     export default {
       name: 'RosterView',
-      components: {
-        NavTool,
-        Logo
-    },
+     
     data() {
       return {
         newStudent: {
@@ -82,6 +79,7 @@ import { createNamespacedHelpers } from 'vuex';
         
       };
     },
+ 
     methods: {
       handleError(error, verb) {
           if (error.response) {
@@ -108,9 +106,9 @@ import { createNamespacedHelpers } from 'vuex';
     toggleRemoving(){
       this.isRemoving = !this.isRemoving;
       if(this.isRemoving){
-          this.removingMsg = "Cancel";
+          this.removingMsg = "Cancel Removing Students";
       }else {
-        this.removingMsg = "Remove Students From Class";
+        this.removingMsg = "Click To Remove Students From Class";
       }
     },
 
@@ -180,41 +178,38 @@ import { createNamespacedHelpers } from 'vuex';
   text-decoration: none;
   width: 200px;
 }
-    .roster-container {
-        display: grid;
-        grid-template-columns: 200px 250px 1fr;
-        grid-template-areas: 
-          "nav title logo"
-          "nav description description"
-          "nav class class"
-          ". class class"
-          ;
-        gap: 15px;
-      }
-      
-      .description{
-        grid-area: description;
-
-      }
-      
-      .nav-tool {
-        grid-area: nav;
-        margin-right: 20px;
-      }
-      
-      .roster-logo {
-        grid-area: logo;
-        justify-self: right;
-      }
-      
-      .roster-title-view {
-        grid-area: title;
-        justify-content: center;
-        text-align: center;
-      }
+    
+     
    .form{
     grid-area: class;
    }
+
+
+
+@media screen and (max-width: 600px) {
+      .add-student-container{
+       
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        grid-template-areas: 
+        "id-label school-id"
+        "first-name-label first-name "
+        "last-name-label last-name "
+        ". submit"
+        "roster roster"
+        " remove-student remove-student"
+        ". finalize"
+       
+        ;
+        gap: 15px;
+      }
+      #remove-student{
+        grid-area: remove-student;
+        width: 100vw;
+      }
+    }
+
+    @media screen and (min-width: 601px) {
       .add-student-container{
        
         display: grid;
@@ -229,6 +224,9 @@ import { createNamespacedHelpers } from 'vuex';
         ;
         gap: 15px;
       }
+    }
+
+
       #finalize{
         grid-area: finalize;
       }

@@ -1,11 +1,9 @@
 <template>
 
-<div class="class-view-container">
-    <NavTool class="home-nav-tool"/>
     <div class = "home-title-view">
       <h1 class="page-title">Class: {{ schoolClass.className }}</h1>
     </div>
-    <Logo class="home-logo"/>
+  
 <div class="class-container">
 <div class="loading" v-if="isLoading">Loading...</div>
 
@@ -64,11 +62,9 @@
 
       
 <div class="subject-button">
-  
-<p></p>
   <router-link class="button-link" v-bind:to="{name: 'create-subject'}">Add a Subject</router-link>
-  <p></p>
   <div class="button-link" @click="toggleArchive">{{archiveMessage}}</div>
+ 
 </div>
 
 <div class="roster-button">
@@ -90,23 +86,18 @@
   </div>
 </div>
 </div>
-</div>
+
 
 </template>
 
 <script>
-import Logo from '../components/Logo.vue';
-import NavTool from '@/components/NavTool.vue';
 import ClassService from '../services/ClassService';
 import StudentService from '../services/StudentService';
 import SubjectService from '../services/SubjectService';
 
 export default {
   name: 'ClassView',
-  components: {
-    NavTool,
-    Logo
-},
+ 
 data() {
   return {
     classId: 0,
@@ -247,27 +238,6 @@ this.classId = parseInt(this.$route.params.classId)
 </script>
 
 <style scoped>
- .class-view-container {
-        display: grid;
-        grid-template-columns: 200px 1fr 1fr;
-        grid-template-areas: 
-          "nav title logo"
-          "nav class class"
-          "nav class class"
-          ;
-        gap: 15px;
-      }
-  
-  
-  .home-nav-tool {
-    grid-area: nav;
-    margin-right: 20px;
-  }
-  
-  .home-logo {
-    grid-area: logo;
-    justify-self: right;
-  }
   
   .home-title-view {
     grid-area: title;
@@ -290,11 +260,13 @@ this.classId = parseInt(this.$route.params.classId)
         "active-label active-radio ."
         ". submit submit"
         "subjects sub-display sub-buttons"
+        ". sub-display ."
         "roster ros-display ros-button"
         
         ;
         gap: 15px;
       }
+
 .sub-display{
   grid-area: sub-display;
   background-color: rgb(233, 230, 230);
@@ -311,8 +283,6 @@ this.classId = parseInt(this.$route.params.classId)
   padding: 10px;
   text-decoration: none;
   border-radius: 5px;
-
-
 }
       .class-name {
         grid-area: name;
@@ -324,7 +294,6 @@ this.classId = parseInt(this.$route.params.classId)
       .active-radio{
         grid-area: active-radio;
         display: flex;
-        
       }
       .name-label{
         grid-area: name-label;
@@ -381,6 +350,8 @@ this.classId = parseInt(this.$route.params.classId)
       }
       .subject-button {
         grid-area: sub-buttons;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
       }
       .roster-button {
         grid-area: ros-button;
@@ -395,7 +366,6 @@ this.classId = parseInt(this.$route.params.classId)
   font-size: larger;
   min-width: 75px;
   max-width: 150px;
-  
 }
 .subject-title-archive{
   color: black;
@@ -408,7 +378,6 @@ this.classId = parseInt(this.$route.params.classId)
   min-width: 75px;
   max-width: 150px;
   background-color: rgb(253, 253, 253);
-  
 }
 
 .subject-title:nth-child(4n-3){
@@ -432,8 +401,8 @@ gap: 5px;
 display: flex;
 flex-wrap: wrap;
 gap: 5px;
-
 }
+
 .student-title{
   color: black;
   text-align: center;
@@ -444,7 +413,6 @@ gap: 5px;
   font-size: larger;
   min-width: 75px;
   max-width: 150px;
-  
 }
 
 .student-title:nth-child(4n-3){
@@ -459,5 +427,40 @@ gap: 5px;
 .student-title:nth-child(4n-0){
   background-color: #93c47dff;
 }
+
+@media screen and (max-width: 600px) {
+  div {
+    max-width: 100vw;
+  }
+  .class-container {
+    grid-area: class;
+  }
+  .class-edit-container{
+        display: grid;
+        max-width: 100vw;
+        padding-top: 5px;
+        grid-template-columns: 1fr 2fr;
+        grid-template-areas: 
+        "name-label name" 
+        "description-label description-label"
+        "class-description class-description"
+        "active-label active-radio"
+        "submit submit"
+        "subjects subjects"
+        " sub-display sub-display"
+        "sub-buttons sub-buttons" 
+        "roster roster"
+        "ros-display ros-display" 
+        "ros-button ros-button"
+        ;
+        gap: 15px;
+      }
+      .submit-button{
+        width: 90vw;
+      }
+}
+
+
+
     </style>
 

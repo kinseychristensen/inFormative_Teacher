@@ -1,12 +1,11 @@
 <template>
 
-    <div class="home-container">
-        <NavTool class="home-nav-tool"/>
+
         <div class = "home-title-view">
           <h1 class="page-title">{{subject.code}}</h1>
           <p class="logged-in-title">{{subject.description}}</p>
         </div>
-        <Logo class="home-logo"/>
+     
     
     <div class="sub-view-container">
     <div class="loading" v-if="isLoading">Loading...</div>
@@ -44,21 +43,17 @@
       </div>
     </div>
     </div>
-    </div>    
+  
 
     </template>
     
     <script>
-    import Logo from '../components/Logo.vue';
-    import NavTool from '@/components/NavTool.vue';
+   
     import SubjectService from '../services/SubjectService';
     
     export default {
       name: 'SubjectView',
-      components: {
-        NavTool,
-        Logo
-    },
+      
     data() {
       return {
         classId: 0,
@@ -121,28 +116,7 @@ if(shouldArchive){
     </script>
     
     <style scoped>
-    .home-container {
-        display: grid;
-        grid-template-columns: 250px 1fr 1fr;
-        grid-template-areas: 
-          "nav title logo"
-          "nav class class"
-          ". class class"
-          ;
-        gap: 15px;
-      }
-      
-      
-      .home-nav-tool {
-        grid-area: nav;
-        margin-right: 20px;
-      }
-      
-      .home-logo {
-        grid-area: logo;
-        justify-self: right;
-      }
-      
+   
       .home-title-view {
         grid-area: title;
         justify-content: center;
@@ -236,6 +210,13 @@ if(shouldArchive){
   text-decoration: none;
   width: 200px;
   height: 50px;
+}
+
+@media screen and (max-width: 600px) {
+  .sub-button-link{
+  
+    max-width: 70px;
+  }
 }
 
     </style>

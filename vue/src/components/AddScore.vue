@@ -327,4 +327,34 @@
 .inactive{
     background-color: green;
 }
+
+
+@media screen and (max-width: 600px){
+#student-loop-if{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-areas: 
+  "student-name score student-comment"
+  ;
+  background-color: white;
+  gap: 3px;
+}
+
+#student-score{
+  grid-area: score;
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr;
+    grid-template-areas: 
+    "score is-waived label-waived"
+    "score is-not-waived label-not-waived"
+    ;
+}
+#score{
+    grid-area: score;
+    max-width: 50px;
+}
+}
+
+
+
     </style>

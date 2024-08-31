@@ -1,12 +1,10 @@
 <template>
 
-    <div class="home-container">
-        <NavTool class="home-nav-tool"/>
+   
         <div class = "home-title-view">
-          <h1 class="page-title">Groups View Page</h1>
-          <p class="logged-in-title">description here</p>
+          <h1 class="page-title">Subject Groups</h1>
+          <p class="logged-in-title">Setting up groups in each subject can make assessing on the go quicker and easier!  </p>
         </div>
-        <Logo class="home-logo"/>
 
     <div class="groups-container">
     <div class="loading" v-if="isLoading">Loading...</div>
@@ -17,10 +15,10 @@
           id="sub-details-groups">{{ subject.code }} : {{ subject.description }} ID: {{ subject.id }}
           </router-link>
           <div id="groups-edit-buttons">
-             <button @click="toggleAdd(subject.id)" v-if="!subject.addGroup">Add Group</button>
-             <button @click="toggleAdd(subject.id)" v-else>Cancel Adding Group</button>
-              <button @click="toggleRemove(subject.id)" v-if="!subject.removeGroup">Remove Group</button>
-             <button @click="toggleRemove(subject.id)" v-else>Cancel Removing Group</button>
+             <button class="btn" @click="toggleAdd(subject.id)" v-if="!subject.addGroup">Add Group</button>
+             <button class="btn" @click="toggleAdd(subject.id)" v-else>Cancel Adding Group</button>
+              <button  class="btn" @click="toggleRemove(subject.id)" v-if="!subject.removeGroup">Remove Group</button>
+             <button class="btn" @click="toggleRemove(subject.id)" v-else>Cancel Removing Group</button>
            </div>
 
           <div class="flex-the-groups">
@@ -29,14 +27,14 @@
 
           <div id="groups-active" class="groups-loop" v-if="!subject.removeGroup">
               <div v-for="schoolGroup in subject.groups" v-bind:key="schoolGroup.groupId" v-bind:value="schoolGroup.groupId" >
-                  <div class="a-group" :class="theClass(schoolGroup.color)">{{schoolGroup.groupName  }} : {{ schoolGroup.description }}
+                  <div class="b-group" :class="theClass(schoolGroup.color)">{{schoolGroup.groupName  }} : {{ schoolGroup.description }}
                     <div><GroupRoster :classId="this.classId" :groupId="schoolGroup.groupId"/></div>
                  </div>
               </div>
           </div>
           <div id="groups-deleting" class="groups-loop" v-else>
             <div v-for="schoolGroup in subject.groups" v-bind:key="schoolGroup.groupId" v-bind:value="schoolGroup.groupId">
-              <div class="a-group">{{schoolGroup.groupName  }} : {{ schoolGroup.description }}
+              <div class="a-group"><div>{{schoolGroup.groupName  }} </div><div> {{ schoolGroup.description }}</div>
                   <button @click="deleteGroup(schoolGroup.groupId)">DELETE THIS GROUP</button>
               </div> 
             </div>
@@ -48,14 +46,10 @@
         
     </div>
     </div>
-    </div>
     </template>
     
     <script>
-    import Logo from '../components/Logo.vue';
-    import NavTool from '@/components/NavTool.vue';
-    import GroupService from '../services/GroupService';
-    import StudentService from '../services/StudentService';
+    import GroupService from '../services/GroupService';   
     import SubjectService from '../services/SubjectService';
     import CreateGroup from '../components/CreateGroup.vue';
     import GroupRoster from '../components/GroupRoster.vue';
@@ -64,8 +58,7 @@
     export default {
       name: 'GroupsView',
       components: {
-        NavTool,
-        Logo,
+    
         CreateGroup,
         GroupRoster,
     },
@@ -290,47 +283,74 @@
   padding: 20px;
   border-radius: 15px;
   text-decoration: none;
-  min-width: 175px;
-  max-width: 350px;
+  width: 200px;
   min-height: 75px;
-
   font-size: larger;
   background-color: #dd7e6bff;
+  display: flexbox;
+  flex-direction: column;
 }
+
+.b-group{
+        color: black;
+  text-align: center;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 15px;
+  text-decoration: none;
+  min-width: 200px;
+  max-width: 350px;
+  min-height: 75px;
+  font-size: larger;
+}
+
+
+
 
 .pink{
-  background-color: rgb(237, 82, 139);
-  min-width: 50px;
+  background-color: #f3c0bd;
+ 
+
 }
 .red{
-  background-color: red;
-  min-width: 50px;
+  background-color: #ee8f8d;
+
 }
 .orange{
-  background-color: rgb(255, 115, 0);
-  min-width: 50px;
+  background-color: #f1ac8d;
+ 
 }
 .yellow{
-  background-color: rgb(246, 255, 0);
-  min-width: 50px;
+  background-color:#f7d18a;
+
 }
 .green{
-  background-color: rgb(94, 255, 0);
-  min-width: 50px;
+  background-color: #b2c8a5;
+
 }
 .blue{
-  background-color: rgb(0, 136, 255);
-  min-width: 50px;
+  background-color: #93caef;
+
 }
 .purple{
-  background-color: rgb(149, 35, 144);
-  min-width: 50px;
+  background-color: #d0aee6;
+
 }
 .gray{
-  background-color: rgb(136, 117, 117);
-  min-width: 50px;
+  background-color: #bfc5c9;
+
 }
-
-
+ .btn {
+  width: 170px;
+  padding: 2px;
+  height: 30px;
+  border: black;
+  background-color: rgb(255, 217, 102,100);
+  color: black;
+  border-radius: 5px;
+  transition: background-color .3s ease;
+  font: bold;
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+ }
       
     </style>

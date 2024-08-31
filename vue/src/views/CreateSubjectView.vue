@@ -1,7 +1,6 @@
 <template>
 
-    <div class="home-container">
-        <NavTool class="nav-tool"/>
+<div class="class-container">
         <div class = "title-view">
           <h1 class="page-title">Create Subject</h1>
           <p class="logged-in-title">Subjects may not be edited after creation.  Please ensure you enter all information correctly.  For additional instructions, 
@@ -9,9 +8,9 @@
           </p>
           <p class="error">{{ errorMessage }}</p>
         </div>
-        <Logo class="home-logo"/>
+       
    
-    <div class="class-container">
+   
         <div class="loading" v-if="isLoading">Loading...</div>
     
        <div v-else>
@@ -20,8 +19,8 @@
 
         <form class="form-field" v-on:submit.prevent="checkSubForm">
           <div id="clone-search-label">Your work may already be done! Check to see if your subject standards are already in
-          <router-link id="search-subs" class="button-link"
-          v-bind:to="{ name: 'all-subjects'}">Our Database</router-link></div>
+          <router-link id="search-subs" class="database"
+          v-bind:to="{ name: 'all-subjects'}">Our Database.</router-link></div>
           <button class="complete-button">Complete</button>
           <label for="subject" class="sub-label">Title:</label>
           <input id="subject" v-model="newSubject.code"/>
@@ -30,19 +29,19 @@
        
           <div class="mastery">
             <div class="mastery-item">
-              <p>Not Attempted:</p>
+              <a>Not Attempted:</a>
             <input v-model.number="newSubject.notAttempted"/> </div>
             <div class="mastery-item">
-              <p>Below:</p>
+              <a>Below:</a>
               <input v-model.number="newSubject.below"/></div>
             <div class="mastery-item">
-              <p>Approaching:</p>
+              <a>Approaching:</a>
               <input v-model.number="newSubject.approaching"/></div>
             <div class="mastery-item">
-              <p>Proficient:</p>
+              <a>Proficient:</a>
               <input v-model.number="newSubject.proficient"/></div>
             <div class="mastery-item">
-              <p>Mastered:</p>
+              <a>Mastered:</a>
               <input v-model.number="newSubject.mastered"/></div>
           </div>
 
@@ -72,7 +71,8 @@
             <div id="lessons">Indicators</div></div>
 
             <div class="topic-loop" v-for="currTopic in newSubject.topics" v-bind:key="currTopic.id">
-            
+            <div id="a-units">Category / Unit</div>
+            <div id="a-lessons">Indicators</div>
            
             <div class="standard">
               <div v-for="currLesson in currTopic.lessons" v-bind:key="currLesson.id">
@@ -88,11 +88,11 @@
               </div></div>
             
             <form v-on:submit.prevent="addTopic(currTopic)" class="topic-item">
-              <div><label for="topic-code" class="top-code-label">Code:</label>
-              <input id="topic-code" v-model.lazy="currTopic.code"/></div>
-             <div> <label for="topic-desc" class="top-desc-label">Description:</label><p></p>
-              <textarea id="topic-desc" v-model.lazy="currTopic.description"></textarea></div>
-             <div> <button class="add-topic-button">Add Another Category</button></div>
+              <label for="topic-code" class="top-code-label">Code:</label>
+              <input id="topic-code" v-model.lazy="currTopic.code"/>
+             <label for="topic-desc" class="top-desc-label">Description:</label>
+              <textarea id="topic-desc" v-model.lazy="currTopic.description"></textarea>
+            <button class="add-topic-button">Add Another Category</button>
             </form>
           </div>
           </div>
@@ -105,19 +105,19 @@
           <div>Class: {{ newSubjectClass }}</div>
             <div class="mastery">
             <div class="mastery-item">
-              <p>Not Attempted: {{ newSubject.notAttempted }}</p>
+              <p>Not Attempted:  </p><p> {{ newSubject.notAttempted }}</p>
             </div>
             <div class="mastery-item">
-              <p>Below: {{ newSubject.below }}</p>
+              <p>Below: </p><p> {{ newSubject.below }}</p>
             </div>
             <div class="mastery-item">
-              <p>Approaching:  {{ newSubject.approaching }}</p>
+              <p>Approaching: </p><p> {{ newSubject.approaching }}</p>
             </div>
             <div class="mastery-item">
-              <p>Proficient:  {{ newSubject.proficient }}</p>
+              <p>Proficient:  </p><p> {{ newSubject.proficient }}</p>
             </div>
             <div class="mastery-item">
-              <p>Mastered:  {{ newSubject.mastered }}</p>
+              <p>Mastered:   </p><p> {{ newSubject.mastered }}</p>
             </div>
           </div>
           <div id="units-lessons">
@@ -139,16 +139,14 @@
           <button class="button-link" id="complete-confirm" @click="createSubject">Confirm</button>
         </div>
       </div>
-    </div>
-  </div>  
+    </div> 
 
 
 
     </template>
     
     <script>
-    import Logo from '../components/Logo.vue';
-    import NavTool from '@/components/NavTool.vue';
+  
     import SubjectService from '../services/SubjectService';
     import ClassService from '../services/ClassService';
     
@@ -156,10 +154,7 @@
     
     export default {
       name: 'CreateSubjectView',
-      components: {
-        NavTool,
-        Logo
-    },
+  
 
     data() {
       return {
@@ -353,39 +348,17 @@ if (this.newSubject.classId === 0) {
     </script>
     
     <style scoped>
-    .home-container {
-        display: grid;
-        grid-template-columns: 250px 1fr 1fr;
-        grid-template-areas: 
-          "nav title logo"
-          "nav class class"
-          ". class class"
-          ;
-        gap: 15px;
-      }
-
-
-      .nav-tool {
-        grid-area: nav;
-        margin-right: 20px;
-      }
+   
       
-      .home-logo {
-        grid-area: logo;
-        justify-self: right;
-      }
-      
-      .home-title-view {
+      .title-view {
         grid-area: title;
-        justify-content: center;
-        text-align: center;
       }
       
       .class-container {
         grid-area: class;
+        max-width: 1000px;
+        margin-left: 20px;
       }
-
-      
 
       .subject-field{
         display: grid;
@@ -442,6 +415,10 @@ if (this.newSubject.classId === 0) {
         padding: 15px;
         border: black;
         border-radius: 25px;
+        display: flexbox;
+        flex-direction: row;
+        justify-content: space-between;
+        min-width: 150px;
       }
       .mastery-item:nth-child(5n-0){
        background-color: #a4c2f4ff;
@@ -484,6 +461,7 @@ if (this.newSubject.classId === 0) {
         grid-template-columns: 1fr 3fr;
         grid-template-areas: 
         "topic-item standard"
+        ". standard"
         ;
         gap: 5px;
         padding: 5px;
@@ -505,19 +483,24 @@ if (this.newSubject.classId === 0) {
         border: black;
         border-radius: 25px;
       }
-
+     
       .topic-item{
         grid-area: topic-item;
-        display: flexbox;
-        flex-direction: column;
-        align-content: flex-start;
+        display: grid;
         gap: 5px;
       }
+     
       .standard{
         grid-area: standard;
         display: flexbox;
-        flex-direction: row;
+        grid-template-columns: 1fr;
         gap: 20px;
+      }
+
+      .standard-form{
+        display: grid;
+       grid-template-columns: 1fr;
+        gap: 3px;
       }
 
       .add-topic{
@@ -608,7 +591,101 @@ if (this.newSubject.classId === 0) {
   min-width: 50px;
 }
 
+@media screen and (min-width: 601px){
+#a-units{
+        display: none;
+      }
+      #a-lessons{
+        display: none;
+      }
+      .class-container {
+        margin: auto;
 
+      }
+      .title-view {
+        align-items: center;
+        max-width: 1000px;
+      }
+    }
+
+@media screen and (max-width: 600px) {
+
+  .class-container {
+        grid-area: class;
+        max-width: 100vw;
+
+      }
+
+      .form-field{
+        grid-area: form;
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        width: 100vw;
+        grid-template-areas:
+        "search search"
+        "complete-button complete-button"
+        "sub-label subject"
+        "sub-desc-label  ."
+        "sub-desc sub-desc"
+        "class-sel-label ."
+        "class-select class-select"
+        "mastery mastery"
+        "sub-color-label ."
+        "color-display color-display"
+        "sub-color sub-color"
+       
+        ;
+        gap: 15px;
+      }
+      .mastery{
+        grid-area: mastery;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-content: space-around;
+        gap: 5px;
+        
+      }
+      .mastery-item {
+        gap: 5px;
+        padding: 5px;
+        border: black;
+        border-radius: 15px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .topic-loop{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+        "topic-label"
+        "topic-item"
+        "lesson-label" 
+        "standard"
+        ;
+        gap: 5px;
+        padding: 5px;
+        border: 2px;
+        border-color: black;
+
+      }
+      #units{
+        display: none;
+      }
+      #lessons{
+        display: none;
+      }
+      #a-units{
+       grid-area: topic-label;
+       background-color: #d0aee6;
+      }
+      #a-lessons{
+        grid-area: lesson-label;
+        background-color: #d0aee6;
+      }
+
+}
 
 
 

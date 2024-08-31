@@ -1,7 +1,7 @@
 <template>
 
-    <div class="home-container">
-        <NavTool class="home-nav-tool"/>
+       
+<div class="class-container">
         <div class = "home-title-view">
           <h1 class="page-title">Create Artifact for {{ subject.code }}</h1>
           <div class="logged-in-title"><p>Artifacts are moments when you are assessing a student's progress towards mastery.  
@@ -10,9 +10,7 @@
             standard within the scope of the subject being taught.  If an assignment covers more than one standard, please make multiple artifacts. </p>
           <div v-if="!isValid" class="error">{{ errorMessage }}</div></div>
         </div>
-        <Logo class="home-logo"/>
-    
-    <div class="class-container">
+
     <div class="loading" v-if="isLoading">Loading...</div>
     
     <div v-else class="class-field">
@@ -58,22 +56,17 @@
 
     </div>
     </div>
-  </div>
     
     </template>
     
     <script>
-    import Logo from '../components/Logo.vue';
-    import NavTool from '@/components/NavTool.vue';
+
     import SubjectService from '../services/SubjectService';
     import ArtifactService from '../services/ArtifactService';
     
     export default {
       name: 'CreateArtifactView',
-      components: {
-        NavTool,
-        Logo
-    },
+  
     data() {
       return {
         artifact: {
@@ -220,27 +213,6 @@
     </script>
     
     <style scoped>
-    .home-container {
-        display: grid;
-        grid-template-columns: 250px 1fr 1fr;
-        grid-template-areas: 
-          "nav title logo"
-          "nav class class"
-          ". class class"
-          ;
-        gap: 15px;
-      }
-      
-      
-      .home-nav-tool {
-        grid-area: nav;
-        margin-right: 20px;
-      }
-      
-      .home-logo {
-        grid-area: logo;
-        justify-self: right;
-      }
       
       .home-title-view {
         grid-area: title;
@@ -250,6 +222,8 @@
       
       .class-container {
         grid-area: class;
+        max-width: 1000px;
+        margin: auto;
       }
 
       #ca-form-grid-1{
@@ -315,4 +289,41 @@
         color: red;
         font-size:x-large;
       }
+
+      @media screen and (max-width: 600px) {
+        #ca-form-grid-2{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+        "art-title-label "
+        "art-title "
+        "art-lesson-label "
+        "art-lesson"
+        "art-date-label "
+        "art-date"
+        "art-comm-label " 
+        " art-comm"
+        "submit";
+       gap: 5px;
+      }
+
+      #ca-form-grid-1{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+        "art-type-label"
+        "art-type"
+        "new-art-type-label"
+        "new-art-type"
+        "art-type-button"
+        ;
+        margin-bottom: 20px;
+        gap: 5px;
+      }
+
+      }
+
+
+
+
     </style>

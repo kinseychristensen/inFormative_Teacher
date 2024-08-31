@@ -1,13 +1,11 @@
 <template>
 
-    <div class="home-container">
-        <NavTool class="home-nav-tool"/>
+   
         <div class = "home-title-view">
           <h1 class="page-title">Student View Page</h1>
           <p class="logged-in-title">description here</p>
         </div>
-        <Logo class="home-logo"/>
-    </div>
+   
     <div class="class-container">
     <div class="loading" v-if="isLoading">Loading...</div>
     
@@ -19,16 +17,12 @@
     </template>
     
     <script>
-    import Logo from '../components/Logo.vue';
-    import NavTool from '@/components/NavTool.vue';
+  
     import ClassService from '../services/ClassService';
     
     export default {
       name: 'StudentView',
-      components: {
-        NavTool,
-        Logo
-    },
+   
     data() {
       return {
         SchoolClasses: [],

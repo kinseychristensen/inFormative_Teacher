@@ -1,14 +1,11 @@
 <template>
 
-    <div class="home-container">
-        <NavTool class="home-nav-tool"/>
+<div class="class-container">
         <div class = "home-title-view">
           <h1 class="page-title">{{subject.code}} Artifacts</h1>
           <p class="logged-in-title">{{subject.description}}</p>
         </div>
-        <Logo class="home-logo"/>
-    
-    <div class="class-container">
+
     <div class="loading" v-if="isLoading">Loading...</div>
     
     <div v-else class="class-field">
@@ -28,7 +25,7 @@
         </form>
  
       <router-link id="make-art-link" class="art-button-link" 
-      v-bind:to="{name: 'artifacts', params: {classId: this.classId, subjectId: this.subjectId}}">
+      v-bind:to="{name: 'create-artifact', params: {classId: this.classId, subjectId: this.subjectId}}">
         Make a New Artifact</router-link>
       <router-link id="class-mast-link" class="art-button-link"
       v-bind:to="{name: 'create-artifact', params: {classId: this.classId, subjectId: this.subjectId}}">
@@ -60,13 +57,10 @@
 
     </div>
     </div>
-  </div>
 
     </template>
     
     <script>
-    import Logo from '../components/Logo.vue';
-    import NavTool from '@/components/NavTool.vue';
     import SubjectService from '../services/SubjectService';
     import ArtifactService from '../services/ArtifactService';
  import AddScore from '../components/AddScore.vue';
@@ -74,9 +68,7 @@
     
     export default {
       name: 'ArtifactView',
-      components: {
-        NavTool,
-        Logo, 
+      components: { 
         AddScore,
     },
     data() {
@@ -243,28 +235,7 @@
     </script>
     
     <style scoped>
-    .home-container {
-        display: grid;
-        grid-template-columns: 250px 1fr 1fr;
-        grid-template-areas: 
-          "nav title logo"
-          "nav class class"
-          ". class class"
-          ;
-        gap: 15px;
-      }
-      
-      
-      .home-nav-tool {
-        grid-area: nav;
-        margin-right: 20px;
-      }
-      
-      .home-logo {
-        grid-area: logo;
-        justify-self: right;
-      }
-      
+ 
       .home-title-view {
         grid-area: title;
         justify-content: center;
@@ -273,6 +244,8 @@
       
       .class-container {
         grid-area: class;
+        max-width: 1000px;
+       margin: auto;
       }
       .class-field{
         display: grid;
@@ -399,6 +372,92 @@
 #score-show{
   grid-area: score-show;
 }
+@media screen and (max-width: 600px){
+  .class-container {
+        grid-area: class;
+        max-width: 100vw;
+
+      }
+
+      .class-field{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: 
+        "make-art-link class-mast-link"
+        "sort-by sort-by"
+        "artifact-grid artifact-grid"
+        ;
+
+      }
+
+      #sort-by{
+        grid-area: sort-by;
+        display: grid;
+        max-width: 100vw;
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+        "search-box-label "
+        "search-box"
+        "lesson-select-label "
+        "lesson-select"
+        ;
+      }
+    
+      #artifact-loop{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: 
+        "artifact-details artifact-details"
+        "score-buttons delete-art"
+        "score-show score-show"
+        ;
+        max-width: 90vw;
+      }
+      #artifact-details{
+        grid-area: artifact-details;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: 
+       "artifact-date artifact-type"
+        "lesson-nums ."
+        "lesson-deets lesson-deets"
+        "artifact-title-desc artifact-title-desc"
+        "artifact-comments artifact-comments"
+        ;
+      }
+      #sort-by{
+        grid-area: sort-by;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+        "search-box-label"
+        "search-box"
+        "lesson-select-label"
+        "lesson-select"
+        ;
+        max-width: 90vw;
+      }
+      #search-box{
+        grid-area: search-box;
+        max-width: 400px;
+      }
+      #lesson-select{
+        grid-area: lesson-select;
+        max-width: 400px;
+      }
+      .art-button-link{
+  width: 150px;
+  height: 50px;
+}
+
+
+
+
+
+    }
+
+
+
 
 
     </style>

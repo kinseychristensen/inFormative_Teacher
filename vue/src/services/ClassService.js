@@ -24,6 +24,9 @@ export default {
 
     editClass(editClass, classId){
         return axios.put(`/class/${classId}`, editClass);
+    },
+    getClassesByStudent(studentId){
+        return axios.get(`/class/student/${studentId}`);
     }
 
 }

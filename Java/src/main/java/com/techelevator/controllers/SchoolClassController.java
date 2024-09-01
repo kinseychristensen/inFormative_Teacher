@@ -63,6 +63,10 @@ private SubjectDao subjectDao;
     public SchoolClass editClass(@RequestBody SchoolClass editClass){
         return schoolClassesDao.editClass(editClass);
     };
+    @RequestMapping(path= BASE_URL + "/student/{studentId}", method = RequestMethod.GET)
+    public List<SchoolClass> getClassesByStudentId(@PathVariable int studentId){
+        return schoolClassesDao.getClassesByStudentId(studentId);
+    };
 
 
 

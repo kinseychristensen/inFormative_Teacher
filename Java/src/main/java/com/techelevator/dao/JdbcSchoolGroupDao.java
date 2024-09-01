@@ -35,7 +35,7 @@ public SchoolGroup getGroupDetails(int groupId) {
 @Override
 public List<SchoolGroup> getCurrentGroups (int classId){
     try {
-        String sql = "SELECT * FROM school_group WHERE class_id = ?;";
+        String sql = "SELECT * FROM school_group WHERE class_id = ? ORDER BY group_id;";
         SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, classId);
         List<SchoolGroup> groups = new ArrayList<>();
         while(rs.next()){
@@ -82,10 +82,10 @@ public boolean deleteGroup(int groupId){
 public SchoolGroup editGroup(SchoolGroup editGroup) {
     try {
         String sql = "UPDATE school_group \n" +
-                "\tSET group_name = ?, description = ?, class_id=?, subject_id = ?, color = ?\n" +
+                "\tSET group_name = ?, description = ?, color = ?\n" +
                 "\tWHERE group_id = ?;";
         jdbcTemplate.update(sql, editGroup.getGroupName(), editGroup.getDescription(),
-                editGroup.getClassId(), editGroup.getSubjectId(), editGroup.getColor(), editGroup.getGroupId());
+               editGroup.getColor(), editGroup.getGroupId());
         sql = "SELECT * FROM school_group WHERE group_id = ?;";
         SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, editGroup.getGroupId());
 

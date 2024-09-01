@@ -27,7 +27,17 @@
 
           <div id="groups-active" class="groups-loop" v-if="!subject.removeGroup">
               <div v-for="schoolGroup in subject.groups" v-bind:key="schoolGroup.groupId" v-bind:value="schoolGroup.groupId" >
-                  <div class="b-group" :class="theClass(schoolGroup.color)">{{schoolGroup.groupName  }} : {{ schoolGroup.description }}
+                  <div class="b-group" :class="theClass(schoolGroup.color)">
+                    <button id="edit-group-icon" @click="showEditor(schoolGroup)">✎</button>
+                    {{schoolGroup.groupName  }} : {{ schoolGroup.description }}
+                   
+
+                      <div v-if="schoolGroup.edit"><EditGroup :group="schoolGroup"/></div>
+
+
+
+
+
                     <div><GroupRoster :classId="this.classId" :groupId="schoolGroup.groupId"/></div>
                  </div>
               </div>
@@ -53,6 +63,7 @@
     import SubjectService from '../services/SubjectService';
     import CreateGroup from '../components/CreateGroup.vue';
     import GroupRoster from '../components/GroupRoster.vue';
+    import EditGroup from '../components/EditGroup.vue';
 
     
     export default {
@@ -61,6 +72,7 @@
     
         CreateGroup,
         GroupRoster,
+        EditGroup,
     },
 
     computed: {
@@ -85,7 +97,15 @@
 
     data() {
       return {
-        CurrentGroups: [],
+        CurrentGroups: [{
+          groupId: 0,
+          groupName: '',
+          description: '',
+          classId: 0,
+          subjectId: 0,
+          edit: false,
+
+        }],
         isLoading: true,
         classId: 0,
         subjects: [{
@@ -120,6 +140,10 @@
           } else {
             this.$store.commit('SET_NOTIFICATION', "Error " + verb + " groups. Request could not be created.");
           }
+        },
+
+        showEditor(schoolGroup){
+          schoolGroup.edit = !schoolGroup.edit;
         },
     
         toggleAdd(subjectId){

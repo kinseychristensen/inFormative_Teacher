@@ -37,6 +37,26 @@ public class JdbcSchoolClassesDao implements SchoolClassesDao{
     }
 
     @Override
+    public List<SchoolClass> getClassesByStudentId(int studentId) {
+        List<SchoolClass> classList = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM school_class\n" +
+                    "JOIN student_to_class\n" +
+                    "ON school_class.class_id = student_to_class.class_id\n" +
+                    "WHERE student_id = ? \n" +
+                    "ORDER BY school_class.class_id;";
+            SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, studentId);
+
+            while (rs.next()){
+                classList.add(mapRowToClass(rs));
+            }
+        }catch (DataAccessException e) {
+            throw new DaoException("Error retrieving class details", e);
+        }
+        return classList;
+    }
+
+    @Override
     public List<SchoolClass> getCurrentClasses(int teacherId) {
         List<SchoolClass> classList = new ArrayList<>();
         try {
@@ -44,7 +64,8 @@ public class JdbcSchoolClassesDao implements SchoolClassesDao{
                     "FROM school_class \n" +
                     "JOIN class_to_teacher\n" +
                     "ON school_class.class_id = class_to_teacher.class_id\n" +
-                    "WHERE class_to_teacher.teacher_id = ? AND school_class.is_active = true;";
+                    "WHERE class_to_teacher.teacher_id = ? AND school_class.is_active = true " +
+                    "ORDER BY school_class.class_id;";
             SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, teacherId);
 
             while (rs.next()){
@@ -64,7 +85,8 @@ public class JdbcSchoolClassesDao implements SchoolClassesDao{
                     "FROM school_class \n" +
                     "JOIN class_to_teacher\n" +
                     "ON school_class.class_id = class_to_teacher.class_id\n" +
-                    "WHERE teacher_id = ? AND is_active = false;";
+                    "WHERE teacher_id = ? AND is_active = false " +
+                    "ORDER BY school_class.class_id;";
             SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, teacherId);
 
             while (rs.next()){

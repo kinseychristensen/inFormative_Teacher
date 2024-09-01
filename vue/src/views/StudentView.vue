@@ -2,15 +2,22 @@
 
    
         <div class = "home-title-view">
-          <h1 class="page-title">Student View Page</h1>
-          <p class="logged-in-title">description here</p>
+          <h1 class="page-title">{{student.firstName}} {{ student.lastName }}</h1>
+          <p class="logged-in-title">Student Id: {{ student.schoolId }}</p>
         </div>
    
     <div class="class-container">
     <div class="loading" v-if="isLoading">Loading...</div>
     
     <div v-else class="class-field">
-        This page is loaded.
+        <div class="class-loop" v-for="schoolClass in schoolClasses" v-bind:key="schoolClass.classId"
+        v-bind:value="schoolClass.classId">
+         <div class="class-title">{{ schoolClass.className }} - {{ schoolClass.description }}</div>
+         
+         <SubjectDisplayforStudent :classId="schoolClass.classId" :studentId="studentId"/>
+
+        </div>
+      
     </div>
     </div>
     
@@ -18,14 +25,22 @@
     
     <script>
   
-    import ClassService from '../services/ClassService';
+    import StudentService from '../services/StudentService.js';
+    import ClassService from '../services/ClassService.js';
+    import SubjectDisplayforStudent from '../components/SubjectDisplayforStudent.vue';
+
     
     export default {
       name: 'StudentView',
+      components: {
+        SubjectDisplayforStudent,
+      },
    
     data() {
       return {
-        SchoolClasses: [],
+        studentId: 0,
+        student: {},
+        schoolClasses: [],
         isLoading: true,
         teacherName: "",
       };
@@ -42,25 +57,38 @@
           }
         },
     
-      async retrieveClasses(){
+      async retrieveStudent(){
         try {
           this.isLoading = true;
           console.log("TEST");
-          const response = await ClassService.getCurrentClasses();
-          this.SchoolClasses = response.data;
+          const response = await StudentService.getStudentDetails(this.studentId);
+          this.student = response.data;
+        }catch (error) {
+          this.handleError(error, 'retrieving');
+        }finally {
+          this.retrieveClasses();
+        }
+        }, 
+      
+        async retrieveClasses(){
+        try {
+        
+          const response = await ClassService.getClassesByStudent(this.studentId);
+          this.schoolClasses = response.data;
         }catch (error) {
           this.handleError(error, 'retrieving');
         }finally {
           this.isLoading = false;
         }
         }, 
-      
     
     },
     created(){
     
      
-      this.isLoading = false;
+      this.isLoading = true;
+      this.studentId = parseInt(this.$route.params.studentId);
+      this.retrieveStudent();
       
     }
     }
@@ -69,28 +97,7 @@
     </script>
     
     <style scoped>
-    .home-container {
-        display: grid;
-        grid-template-columns: 250px 1fr 1fr;
-        grid-template-areas: 
-          "nav title logo"
-          "nav class class"
-          ". class class"
-          ;
-        gap: 15px;
-      }
-      
-      
-      .home-nav-tool {
-        grid-area: nav;
-        margin-right: 20px;
-      }
-      
-      .home-logo {
-        grid-area: logo;
-        justify-self: right;
-      }
-      
+    
       .home-title-view {
         grid-area: title;
         justify-content: center;
@@ -100,4 +107,16 @@
       .class-container {
         grid-area: class;
       }
+
+      .class-title {
+  background-color: #d9d9d9ff;
+  color: black;
+  text-align: center;
+  margin: 10px;
+
+  padding: 10px;
+  border-radius: 15px;
+  text-decoration: none;
+  grid-area: class-title;
+}
     </style>

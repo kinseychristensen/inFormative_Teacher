@@ -15,6 +15,8 @@ public interface SchoolClassesDao {
 
     public SchoolClass editClass(SchoolClass editClass);
 
+    public List<SchoolClass> getClassesByStudentId(int studentId);
+
 
 
 

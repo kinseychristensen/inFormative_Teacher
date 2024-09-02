@@ -190,7 +190,6 @@
             newScore.firstName = student.firstName;
             newScore.lastName = student.lastName;
            newScore.studentId = student.id;
-           newScore.inGroup = true;
 
             this.scores.forEach(score => {
                 if(student.id === score.studentId){

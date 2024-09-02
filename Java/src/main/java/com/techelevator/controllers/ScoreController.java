@@ -73,7 +73,10 @@ return scores;
         return scoreDao.getScoresByArtifact(artifactId);
     }
 
-
+    @RequestMapping(path = BASE_URL + "/student/{studentId}/lesson/{lessonId}", method= RequestMethod.GET)
+    public Score getTopScoreByLessonAndStudentId(@PathVariable int studentId, @PathVariable int lessonId){
+        return scoreDao.getTopScoreByLessonAndStudentId(studentId, lessonId);
+    }
 
 
 }

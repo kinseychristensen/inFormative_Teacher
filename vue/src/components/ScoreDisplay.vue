@@ -60,7 +60,8 @@ import ArtifactDetails from './ArtifactDetails.vue';
     .score-flex{
         border-radius: 15px;
         margin: 10px;
-        gap: 3px;
+        display: flexbox;
+       
       
     }
 .score-item{
@@ -71,8 +72,8 @@ import ArtifactDetails from './ArtifactDetails.vue';
     "comments waived  "
     ;
     max-width: 1000px;
-    gap: 10px;
    padding: 3px;
+  
        
     }
 
@@ -80,7 +81,7 @@ import ArtifactDetails from './ArtifactDetails.vue';
         background-color: white;
     }
     .score-item:nth-child(even){
-        background-color: #ffd966ff;
+        background-color:  #d9d9d9ff;
     }
 #artifact{
     grid-area: artifact;
@@ -95,6 +96,11 @@ import ArtifactDetails from './ArtifactDetails.vue';
     grid-area: waived;
 }
  
+@media screen and (max-width: 600px) {
+    .score-item{
+        max-width: 80vw;
+    }
+}
 
     
     

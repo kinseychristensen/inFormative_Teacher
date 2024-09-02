@@ -5,6 +5,7 @@
         {{ artifact.description }}
         <p></p>
         {{ artifact.assignmentDate }} {{ artifact.artifactType }}
+        <p>Lesson Id: {{ artifact.lessonId }}</p>
 
        </div> 
         

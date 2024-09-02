@@ -21,5 +21,8 @@ getClassScoresBySubject(classId, subjectId){
 
 getScoresByArtifact(artifactId){
     return axios.get(`/scores/${artifactId}`);
+},
+getTopScore(studentId, lessonId){
+    return axios.get(`/scores/student/${studentId}/lesson/${lessonId}`);
 }
 }

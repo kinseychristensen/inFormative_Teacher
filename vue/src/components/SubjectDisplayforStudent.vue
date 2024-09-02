@@ -5,9 +5,17 @@
       <button v-for="subject in subjects" v-bind:key="subject.id" id="sub-box" :class="theClass(subject.color)"
        >
       <a id="sub-text">{{ subject.code }}</a>
-      <div id="score-display"> 
+      <p>{{ subject.description }}</p>
+      <div class="buttons">
+        <button class="btn" id="show-scores-btn" @click="toggleScoresOn">{{scoreMessage}}</button>
+        <button class="btn" id="show-mastery-btn" @click="toggleMasteryOn">{{masteryMessage}}</button>
+      </div>
+      <div id="score-display"  v-if="showScores"> 
         <ScoreDisplay :studentId="studentId" :subjectId="subject.id"/>
       </div>
+      <div v-if="showMastery">
+        <MasteryDisplay :subjectId ="subject.id" :studentId="studentId"/>
+    </div>
     </button>
 </div>
     
@@ -18,18 +26,25 @@
     <script>
     import SubjectService from '../services/SubjectService';
     import ScoreDisplay from './ScoreDisplay.vue';
+    import MasteryDisplay from './MasteryDisplay.vue';
+
    
     
     export default {
     props: ['classId', 'studentId'],
     components: {
         ScoreDisplay,
+        MasteryDisplay,
       },
         
     data (){
         return {
             isLoading: true,
             subjects: [],
+            showScores: false,
+            scoreMessage: 'Show Scores',
+            masteryMessage: 'Show Mastery Levels',
+            showMastery: false,
             colors: [
             {val: 1, colorName: 'Pink'},
             {val: 2, colorName: 'Red'},
@@ -81,6 +96,33 @@
               else if(colorVal === 7) return "purple";
               else return "gray";
             },
+
+            toggleScoresOn(){
+                if(!this.showScores){
+                this.showScores = true;
+                this.showMastery = false;
+                this.scoreMessage = "Hide Scores";
+                this.masteryMessage = "Show Mastery Levels";
+                }else {
+                    this.showScores = false;
+                    this.scoreMessage = "Show Scores";
+                  
+                }
+            },
+
+            toggleMasteryOn(){
+                if(!this.showMastery){
+                this.showScores = false;
+                this.showMastery = true;
+                this.masteryMessage = "Hide Mastery Levels";
+                this.scoreMessage = "Show Scores";
+            }else {
+                this.showMastery = false;
+                this.masteryMessage = "Show Mastery Levels";
+               
+            }
+        },
+
     
     },
     

@@ -10,13 +10,14 @@
     <div class="loading" v-if="isLoading">Loading...</div>
     
     <div v-else class="class-field">
+     
         <div class="class-loop" v-for="schoolClass in schoolClasses" v-bind:key="schoolClass.classId"
         v-bind:value="schoolClass.classId">
          <div class="class-title">{{ schoolClass.className }} - {{ schoolClass.description }}</div>
-         
-         <SubjectDisplayforStudent :classId="schoolClass.classId" :studentId="studentId"/>
-
-        </div>
+        
+         <SubjectDisplayforStudent :classId="schoolClass.classId" :studentId="studentId"/></div>
+       
+       
       
     </div>
     </div>
@@ -43,6 +44,7 @@
         schoolClasses: [],
         isLoading: true,
         teacherName: "",
+       
       };
     },
     methods: {

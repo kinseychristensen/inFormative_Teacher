@@ -14,5 +14,5 @@ public interface ScoreDao {
     public List<Score> getStudentScoresBySubjectId (int studentId, List<Artifact> artifacts);
 
     public List<Score> getScoresByArtifact (int artifactId);
-
+    public Score getTopScoreByLessonAndStudentId(int studentId, int lessonId);
 }

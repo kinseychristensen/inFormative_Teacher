@@ -120,7 +120,7 @@ CREATE TABLE scores (
     artifact_id int NOT NULL,
     score int DEFAULT -1,
     comments text,
-    is_waived boolean DEFAULT FALSE,
+    is_waived boolean NOT NULL DEFAULT FALSE,
     CONSTRAINT FK_student_id FOREIGN KEY (student_id) REFERENCES students(student_id),
     CONSTRAINT FK_artifact_id FOREIGN KEY (artifact_id) REFERENCES artifacts(artifact_id),
     CONSTRAINT PK_unique_score PRIMARY KEY (student_id, artifact_id)

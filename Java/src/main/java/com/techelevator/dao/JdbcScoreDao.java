@@ -84,6 +84,28 @@ return true;
     }
 
     @Override
+    public Score getTopScoreByLessonAndStudentId(int studentId, int lessonId) {
+       Score score = new Score();
+        String sql;
+        try {
+
+                sql = "SELECT * FROM scores\n" +
+                        "JOIN artifacts\n" +
+                        "ON scores.artifact_id = artifacts.artifact_id\n" +
+                        "WHERE student_id = ? AND lesson = ? AND is_waived = false\n" +
+                        "ORDER BY score DESC LIMIT 1;";
+                SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, studentId, lessonId);
+                while(rs.next()){
+                    score = mapRowToScore(rs);
+
+            }
+        }catch (DataAccessException e) {
+            throw new DaoException("Error retrieving class details", e);
+        }
+        return score;
+    }
+
+    @Override
     public List<Score> getScoresByArtifact(int artifactId) {
         List<Score> scores = new ArrayList<>();
         String sql;

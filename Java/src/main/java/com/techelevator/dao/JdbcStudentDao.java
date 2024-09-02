@@ -20,11 +20,32 @@ public class JdbcStudentDao implements  StudentDao{
         this.jdbcTemplate = jdbcTemplate;
     }
 
+@Override
     public List<Student> getAllStudents(){
         List<Student> students = new ArrayList<>();
         try {
             String sql = "SELECT * FROM students ORDER BY last_name, first_name;";
             SqlRowSet rs  = jdbcTemplate.queryForRowSet(sql);
+
+            while (rs.next()){
+                students.add(mapRowToStudent(rs));
+            }
+        }catch (DataAccessException e) {
+            throw new DaoException("Error retrieving student details", e);
+        } return students;
+    }
+@Override
+    public List<Student> getAllStudentsByTeacher(int teacherId){
+        List<Student> students = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM students\n" +
+                    "JOIN student_to_class\n" +
+                    "ON students.student_id = student_to_class.student_id\n" +
+                    "JOIN class_to_teacher\n" +
+                    "ON student_to_class.class_id = class_to_teacher.class_id\n" +
+                    "WHERE class_to_teacher.teacher_id = ?\n" +
+                    "ORDER BY students.last_name, students.first_name;";
+            SqlRowSet rs  = jdbcTemplate.queryForRowSet(sql, teacherId);
 
             while (rs.next()){
                 students.add(mapRowToStudent(rs));

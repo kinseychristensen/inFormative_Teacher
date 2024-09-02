@@ -2,10 +2,12 @@
 
     
         <div>
-        {{ artifact.description }}
-        <p></p>
-        {{ artifact.assignmentDate }} {{ artifact.artifactType }}
-        <p>Lesson Id: {{ artifact.lessonId }}</p>
+       <div>{{ artifact.description }}</div>
+       
+       <div> Date: {{ artifact.assignmentDate }} </div>
+      
+       <div>Type:  {{ artifact.artifactType }}</div>
+       
 
        </div> 
         
@@ -59,7 +61,8 @@
         }
         
         </script>
-        <style>
+        
+        <style scoped>
         
         
      

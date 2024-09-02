@@ -175,8 +175,16 @@ return true;
 
     @Override
     public boolean addSubject(int subjectId, int classId, int color) {
+
         try{
-            String sql = "INSERT INTO class_to_subject (class_id, subject_id, color) VALUES (?, ?, ?);";
+            String sql = "SELECT * from class_to_subject WHERE class_id = ? AND subject_id = ?;";
+           SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, classId, subjectId);
+
+            if(rs.next()){
+                return false;
+            }
+
+             sql = "INSERT INTO class_to_subject (class_id, subject_id, color) VALUES (?, ?, ?);";
             jdbcTemplate.update(sql, classId, subjectId, color);
         }catch (DataAccessException e) {
             throw new DaoException("Error retrieving student details", e);

@@ -42,6 +42,7 @@ public class ScoreController {
 
     @RequestMapping(path = BASE_URL, method = RequestMethod.PUT)
     public boolean editScores (@RequestBody List<Score> scores){
+        System.out.println(scores);
         return scoreDao.editScores(scores);
     }
 

@@ -116,40 +116,40 @@ VALUES (6, 'number sort', 3, 1, '02/22/2024', 'some students struggling with tho
 
 
 INSERT INTO scores (student_id, artifact_id, score, comments, is_waived) VALUES (1, 1, 0, 'pulled for band', true);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (2, 1, 2);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (3, 1, 4);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (4, 1, 2);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (5, 1, 2.4);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (6, 1, 2);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (7, 1, 1);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (2, 1, 2, false);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (3, 1, 4, false);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (4, 1, 2, false);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (5, 1, 2.4, false);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (6, 1, 2, false);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (7, 1, 1, false);
 INSERT INTO scores (student_id, artifact_id, score, comments, is_waived) VALUES (8, 1, 0.5, 'checked out, needs to complete', false);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (9, 1, 3);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (10, 1, 2);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (11, 1, 2.7);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (12, 1, 2);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (13, 1, 3);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (14, 1, 1);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (15, 1, 1.5);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (16, 1, 2);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (9, 1, 3, false);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (10, 1, 2, false);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (11, 1, 2.7, false);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (12, 1, 2, false);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (13, 1, 3, false);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (14, 1, 1, false);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (15, 1, 1.5, false);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (16, 1, 2, false);
 INSERT INTO scores (student_id, artifact_id, score, comments, is_waived) VALUES (17, 1, 0, 'absent', true);
 
 
-INSERT INTO scores (student_id, artifact_id, score) VALUES (1, 5, 3);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (2, 5, 1);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (3, 5, 3);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (4, 5, 2.5);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (5, 5, 2.4);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (6, 5, 1);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (7, 5, 1.4);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (1, 5, 3, false);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (2, 5, 1, false);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (3, 5, 3, false);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (4, 5, 2.5, false);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (5, 5, 2.4, false);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (6, 5, 1, false);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (7, 5, 1.4, false);
 INSERT INTO scores (student_id, artifact_id, score, comments, is_waived) VALUES (8, 5, 0.5, 'checked out, needs to complete', false);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (9, 5, 3.1);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (9, 5, 3.1, false);
 INSERT INTO scores (student_id, artifact_id, score, comments, is_waived) VALUES (10, 5, 2, 'sub said Blathers gave Redd answers, needs retesting', true);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (11, 5, 2.7);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (11, 5, 2.7, false);
 INSERT INTO scores (student_id, artifact_id, score, comments, is_waived) VALUES (12, 5, 3, 'sub said Blathers was caught giving Redd answers', false);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (13, 5, 3);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (14, 5, 1);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (15, 5, 1.5);
-INSERT INTO scores (student_id, artifact_id, score) VALUES (16, 5, 4);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (13, 5, 3, false);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (14, 5, 1, false);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (15, 5, 1.5, false);
+INSERT INTO scores (student_id, artifact_id, score, is_waived) VALUES (16, 5, 4, false);
 INSERT INTO scores (student_id, artifact_id, score, comments, is_waived) VALUES (17, 5, 0, 'sick leave', true);
 
 INSERT INTO scores (student_id, artifact_id, score, comments, is_waived) VALUES (3, 3, 3, 'did whiteboarding questions', false);

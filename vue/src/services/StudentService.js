@@ -28,6 +28,10 @@ export default {
 
     editGroupRoster(students, groupId){
         return axios.put(`/group/${groupId}/roster`, students);
+    },
+
+    getAllStudentsByTeacher(){
+        return axios.get("/student/all/teacher");
     }
 
 

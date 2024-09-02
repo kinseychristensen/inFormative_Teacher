@@ -39,6 +39,9 @@ return true;
     @Override
     public boolean editScores(List<Score> scores) {
         for(Score score : scores){
+            if(score.getWaived() == null){
+                score.setWaived(false);
+            }
             try{
                 String sql = "SELECT * FROM scores WHERE student_id = ? AND artifact_id = ?;";
                 SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, score.getStudentId(), score.getArtifactId());
@@ -47,6 +50,9 @@ return true;
                     currentScore = mapRowToScore(rs);
                 }
                 if(currentScore != null){
+                    if(currentScore.getWaived() == null){
+                        currentScore.setWaived(false);
+                    }
                     sql = "UPDATE scores SET score=?, comments = ?, is_waived =? WHERE student_id =? AND artifact_id = ?;";
                     jdbcTemplate.update(sql, score.getScore(), score.getComments(), score.getWaived(),
                             score.getStudentId(), score.getArtifactId());

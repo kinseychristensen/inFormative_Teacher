@@ -21,6 +21,7 @@ import ReportsView from '../views/ReportsView.vue';
 import AllSubjectsView from '../views/AllSubjectsView.vue';
 import RootView from '../views/RootView.vue';
 import NewPasswordView from '../views/NewPasswordView.vue';
+import AllStudentsView from '../views/AllStudentsView.vue';
 
 const routes = [
   {
@@ -123,6 +124,11 @@ const routes = [
     path: "/class/:classId/subject/:subjectId/artifacts/new",
     name: "create-artifact",
     component: CreateArtifactView,
+  },
+  {
+    path: "/students",
+    name: "all-students",
+    component: AllStudentsView,
   },
 
 

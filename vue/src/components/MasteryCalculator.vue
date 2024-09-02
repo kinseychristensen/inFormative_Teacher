@@ -1,5 +1,5 @@
     <template>
-        <div :class="theClass(score.score)">{{ level}} {{ lessonId }} </div>
+        <div :class="theClass(score.score)">{{ level}} </div>
         </template>
         
         <script>

@@ -4,8 +4,8 @@
     <div class="subject-flex">
       <button v-for="subject in subjects" v-bind:key="subject.id" id="sub-box" :class="theClass(subject.color)"
        >
-      <a id="sub-text">{{ subject.code }}</a>
-      <p>{{ subject.description }}</p>
+      <div class="sub-text">{{ subject.code }}</div>
+      <div class="sub-text">{{ subject.description }}</div>
       <div class="buttons">
         <button class="btn" id="show-scores-btn" @click="toggleScoresOn">{{scoreMessage}}</button>
         <button class="btn" id="show-mastery-btn" @click="toggleMasteryOn">{{masteryMessage}}</button>
@@ -135,17 +135,19 @@
     }
     
     </script>
-    <style>
+    <style scoped>
     
     
     .subject-flex{
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
+  
     }
     
     #sub-box{
-    
+        vertical-align: middle;
+        text-align: center;
       min-height: 100px;
         width: 90vw;
       border-radius: 15px;
@@ -154,49 +156,57 @@
       margin: auto;
     }
     
-    #sub-text {
+    .sub-text {
       vertical-align: middle;
       color: black;
       text-decoration: none;
-      line-height: 100px;
-      height: 100px;
       text-align: center;
+      font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
     
     }
     
     .pink{
       background-color: #f3c0bd;
-     
-    
     }
     .red{
       background-color: #ee8f8d;
-    
     }
     .orange{
       background-color: #f1ac8d;
-     
     }
     .yellow{
       background-color:#f7d18a;
-    
     }
     .green{
       background-color: #b2c8a5;
-    
     }
     .blue{
       background-color: #93caef;
-    
     }
     .purple{
       background-color: #d0aee6;
-    
     }
     .gray{
       background-color: #bfc5c9;
-    
     }
+    .btn{
+        margin-left: auto;
+  width: 170px;
+  padding: 2px;
+  height: 30px;
+  border: black;
+  background-color: rgb(241, 214, 11);
+  color: black;
+  border-radius: 5px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color .3s ease;
+  font-weight: bold; 
+  margin: 10px;
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+
+}
+    
     
     
     @media screen and (min-width: 601px){

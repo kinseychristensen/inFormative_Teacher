@@ -19,6 +19,7 @@ public interface StudentDao {
 
   public List<Student> editGroupRoster (List<Student> roster, int groupId);
 
+  public List<Student> getAllStudentsByTeacher(int teacherId);
 
 
 

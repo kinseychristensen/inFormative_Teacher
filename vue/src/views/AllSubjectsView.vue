@@ -64,6 +64,7 @@
     data() {
       return {
         schoolClasses: [],
+        wasValid: false,
         isLoading: true,
         selectedClassId: 0,
         colorPicked: 0,
@@ -114,11 +115,15 @@ async makeClone(subjectId, classId){
     if(this.selectedClassId != 0){
     try {
         const response = await SubjectService.addSubject(subjectId, classId, this.colorPicked);
+        this.wasValid = response.data;
 
     }catch (error) {
         this.handleError(error, 'cloning');
     }finally {
-        this.$router.push({name: 'home'});
+      if(!this.wasValid)
+      {this.$router.go(0);}
+      else {
+        this.$router.push({name: 'home'});}
     }
 }
     },

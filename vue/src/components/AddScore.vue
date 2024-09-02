@@ -22,7 +22,7 @@
             <div id="student-flex">
     <div id="student-loop" v-for="studentScore in scoresForGroup" v-bind:key="studentScore.studentId">
         <div  id="student-loop-if" v-if="studentScore.inGroup">
-        <div id="student-name">{{ studentScore.firstName }} {{ studentScore.lastName }}</div>
+        <div id="student-name"> {{studentScore.studentName}} </div>
        <div id="student-score">
         <input type="number" id="score" v-model="studentScore.score"/>
         <label for="is-waived" id="label-waived">Waives this score</label>
@@ -68,6 +68,7 @@
         };
     },
     computed: {
+    
       scoresForGroup() {
         let selectScores  = this.newScores;
 
@@ -98,6 +99,16 @@
 
 
     },
+    getStudentName (studentId){
+        let studentName = '';
+       this.allStudents.forEach(student => {
+          if (student.studentId == studentId){
+            studentName = student.firstName + " " + student.lastName;
+          }
+       })
+        return studentName;
+        },
+
   },
     methods: {
         handleError(error, verb) {
@@ -110,10 +121,8 @@
             this.$store.commit('SET_NOTIFICATION', "Error " + verb + " deck list. Request could not be created.");
           }
         },
-        toggleWaive(){
-            this.studentScore
-
-        },
+    
+        
 
         async saveScores1(){
             let editedArtifact = {id:0, artifactTypeInt:0, description: '', lessonId: 0, assignmentDateAsStr: '', comments: ''};
@@ -136,6 +145,7 @@
 
         async saveScores2(){
             try{
+              console.log(this.newScores);
                 this.isLoading=true;
                 const response = await ScoreService.editScores(this.newScores);
             }catch(error){
@@ -187,9 +197,8 @@
            newScore.comments = '';
             newScore.isWaived = false;
             newScore.artifactId = this.artifactId;
-            newScore.firstName = student.firstName;
-            newScore.lastName = student.lastName;
            newScore.studentId = student.id;
+           newScore.studentName = student.firstName + " " + student.lastName;
 
             this.scores.forEach(score => {
                 if(student.id === score.studentId){

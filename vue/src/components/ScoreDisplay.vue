@@ -55,12 +55,14 @@ import ArtifactDetails from './ArtifactDetails.vue';
     }
     
     </script>
-    <style>
+    <style scoped>
     
     .score-flex{
         border-radius: 15px;
-        margin: 10px;
         display: flexbox;
+        max-width: 80vw;
+        align-content: center;
+        
        
       
     }
@@ -73,6 +75,9 @@ import ArtifactDetails from './ArtifactDetails.vue';
     ;
     max-width: 1000px;
    padding: 3px;
+   text-align: left;
+   margin: auto;
+   font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
   
        
     }
@@ -85,15 +90,19 @@ import ArtifactDetails from './ArtifactDetails.vue';
     }
 #artifact{
     grid-area: artifact;
+    text-align: left;
 }
 #score{
     grid-area: score;
+    text-align: left;
 }
 #comments{
     grid-area: comments;
+    text-align: left;
 }
 #waived{
     grid-area: waived;
+    text-align: right;
 }
  
 @media screen and (max-width: 600px) {

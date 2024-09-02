@@ -74,6 +74,8 @@ import MasteryCalculator from './MasteryCalculator.vue';
     .topic-loop{
         max-width: 1000px;
        padding: 3px;   
+       margin: auto;
+       font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
         }
     
         .topic-loop:nth-child(odd){
@@ -92,10 +94,14 @@ import MasteryCalculator from './MasteryCalculator.vue';
             border: 1px;
             border-color: black;
             border-style: dashed;
+            vertical-align: center;
         }
         #lesson-item{
             text-align: left;
             
+        }
+        #mastery {
+            vertical-align: center;
         }
 
     @media screen and (max-width: 600px) {

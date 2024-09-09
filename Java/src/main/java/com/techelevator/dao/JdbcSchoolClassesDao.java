@@ -81,10 +81,10 @@ public class JdbcSchoolClassesDao implements SchoolClassesDao{
     public List<SchoolClass> getArchivedClasses(int teacherId) {
         List<SchoolClass> classList = new ArrayList<>();
         try {
-            String sql = "SELECT *\n" +
+            String sql = "SELECT * \n" +
                     "FROM school_class \n" +
-                    "JOIN class_to_teacher\n" +
-                    "ON school_class.class_id = class_to_teacher.class_id\n" +
+                    "JOIN class_to_teacher \n" +
+                    "ON school_class.class_id = class_to_teacher.class_id \n" +
                     "WHERE teacher_id = ? AND is_active = false " +
                     "ORDER BY school_class.class_id;";
             SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, teacherId);

@@ -1,39 +1,74 @@
 <template>
 
-    <div class="home-container">
-        <NavTool class="home-nav-tool"/>
+  
         <div class = "home-title-view">
-          <h1 class="page-title">Archive View Page</h1>
-          <p class="logged-in-title">description here</p>
+          <h1 class="page-title">Archived Classes</h1>
+          <p class="logged-in-title">To view details for an archived class or subject, click the coresspoinding icon.  </p>
         </div>
-        <Logo class="home-logo"/>
-    </div>
-    <div class="class-container">
-    <div class="loading" v-if="isLoading">Loading...</div>
+       
+    
+    <div class="archive-container" v-if="isLoading">Loading...</div>
     
     <div v-else class="class-field">
-        This page is loaded.
+   
+
+
+        <div id="archived-classes-loop" v-for="schoolClass in archivedSchoolClasses" v-bind:key="schoolClass.classId" >
+  <div class="one-class">
+    <router-link v-bind:to="{name: 'class-page', params:{classId: schoolClass.classId}}" class="class-title">
+        {{ schoolClass.className }}</router-link>
+    
+</div>
+
+<div class="subject-flex">
+ 
+ <SubjectDisplay class="subject-display" :classId="schoolClass.classId"/>
+ 
+ <ArchivedSubjectDisplay class="subject-display" :classId="schoolClass.classId"/>
+
+</div>
+</div>
+
+<h3>Archived Subjects in Currently Active Classes</h3>
+<div id="current-classes-loop" v-for="schoolClass in currentSchoolClasses" v-bind:key="schoolClass.classId" >
+  <div class="one-class">
+    <router-link v-bind:to="{name: 'class-page', params:{classId: schoolClass.classId}}" class="class-title">
+        {{ schoolClass.className }}</router-link>
+   
+</div>
+
+<div class="subject-flex">
+ 
+ <ArchivedSubjectDisplay class="subject-display" :classId="schoolClass.classId"/>
+
+</div>
+</div>
+
+
+
     </div>
-    </div>
+   
     
     </template>
     
     <script>
-    import Logo from '../components/Logo.vue';
-    import NavTool from '@/components/NavTool.vue';
+  
     import ClassService from '../services/ClassService';
+    import SubjectDisplay from '../components/SubjectDisplay.vue';
+    import ArchivedSubjectDisplay from '../components/ArchivedSubjectDisplay.vue';
     
     export default {
       name: 'ArchiveView',
       components: {
-        NavTool,
-        Logo
+     SubjectDisplay, 
+     ArchivedSubjectDisplay
     },
     data() {
       return {
-        SchoolClasses: [],
+        currentSchoolClasses: [],
+        archivedSchoolClasses: [],
         isLoading: true,
-        teacherName: "",
+       
       };
     },
     methods: {
@@ -48,12 +83,23 @@
           }
         },
     
-      async retrieveClasses(){
+      async retrieveArchivedClasses(){
         try {
           this.isLoading = true;
-          console.log("TEST");
+          const response = await ClassService.getArchivedClasses();
+          this.archivedSchoolClasses = response.data;
+        }catch (error) {
+          this.handleError(error, 'retrieving');
+        }finally {
+          this.retrieveCurrentClasses();
+        }
+        }, 
+      
+        async retrieveCurrentClasses(){
+        try {
+          this.isLoading = true;
           const response = await ClassService.getCurrentClasses();
-          this.SchoolClasses = response.data;
+          this.currentSchoolClasses = response.data;
         }catch (error) {
           this.handleError(error, 'retrieving');
         }finally {
@@ -65,8 +111,7 @@
     },
     created(){
     
-     
-      this.isLoading = false;
+     this.retrieveArchivedClasses();
       
     }
     }
@@ -75,35 +120,47 @@
     </script>
     
     <style scoped>
-    .home-container {
-        display: grid;
-        grid-template-columns: 250px 1fr 1fr;
-        grid-template-areas: 
-          "nav title logo"
-          "nav class class"
-          ". class class"
-          ;
-        gap: 15px;
-      }
-      
-      
-      .home-nav-tool {
-        grid-area: nav;
-        margin-right: 20px;
-      }
-      
-      .home-logo {
-        grid-area: logo;
-        justify-self: right;
-      }
-      
-      .home-title-view {
-        grid-area: title;
-        justify-content: center;
-        text-align: center;
-      }
-      
-      .class-container {
+   
+    
+      .archive-container {
         grid-area: class;
       }
+
+      .class-title {
+  background-color: #d9d9d9ff;
+  color: black;
+  text-align: center;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 15px;
+  text-decoration: none;
+  grid-area: class-title;
+  width: 400px;
+}
+
+#current-classes-loop{
+  background-color: rgb(191, 238, 179);
+  padding: 15px;
+  border-radius: 25px;
+  margin: 20px;
+  border-style: double;
+  border-color: black;
+}
+#archived-classes-loop{
+
+  padding: 15px;
+  border-radius: 25px;
+  margin: 20px;
+  border-style: double;
+  border-color: black;
+}
+
+.subject-flex{
+display: flex;
+flex-wrap: wrap;
+margin-top: 10px;
+justify-content: flex-start;
+}
+
+
     </style>

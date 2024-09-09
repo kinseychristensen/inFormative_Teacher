@@ -1,14 +1,10 @@
 <template>
 
-    <div class="home-container">
-        <NavTool class="home-nav-tool"/>
-        <div class = "home-title-view">
+    <div class="report-container">
+     
           <h1 class="page-title">Reports View Page</h1>
           <p class="logged-in-title">description here</p>
-        </div>
-        <Logo class="home-logo"/>
-    </div>
-    <div class="class-container">
+      
     <div class="loading" v-if="isLoading">Loading...</div>
     
     <div v-else class="class-field">
@@ -19,21 +15,22 @@
     </template>
     
     <script>
-    import Logo from '../components/Logo.vue';
-    import NavTool from '@/components/NavTool.vue';
-    import ClassService from '../services/ClassService';
+    
+  
+    import SubjectService from '../services/SubjectService';
     
     export default {
       name: 'ReportsView',
       components: {
-        NavTool,
-        Logo
+      
     },
     data() {
       return {
-        SchoolClasses: [],
+        subject: {},
         isLoading: true,
-        teacherName: "",
+        subjectId: 0,
+        classId: 0,
+      
       };
     },
     methods: {
@@ -48,11 +45,10 @@
           }
         },
     
-      async retrieveClasses(){
+      async retrieveSubjectDetails(){
         try {
           this.isLoading = true;
-          console.log("TEST");
-          const response = await ClassService.getCurrentClasses();
+          const response = await SubjectService.getSubjectDetails(this.subjectId);
           this.SchoolClasses = response.data;
         }catch (error) {
           this.handleError(error, 'retrieving');
@@ -65,8 +61,9 @@
     },
     created(){
     
-     
-      this.isLoading = false;
+      this.subjectId = parseInt(this.$route.params.subjectId);
+      this.classId = parseInt(this.$route.params.classId);
+      this.retrieveSubjectDetails();
       
     }
     }

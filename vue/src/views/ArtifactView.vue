@@ -36,7 +36,7 @@
         <div id="artifact-details">
           <div id="lesson-nums">{{ artifact.topicCode }}:{{ artifact.lessonCode }}</div>  
            <div id="lesson-deets"> {{ artifact.topicDescription }}: {{ artifact.lessonDescription }}</div>
-          <div id="artifact-title-desc">{{ artifact.description }}<p></p></div>
+          <div id="artifact-title-desc"><h3>{{ artifact.description }}</h3><p></p></div>
           <div id="artifact-type">{{ artifact.artifactType }}</div>
           <div id="artifact-date">{{ artifact.assignmentDate }}</div>
           <div id="artifact-comments">Comments: {{ artifact.comments }}</div>

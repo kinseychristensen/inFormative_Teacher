@@ -24,7 +24,7 @@
         <div  id="student-loop-if" v-if="studentScore.inGroup">
         <div id="student-name"> {{studentScore.studentName}} </div>
        <div id="student-score">
-        <input type="number" id="score" v-model="studentScore.score"/>
+        <input type="number" step=".01" id="score" v-model="studentScore.score"/>
         <label for="is-waived" id="label-waived">Waives this score</label>
         <input type="radio" id="is-waived" v-model="studentScore.isWaived" :value="true"/>
         <label for="is-not-waived" id="label-not-waived">Counts towards mastery</label>

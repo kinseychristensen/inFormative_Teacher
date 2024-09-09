@@ -30,7 +30,7 @@
 <div class="sub-display">
   <div v-if="isArchiving" class="subject-flex">
    
-  <div v-for="subject in subjects" v-bind:key="subject.id" class="subject-title-archive" @click="archiveSubject(subject.id)">
+  <div v-for="subject in subjects" v-bind:key="subject.id" class="subject-title-archive"  @click="archiveSubject(subject.id)">
   {{subject.code}}
   </div>
   <div>Click on a Subject to Archive.</div>
@@ -39,7 +39,7 @@
 
   <div v-else class="subject-flex">
   <router-link v-for="subject in subjects" v-bind:key="subject.id"
-  v-bind:to="{name: 'subject-page', params: {subjectId: subject.id}}" class="subject-title">
+  v-bind:to="{name: 'subject-page', params: {subjectId: subject.id}}" class="subject-title" :class="theClass(subject.color)">
   {{ subject.code }}
 </router-link></div>
 
@@ -114,7 +114,16 @@ data() {
     buttonMsg: "",
     activeDisplay: "",
     isArchiving: false,
-    archiveMessage: "Archive Subject"
+    archiveMessage: "Archive Subject", colors: [
+        {val: 1, colorName: 'Pink'},
+        {val: 2, colorName: 'Red'},
+        {val: 3, colorName: 'Orange'},
+        {val: 4, colorName: 'Yellow'},
+        {val: 5, colorName: 'Green'},
+        {val: 6, colorName: 'Blue'},
+        {val: 7, colorName: 'Purple'},
+        {val: 8, colorName: 'Gray'},
+       ],
   };
 },
 methods: {
@@ -128,6 +137,17 @@ methods: {
         this.$store.commit('SET_NOTIFICATION', "Error " + verb + " deck list. Request could not be created.");
       }
     },
+
+    theClass(colorVal){
+          if(colorVal === 1)return "pink";
+          else if(colorVal === 2) return "red";
+          else if(colorVal === 3) return "orange";
+          else if(colorVal === 4) return "yellow";
+          else if(colorVal === 5) return "green";
+          else if(colorVal === 6) return "blue";
+          else if(colorVal === 7) return "purple";
+          else return "gray";
+        },
 
 archiveSubject(subjectId){
 
@@ -380,18 +400,7 @@ this.classId = parseInt(this.$route.params.classId)
   background-color: rgb(253, 253, 253);
 }
 
-.subject-title:nth-child(4n-3){
-  background-color: #dd7e6bff;
-}
-.subject-title:nth-child(4n-2){
-  background-color: #f6b26bff;
-}
-.subject-title:nth-child(4n-1){
-  background-color: #ffd966ff;
-}
-.subject-title:nth-child(4n-0){
-  background-color: #93c47dff;
-}
+
 .subject-flex{
 display: flex;
 flex-wrap: wrap;
@@ -413,20 +422,10 @@ gap: 5px;
   font-size: larger;
   min-width: 75px;
   max-width: 150px;
+  background-color: #93caef;
 }
 
-.student-title:nth-child(4n-3){
-  background-color: #dd7e6bff;
-}
-.student-title:nth-child(4n-2){
-  background-color: #f6b26bff;
-}
-.student-title:nth-child(4n-1){
-  background-color: #ffd966ff;
-}
-.student-title:nth-child(4n-0){
-  background-color: #93c47dff;
-}
+
 
 @media screen and (max-width: 600px) {
   div {
@@ -460,6 +459,36 @@ gap: 5px;
       }
 }
 
+
+.pink{
+  background-color: #f3c0bd;
+ 
+
+}
+.red{
+  background-color: #ee8f8d;
+
+}
+.orange{
+  background-color: #f1ac8d;
+ 
+}
+.yellow{
+  background-color:#f7d18a;
+
+}
+.green{
+  background-color: #b2c8a5;
+
+}
+.blue{
+  background-color: #93caef;
+
+}
+.purple{
+  background-color: #d0aee6;
+
+}
 
 
     </style>

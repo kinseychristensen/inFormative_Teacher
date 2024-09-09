@@ -118,7 +118,7 @@ CREATE TABLE artifacts (
 CREATE TABLE scores (
     student_id int NOT NULL,
     artifact_id int NOT NULL,
-    score int DEFAULT -1,
+    score real DEFAULT -1,
     comments text,
     is_waived boolean NOT NULL DEFAULT FALSE,
     CONSTRAINT FK_student_id FOREIGN KEY (student_id) REFERENCES students(student_id),

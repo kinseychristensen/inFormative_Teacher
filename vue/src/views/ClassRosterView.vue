@@ -274,21 +274,11 @@ import StudentService from '../services/StudentService';
   font-size: larger;
   min-width: 75px;
   max-width: 150px;
+  background-color: #93caef;
   
 }
 
-.student-title:nth-child(4n-3){
-  background-color: #dd7e6bff;
-}
-.student-title:nth-child(4n-2){
-  background-color: #f6b26bff;
-}
-.student-title:nth-child(4n-1){
-  background-color: #ffd966ff;
-}
-.student-title:nth-child(4n-0){
-  background-color: #93c47dff;
-}
+
 
 
     </style>

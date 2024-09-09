@@ -9,7 +9,7 @@
         <p></p>
       </div>
       <div class="form-input-group">
-        <label for="username" class="bold-label">Username:  </label>  <input type="text" id="username" v-model="user.username" required autofocus />
+        <label for="username" class="bold-label">Username:  </label>  <input type="email" id="username" v-model="user.username" required autofocus />
       </div>
 
       <div class="form-input-group">

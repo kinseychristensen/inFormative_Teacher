@@ -9,6 +9,11 @@
     
     <div v-else class="class-field">
         This page is loaded.
+        {{ subject }}
+
+
+
+        ClassService{{ schoolClass }}
     </div>
     </div>
     
@@ -18,6 +23,7 @@
     
   
     import SubjectService from '../services/SubjectService';
+    import ClassService from '../services/ClassService';
     
     export default {
       name: 'ReportsView',
@@ -27,6 +33,7 @@
     data() {
       return {
         subject: {},
+        schoolClass: {},
         isLoading: true,
         subjectId: 0,
         classId: 0,
@@ -49,7 +56,18 @@
         try {
           this.isLoading = true;
           const response = await SubjectService.getSubjectDetails(this.subjectId);
-          this.SchoolClasses = response.data;
+          this.subject = response.data;
+        }catch (error) {
+          this.handleError(error, 'retrieving');
+        }finally {
+          this.retrieveClassDetails();
+        }
+        }, 
+        async retrieveClassDetails(){
+        try {
+          this.isLoading = true;
+          const response = await ClassService.getClassDetails(this.classId);
+          this.schoolClass = response.data;
         }catch (error) {
           this.handleError(error, 'retrieving');
         }finally {

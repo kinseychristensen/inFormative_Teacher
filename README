@@ -1,5 +1,5 @@
 inFormative Teacher is a classroom proficency tracking system.  The backend was created in IntelliJ using Java and Springboot to speak with a PostgreSQL database.  The frontend is Vue.js.  The goal of inFormative is to allow classroom teachers, specialists, and coaches to have a quick and easy way to track 'soft' data about their students continuing progress outside of the formalized gradebook and final assessments.  Teachers are able to utilize pre-built subjects from our database for core curriculum, behavior tracking, etc or customize their own set of diagnostic criteria.  They then assign artifacts to individual indicators.  Artifacts recieve a numbered score that can then be used to create robust data maps showing how a student, class, or study group improves and develops their skills for that indicator.  
 
-Currently, the website is close to its first launch.  Remaining tasks are unifying the styling, adding password recovery options, and completing the data anaylsis module.  
+Currently, the website is close to its first launch.  Remaining tasks are unifying the styling, adding contact and about us information, and completing the data anaylsis module.  
 
 Future goals include building out an archive for past courses' data to be compared to future data, creating a print report option, and developing a mobile app version. 

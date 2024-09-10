@@ -2,18 +2,35 @@
 
     <div class="report-container">
      
-          <h1 class="page-title">Reports View Page</h1>
-          <p class="logged-in-title">description here</p>
+          <h1 class="page-title">{{subject.code}} Reports for {{ schoolClass.className}}</h1>
+          <p class="logged-in-title">Want to request a new report type?  Contact us!</p>
       
     <div class="loading" v-if="isLoading">Loading...</div>
     
     <div v-else class="class-field">
-        This page is loaded.
-        {{ subject }}
 
+      <div>
+      
+        <label for="lesson-select" id="lesson-select-label">Filter By Indicator:</label>
+          <select id="lesson-select" v-model="searchingLesson">Search Indicators
+      <option v-bind:value="0">All indicators </option>
+      <option v-for="lesson in lessonsList" v-bind:key="lesson.id" v-bind:value="lesson.id">
+        {{ lesson.topic_id }} - {{ lesson.code }}: {{ lesson.description }}
+      </option>
 
+     </select>
+     </div><div>
 
-        ClassService{{ schoolClass }}
+        <label for="group-sel" id="group-sel-label">Filter By Group:</label>
+    <select id="group-sel" v-model="groupSel">
+      <option v-bind:value="0">All Students</option>
+      <option v-for="group in groups" v-bind:key="group.groupId" v-bind:value="group.groupId">
+        {{ group.groupName }} : {{ group.description }}</option>
+    </select>
+        
+
+      </div>
+      
     </div>
     </div>
     
@@ -24,6 +41,7 @@
   
     import SubjectService from '../services/SubjectService';
     import ClassService from '../services/ClassService';
+    import GroupService from '../services/GroupService';
     
     export default {
       name: 'ReportsView',
@@ -37,9 +55,14 @@
         isLoading: true,
         subjectId: 0,
         classId: 0,
+        groups: [],
+        groupSel: 0,
+        searchingLesson: 0,
+        lessonsList: [],
       
       };
-    },
+
+},
     methods: {
       handleError(error, verb) {
           if (error.response) {
@@ -71,11 +94,33 @@
         }catch (error) {
           this.handleError(error, 'retrieving');
         }finally {
-          this.isLoading = false;
+          this.retrieveGroups();
         }
         }, 
-      
-    
+        async retrieveGroups(){
+      try {
+      this.isLoading = true;
+      const response = await GroupService.getCurrentGroups(this.classId);
+      this.groups = response.data;
+    }catch (error) {
+      this.handleError(error, 'retrieving');
+    }finally {
+    this.getLessons();
+    }
+  },
+    getLessons(){
+     this.subject.topics.forEach(topic => {
+       topic.lessons.forEach(lesson => {
+        lesson.topic_id = topic.id;
+        lesson.topicCode = topic.code;
+        lesson.topicDescription = topic.description;
+        lesson.lessonDescription = lesson.description;
+        lesson.lessonCode = lesson.code;
+        this.lessonsList.push(lesson);
+      })
+    })
+    this.isLoading = false;   
+  },
     },
     created(){
     
@@ -84,7 +129,7 @@
       this.retrieveSubjectDetails();
       
     }
-    }
+  }
     
     
     </script>

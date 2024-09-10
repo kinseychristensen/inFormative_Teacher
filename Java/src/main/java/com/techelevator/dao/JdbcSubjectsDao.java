@@ -184,6 +184,14 @@ return true;
                 return false;
             }
 
+            sql = "SELECT * from class_to_subject_archived WHERE class_id = ? AND subject_id = ?;";
+            rs = jdbcTemplate.queryForRowSet(sql, classId, subjectId);
+
+            if(rs.next()) {
+                sql = "DELETE FROM class_to_subject_archived WHERE class_id = ? AND subject_id = ?;";
+                jdbcTemplate.update(sql, classId, subjectId);
+            }
+
              sql = "INSERT INTO class_to_subject (class_id, subject_id, color) VALUES (?, ?, ?);";
             jdbcTemplate.update(sql, classId, subjectId, color);
         }catch (DataAccessException e) {

@@ -13,6 +13,7 @@
     <div v-else class="class-field">
       <div class="sub-view-grid">
 
+
        <router-link id="score-button" class="sub-button-link" 
           v-bind:to="{name: 'artifacts', params: {classId: this.classId, subjectId: this.subjectId}}">Add Scores</router-link>
         <router-link id="artifact-button" class="sub-button-link"
@@ -21,7 +22,16 @@
         v-bind:to="{name: 'reports', params: {classId: this.classId, subjectId: this.subjectId}}">View Class Mastery</router-link>
         <router-link id="groups-button" class="sub-button-link"
         v-bind:to="{name: 'groups', params: {classId: this.classId}}">Groups</router-link>
-        <div id="archive-button" class="sub-button-link" @click="archiveSubject">Archive this Subject</div>
+        <div id="archive-button" class="sub-button-link" v-if="subjectActive" @click="archiveSubject">Archive This Subject</div>
+        <div v-if="!subjectActive" id="archive-button" class="sub-button-link" @click="reactivateSubject">Reactivate This Subject</div>
+        <div v-if="!subjectActive" id="color-selector"><form>
+          <label for="sub-color" id="sub-color-label">Subject Color:</label>
+          <select id="sub-color" v-model="color">
+            <option v-for="color in colors" v-bind:key="color.val" v-bind:value="color.val">{{color.colorName}}</option>
+            
+          </select>
+
+        </form></div>
        
         <div id="syllabus">
             <div class="topic-loop" v-for="currTopic in subject.topics" v-bind:key="currTopic.id">
@@ -43,7 +53,7 @@
       </div>
     </div>
     </div>
-  
+
 
     </template>
     
@@ -60,8 +70,34 @@
         subjectId: 0,
         isLoading: true,
         subject: {},
+        archivedSubjects: [],
+        color: 1,
+        colors: [
+        {val: 1, colorName: 'Pink'},
+        {val: 2, colorName: 'Red'},
+        {val: 3, colorName: 'Orange'},
+        {val: 4, colorName: 'Yellow'},
+        {val: 5, colorName: 'Green'},
+        {val: 6, colorName: 'Blue'},
+        {val: 7, colorName: 'Purple'},
+        {val: 8, colorName: 'Gray'},
+       ]
       };
     },
+    computed: {
+
+      subjectActive(){
+        let subActive = true;
+       for (let sub of this.archivedSubjects) {
+        if(sub.id === this.subjectId){
+          subActive = false;
+        }
+       }
+        return subActive;
+      }
+    },
+
+
     methods: {
       handleError(error, verb) {
           if (error.response) {
@@ -89,6 +125,23 @@ if(shouldArchive){
   });
 }
 },
+
+reactivateSubject(){
+
+const shouldArchive = confirm("Are you sure you want to reactivate this subject?");
+
+if(shouldArchive){
+  SubjectService.addSubject(this.subjectId, this.classId, this.color)
+  .then(response => {
+    if(response.status === 200){
+      this.$store.commit('SET_NOTIFICATION', {message: 'Successfully archived this subject.', type: 'success'})
+      this.$router.push({name: 'class-page', params: {classId: this.classId}});
+    }
+  }).catch(error => {
+    this.handleError(error, 'archiving');
+  });
+}
+},
     
       async getSubjectDetails(){
         try {
@@ -98,10 +151,21 @@ if(shouldArchive){
         }catch (error) {
           this.handleError(error, 'retrieving');
         }finally {
-          this.isLoading = false;
+         this.getArchivedSubjects();
         }
         }, 
-      
+      async getArchivedSubjects(){
+        try {
+          this.isLoading = true;
+          const response = await SubjectService.getArchivedClassSubjects(this.classId);
+          this.archivedSubjects = response.data;
+        }catch (error) {
+          this.handleError(error, 'retrieving');
+        }finally {
+          this.isLoading = false;
+        
+        } 
+      },
     
     },
     created(){
@@ -132,8 +196,12 @@ if(shouldArchive){
         grid-template-areas: 
         "score-button artifact-button groups-button mastery-button"
         "syllabus syllabus syllabus syllabus"
-        " . archive-button archive-button ."
+        " . archive-button color-selector color-selector"
         ;
+      }
+      #color-selector{
+        grid-area: color-selector;
+        padding: 10px;
       }
     #score-button{
         grid-area: score-button;

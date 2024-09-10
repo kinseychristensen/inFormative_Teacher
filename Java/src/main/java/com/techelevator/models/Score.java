@@ -8,6 +8,7 @@ public class Score {
     private BigDecimal score;
     private String comments;
     private Boolean isWaived;
+    private int lessonId;
 
 
 
@@ -21,6 +22,14 @@ public class Score {
 
     public int getArtifactId() {
         return artifactId;
+    }
+
+    public int getLessonId() {
+        return lessonId;
+    }
+
+    public void setLessonId(int lessonId) {
+        this.lessonId = lessonId;
     }
 
     public void setArtifactId(int artifactId) {

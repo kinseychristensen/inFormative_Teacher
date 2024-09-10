@@ -14,7 +14,7 @@
   </div>
      
     <div class="r-view">
-    <router-view/>
+    <router-view :key="route.fullPath"/>
     </div>
     
     <div id="nav-2">
@@ -27,9 +27,18 @@
 </template>
 <script>
 import NavTool from '@/components/NavTool.vue';
+import { useRoute } from 'vue-router';
+
+
 export default {
 components: {
   NavTool
+},
+
+data(){
+  return{
+    route: useRoute()
+  }
 }
 }
 </script>

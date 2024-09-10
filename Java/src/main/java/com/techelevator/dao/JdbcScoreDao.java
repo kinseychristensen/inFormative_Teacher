@@ -76,7 +76,16 @@ return true;
        String sql;
        try {
            for(Artifact artifact : artifacts){
-               sql = "SELECT * FROM scores WHERE student_id = ? AND artifact_id = ?";
+               sql = "SELECT scores.student_id, \n" +
+                       "\tscores.artifact_id, \n" +
+                       "\tscores.score, \n" +
+                       "\tscores.comments, \n" +
+                       "\tscores.is_waived, \n" +
+                       "\tartifacts.lesson \n" +
+                       "\tFROM scores\n" +
+                       "JOIN artifacts \n" +
+                       "ON scores.artifact_id = artifacts.artifact_id\n" +
+                       "WHERE student_id= ? AND scores.artifact_id = ?; ";
                SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, studentId, artifact.getId());
                while(rs.next()){
                    Score score = mapRowToScore(rs);
@@ -136,6 +145,7 @@ return true;
         score.setScore(rs.getBigDecimal("score"));
         score.setComments(rs.getString("comments"));
         score.setWaived(rs.getBoolean("is_waived"));
+        score.setLessonId(rs.getInt("lesson"));
         return score;
     }
 

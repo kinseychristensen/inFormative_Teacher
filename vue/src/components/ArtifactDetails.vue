@@ -1,15 +1,14 @@
 <template>
 
     
-        <div>
+      
        <div>{{ artifact.description }}</div>
        
        <div> Date: {{ artifact.assignmentDate }} </div>
       
-       <div>Type:  {{ artifact.artifactType }}</div>
+       <div>Type:  {{ artifact.artifactType }}</div> lesson: {{ artifact.lessonId }}
+      
        
-
-       </div> 
         
         
         

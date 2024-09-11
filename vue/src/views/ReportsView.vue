@@ -24,16 +24,20 @@
         <label for="group-sel" id="group-sel-label">Filter By Group:</label>
     <select id="group-sel" v-model="groupSel">
       <option v-bind:value="0">All Students</option>
-      <option v-for="group in groups" v-bind:key="group.groupId" v-bind:value="group.groupId">
+      <option v-for="group in classGroups" v-bind:key="group.groupId" v-bind:value="group.groupId">
         {{ group.groupName }} : {{ group.description }}</option>
     </select>
         
 
       </div>
-      
+
+      Mastery
+      <GroupMastery :lessons="lessons" :students="students" :approaching="subject.approaching" :below="subject.below"
+      :mastered="subject.mastered" :not-attempted="subject.notAttempted" :proficient="subject.proficient"/>
     </div>
     </div>
-    
+ 
+  
     </template>
     
     <script>
@@ -42,10 +46,13 @@
     import SubjectService from '../services/SubjectService';
     import ClassService from '../services/ClassService';
     import GroupService from '../services/GroupService';
+    import StudentService from '../services/StudentService';
+    import GroupMastery from '../components/GroupMastery.vue';
     
     export default {
       name: 'ReportsView',
       components: {
+        GroupMastery
       
     },
     data() {
@@ -55,14 +62,47 @@
         isLoading: true,
         subjectId: 0,
         classId: 0,
-        groups: [],
+        classGroups: [],
         groupSel: 0,
         searchingLesson: 0,
         lessonsList: [],
+        classRoster: [],
       
       };
 
 },
+  computed: {
+    students(){
+      let students = this.classRoster;
+
+      if(this.groupSel != 0){
+        this.classGroups.forEach(group => {
+          if(group.groupId === this.groupSel){
+            students = group.students;
+          }
+        })
+        }
+
+      return students;
+    },
+    lessons(){
+      let lessons = this.lessonsList;
+
+      if(this.searchingLesson != 0){
+        this.lessonsList.forEach(lesson => {
+          if(lesson.id === this.searchingLesson){
+            lessons = [lesson];
+          }
+        })
+      }
+
+      return lessons;
+    }
+  },
+
+
+
+
     methods: {
       handleError(error, verb) {
           if (error.response) {
@@ -97,17 +137,29 @@
           this.retrieveGroups();
         }
         }, 
+        
         async retrieveGroups(){
       try {
       this.isLoading = true;
       const response = await GroupService.getCurrentGroups(this.classId);
-      this.groups = response.data;
+      this.classGroups = response.data;
     }catch (error) {
       this.handleError(error, 'retrieving');
     }finally {
-    this.getLessons();
+    this.retrieveStudents();
     }
   },
+  async retrieveStudents(){
+    try {
+      this.isLoading = true;
+      const response = await StudentService.getClassRoster(this.classId);
+      this.classRoster = response.data;
+    }catch (error) {
+      this.handleError(error, 'retrieving');
+    }finally {
+      this.getLessons();
+    }
+    }, 
     getLessons(){
      this.subject.topics.forEach(topic => {
        topic.lessons.forEach(lesson => {
@@ -121,6 +173,7 @@
     })
     this.isLoading = false;   
   },
+ 
     },
     created(){
     

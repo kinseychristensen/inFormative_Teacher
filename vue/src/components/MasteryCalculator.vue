@@ -5,7 +5,6 @@
         <script>
     
         import ScoreService from '../services/ScoreService';
-        import SubjectService from '../services/SubjectService';
     
     
     

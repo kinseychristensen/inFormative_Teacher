@@ -30,7 +30,7 @@
               this.handleError(error, 'retrieving');
             }finally {
                 if(this.score.score == null){
-                    this.score.score = 0};
+                    this.score.score = 0}
               if(this.score.score <= this.notAttempted){
                 this.level = 'Not Attempted';
               }else if (this.score.score <= this.below){

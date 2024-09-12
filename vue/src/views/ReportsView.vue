@@ -27,13 +27,44 @@
       <option v-for="group in classGroups" v-bind:key="group.groupId" v-bind:value="group.groupId">
         {{ group.groupName }} : {{ group.description }}</option>
     </select>
-        
+
+    <div>Reports:
+      <input type="checkbox" id="mastery-checkbox" v-model="showMasteryChart"/>
+      <label for="mastery-checkbox">Student Mastery Levels</label>
+
+      <input type="checkbox" id="percent-checkbox" v-model="showPercentChart"/>
+      <label for="percent-checkbox">Class Mastery Level Percentages</label>
+
+      <input type="checkbox" id="scatter-checkbox" v-model="showScatterChart"/>
+      <label for="scatter-checkbox">Student Growth by Artifact</label>
+
+    </div>
+
+    <button @click="toggleShowNames">{{ showNamesMsg }}</button>
 
       </div>
 
-      Mastery
-      <GroupMastery :lessons="lessons" :students="students" :approaching="subject.approaching" :below="subject.below"
-      :mastered="subject.mastered" :not-attempted="subject.notAttempted" :proficient="subject.proficient"/>
+     
+      <GroupMastery v-if="showMasteryChart" :lessons="lessons" :students="students" :approaching="subject.approaching" :below="subject.below"
+      :mastered="subject.mastered" :not-attempted="subject.notAttempted" :proficient="subject.proficient" :showNames="showNames"/>
+
+      <div v-for="lesson in lessons" :key="lesson.id" :value="lesson.id">
+  <PercentagesCalculator 
+    v-if="showPercentChart" 
+    :lesson="lesson" 
+    :students="students" 
+    :notAttempted="subject.notAttempted" 
+    :below="subject.below"
+    :approaching="subject.approaching" 
+    :proficient="subject.proficient" 
+    :mastered="subject.mastered"
+    :chartId="'myChart-' + lesson.id" 
+  />
+</div>
+
+
+
+
     </div>
     </div>
  
@@ -48,11 +79,14 @@
     import GroupService from '../services/GroupService';
     import StudentService from '../services/StudentService';
     import GroupMastery from '../components/GroupMastery.vue';
+    import PercentagesCalculator from '../components/PercentagesCalculator.vue';
+
     
     export default {
       name: 'ReportsView',
       components: {
-        GroupMastery
+        GroupMastery, 
+        PercentagesCalculator,
       
     },
     data() {
@@ -67,6 +101,11 @@
         searchingLesson: 0,
         lessonsList: [],
         classRoster: [],
+        showNames: false,
+        showNamesMsg: 'Show Student Names',
+        showMasteryChart: false,
+        showPercentChart: false,
+        showScatterChart: false,
       
       };
 
@@ -114,52 +153,42 @@
             this.$store.commit('SET_NOTIFICATION', "Error " + verb + " deck list. Request could not be created.");
           }
         },
+
+        toggleShowNames(){
+          if(this.showNames){
+            this.showNames = false;
+            this.showNamesMsg =  "Show Student Names";
+          }else {
+            this.showNames = true;
+            this.showNamesMsg = "Hide Student Names";
+          }
+        },
     
-      async retrieveSubjectDetails(){
-        try {
-          this.isLoading = true;
-          const response = await SubjectService.getSubjectDetails(this.subjectId);
-          this.subject = response.data;
-        }catch (error) {
-          this.handleError(error, 'retrieving');
-        }finally {
-          this.retrieveClassDetails();
-        }
-        }, 
-        async retrieveClassDetails(){
-        try {
-          this.isLoading = true;
-          const response = await ClassService.getClassDetails(this.classId);
-          this.schoolClass = response.data;
-        }catch (error) {
-          this.handleError(error, 'retrieving');
-        }finally {
-          this.retrieveGroups();
-        }
-        }, 
-        
-        async retrieveGroups(){
-      try {
-      this.isLoading = true;
-      const response = await GroupService.getCurrentGroups(this.classId);
-      this.classGroups = response.data;
-    }catch (error) {
-      this.handleError(error, 'retrieving');
-    }finally {
-    this.retrieveStudents();
-    }
-  },
-  async retrieveStudents(){
-    try {
-      this.isLoading = true;
-      const response = await StudentService.getClassRoster(this.classId);
-      this.classRoster = response.data;
-    }catch (error) {
-      this.handleError(error, 'retrieving');
-    }finally {
-      this.getLessons();
-    }
-    }, 
+        async retrieveSubjectDetails() {
+  try {
+    this.isLoading = true;
+    const subjectResponse = await SubjectService.getSubjectDetails(this.subjectId);
+    this.subject = subjectResponse.data;
+
+    const classResponse = await ClassService.getClassDetails(this.classId);
+    this.schoolClass = classResponse.data;
+
+    const groupResponse = await GroupService.getCurrentGroups(this.classId);
+    this.classGroups = groupResponse.data;
+
+    const studentResponse = await StudentService.getClassRoster(this.classId);
+    this.classRoster = studentResponse.data;
+
+    // Finally, process lessons after all data is ready
+   
+  } catch (error) {
+    this.handleError(error, 'retrieving');
+  } finally {
+    this.getLessons();
+    this.isLoading = false;  // Set isLoading to false only when all data is fetched
+  }
+},
+
     getLessons(){
      this.subject.topics.forEach(topic => {
        topic.lessons.forEach(lesson => {
@@ -171,10 +200,10 @@
         this.lessonsList.push(lesson);
       })
     })
-    this.isLoading = false;   
+
   },
- 
-    },
+},
+    
     created(){
     
       this.subjectId = parseInt(this.$route.params.subjectId);
@@ -188,35 +217,15 @@
     </script>
     
     <style scoped>
-    .home-container {
-        display: grid;
-        grid-template-columns: 250px 1fr 1fr;
-        grid-template-areas: 
-          "nav title logo"
-          "nav class class"
-          ". class class"
-          ;
-        gap: 15px;
-      }
-      
-      
-      .home-nav-tool {
-        grid-area: nav;
-        margin-right: 20px;
-      }
-      
-      .home-logo {
-        grid-area: logo;
-        justify-self: right;
-      }
-      
+   
       .home-title-view {
         grid-area: title;
         justify-content: center;
         text-align: center;
       }
       
-      .class-container {
-        grid-area: class;
+      .report-container {
+        margin:auto;
+        max-width: 1000px;
       }
     </style>

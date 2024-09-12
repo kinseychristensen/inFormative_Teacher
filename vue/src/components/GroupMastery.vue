@@ -5,7 +5,7 @@
    <div class="lesson-title"> {{ lesson.code }} - {{ lesson.description }}</div>
    <div class="student-loop">
 <div v-for="student in students" v-bind:key="student.id" class="single-student">
-    <div class="student-name">{{ student.firstName }} {{ student.lastName }}</div><MasteryCalculator class="mastery" :approaching="approaching" :below="below" 
+    <div class="student-name" v-if="showNames">{{ student.firstName }} {{ student.lastName }}</div><div class="studentId" v-if="!showNames">Id: #{{ student.schoolId }}</div><MasteryCalculator class="mastery" :approaching="approaching" :below="below" 
     :not-attempted="notAttempted" :proficient="proficient" :mastered="mastered" :student-id="student.id" :lesson-id="lesson.id" :filter="0" ></MasteryCalculator>
 </div>
 </div>
@@ -18,7 +18,7 @@
 import MasteryCalculator from './MasteryCalculator.vue';
 
 export default {
-props: ['notAttempted', 'below', 'approaching', 'proficient', 'mastered', 'lessons', 'students'],
+props: ['notAttempted', 'below', 'approaching', 'proficient', 'mastered', 'lessons', 'students', 'showNames'],
 components: {
    MasteryCalculator
   },
@@ -50,6 +50,7 @@ computed: {
 .student-loop{
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-around;
 }
 .single-student{
     width: 150px;

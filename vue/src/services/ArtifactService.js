@@ -29,6 +29,9 @@ export default {
     getAllArtifactsBySubject(subjectId){
         return axios.get(`/subject/${subjectId}/artifacts`);
     },
+    getAllArtifactsByLesson(lessonId){
+        return axios.get(`/lesson/${lessonId}/artifacts`);
+    },
     
     createNewArtifactType(artifactType){
         return axios.post("/artifacts/new_type", artifactType);

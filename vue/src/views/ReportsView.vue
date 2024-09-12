@@ -63,6 +63,21 @@
 </div>
 
 
+<div v-for="lesson in lessons" :key="lesson.id" :value="lesson.id">
+  <ArtifactCalculator 
+    v-if="showScatterChart" 
+    :lesson="lesson" 
+    :students="students" 
+    :notAttempted="subject.notAttempted" 
+    :below="subject.below"
+    :approaching="subject.approaching" 
+    :proficient="subject.proficient" 
+    :mastered="subject.mastered"
+    :chartId="'myScatterChart-' + lesson.id"
+    :artifacts="artifacts" 
+
+  />
+</div>
 
 
     </div>
@@ -80,6 +95,9 @@
     import StudentService from '../services/StudentService';
     import GroupMastery from '../components/GroupMastery.vue';
     import PercentagesCalculator from '../components/PercentagesCalculator.vue';
+    import ArtifactService from '../services/ArtifactService';
+    import ArtifactCalculator from '../components/ArtifactCalculator.vue';
+    import ScoreService from '../services/ScoreService';
 
     
     export default {
@@ -87,6 +105,7 @@
       components: {
         GroupMastery, 
         PercentagesCalculator,
+        ArtifactCalculator,
       
     },
     data() {
@@ -106,6 +125,8 @@
         showMasteryChart: false,
         showPercentChart: false,
         showScatterChart: false,
+        unfilteredArtifacts: [],
+        unfilteredScores: [],
       
       };
 
@@ -136,9 +157,54 @@
       }
 
       return lessons;
-    }
-  },
+    },
 
+artifactsWithScores(){
+  let artifactsWithScores = [];
+      
+      this.unfilteredArtifacts.forEach(artifact => {
+            let scores = [];
+            this.unfilteredScores.forEach(score => {
+                if(score.artifactId === artifact.id){
+                  this.students.forEach(student => {
+                    if(student.id === score.studentId){
+                      scores.push(score);
+                    }
+                  })
+                }
+            })
+            let newArtifact = {
+              artifactId: artifact.artifactId, 
+              description: artifact.description,
+              assignmentDate: artifact.assignmentDate,
+              lessonId: artifact.lessonId,
+              scores: [],
+              };
+            newArtifact.scores = scores;
+            artifactsWithScores.push(newArtifact);
+          });
+          return artifactsWithScores;
+
+
+},
+
+    artifacts(){
+      let artifacts = this.artifactsWithScores;
+      if(this.searchingLesson === 0 ){
+          return artifacts;
+      }else {
+        let artifacts = [];
+          if(this.artifactsWithScores.length > 0){
+              this.artifactsWithScores.forEach(artifact => {
+                if(artifact.lessonId === this.searchingLesson){
+                  artifacts.push(artifact);
+            }
+          })
+          }return artifacts;
+        
+  }
+},
+  },
 
 
 
@@ -178,6 +244,12 @@
 
     const studentResponse = await StudentService.getClassRoster(this.classId);
     this.classRoster = studentResponse.data;
+
+    const artifactResponse = await ArtifactService.getAllArtifactsBySubject(this.subjectId);
+    this.unfilteredArtifacts = artifactResponse.data;
+
+    const scoreResponse = await ScoreService.getClassScoresBySubject(this.classId, this.subjectId);
+    this.unfilteredScores = scoreResponse.data;
 
     // Finally, process lessons after all data is ready
    

@@ -22,6 +22,8 @@ public interface ArtifactsDao {
     public ArtifactType createNewArtifactType (ArtifactType artifactType);
 
     public List<ArtifactType> getArtifactTypes ();
+    public List<Artifact> getArtifactsByLesson (int teacherId, int lessonId);
+
 
 
 

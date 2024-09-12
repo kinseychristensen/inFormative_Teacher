@@ -69,6 +69,7 @@
             let score = response.data;
             if (score.score == null) {
               score.score = 0;
+              
             }
             if (score.score <= this.notAttempted) {
               this.notAttemptedScores += 1;

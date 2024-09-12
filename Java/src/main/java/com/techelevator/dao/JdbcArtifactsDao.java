@@ -111,6 +111,7 @@ public class JdbcArtifactsDao implements ArtifactsDao{
         return artifacts;
     }
 
+
     @Override
     public List<Artifact> getArtifactsBySubject(int teacherId, int subjectId) {
         List<Artifact> artifacts = new ArrayList<>();
@@ -167,6 +168,27 @@ public class JdbcArtifactsDao implements ArtifactsDao{
             }catch(DataAccessException e) {
             throw new DaoException("Error updating student details", e);
         }
+    }
+
+    @Override
+    public List<Artifact> getArtifactsByLesson(int teacherId, int lessonId) {
+        List<Artifact> artifacts = new ArrayList<>();
+        try {
+            String sql = "select * \n" +
+                    "from artifacts\n" +
+                    "WHERE lesson_id = ? AND teacher_id = ?\n" +
+                    "ORDER BY assignment_date DESC;";
+            SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, lessonId, teacherId);
+            while (rs.next()){
+                int thisArtifactId = rs.getInt("artifact_id");
+                artifacts.add(getArtifact(thisArtifactId));
+
+
+            }
+        }catch (DataAccessException e) {
+            throw new DaoException("Error retrieving class details", e);
+        }
+        return artifacts;
     }
 
 

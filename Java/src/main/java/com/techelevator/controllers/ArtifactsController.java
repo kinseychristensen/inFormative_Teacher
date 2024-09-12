@@ -65,6 +65,13 @@ public class ArtifactsController {
         return artifactDao.getArtifactsBySubject(teacherId, subjectId);
     }
 
+    @RequestMapping(path = "lesson/{lessonId}/artifacts", method = RequestMethod.GET)
+    public List<Artifact> getArtifactsByLesson( @PathVariable int lessonId, Principal principal){
+        User user = userDao.getUserByUsername(principal.getName());
+        int teacherId = user.getId();
+        return artifactDao.getArtifactsBySubject(teacherId, lessonId);
+    }
+
     @RequestMapping(path = BASE_URL + "/new_type", method = RequestMethod.POST)
     public ArtifactType createNewArtifactType(@RequestBody ArtifactType artifactType){
         return artifactDao.createNewArtifactType(artifactType);

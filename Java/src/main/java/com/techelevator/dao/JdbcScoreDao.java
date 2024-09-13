@@ -89,6 +89,7 @@ return true;
                SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, studentId, artifact.getId());
                while(rs.next()){
                    Score score = mapRowToScore(rs);
+                   score.setLessonId(rs.getInt("lesson"));
                    scores.add(score);
                }
            }
@@ -145,7 +146,7 @@ return true;
         score.setScore(rs.getBigDecimal("score"));
         score.setComments(rs.getString("comments"));
         score.setWaived(rs.getBoolean("is_waived"));
-        score.setLessonId(rs.getInt("lesson"));
+
         return score;
     }
 

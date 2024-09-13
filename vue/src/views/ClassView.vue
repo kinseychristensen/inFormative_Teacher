@@ -258,25 +258,23 @@ this.classId = parseInt(this.$route.params.classId)
 </script>
 
 <style scoped>
-  
-  .home-title-view {
-    grid-area: title;
-    justify-content: center;
-    text-align: center;
+  .home-title-view{
+    text-align:  center;
   }
   
   .class-container {
     grid-area: class;
-    min-width: 800px;
+    max-width: 1000px;
+    margin: auto;
   }
 
   .class-edit-container{
         display: grid;
         padding-top: 5px;
-        grid-template-columns: 150px 2fr 1fr;
+        grid-template-columns: 100px 2fr 1fr;
         grid-template-areas: 
         "name-label name name"
-        "description-label class-description class-description"
+        "description-label class-description ."
         "active-label active-radio ."
         ". submit submit"
         "subjects sub-display sub-buttons"

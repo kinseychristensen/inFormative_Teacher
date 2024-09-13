@@ -1,7 +1,8 @@
 <template>
- 
+ <div class="home-container-classes">
+  <div class="title">
       <h1 class="page-title">Welcome, {{teacherName}}!</h1>
-      <p class="logged-in-title">Please choose a class or subject below to get started.</p>
+      <p class="logged-in-title">Please choose a class or subject below to get started.</p></div>
 
   
 <div class="loading" v-if="isLoading">Loading...</div>
@@ -30,7 +31,7 @@
 <p></p>
 <router-link class="new-class" v-bind:to="{name: 'create-class'}">Add a New Class</router-link>
 
-
+</div>
 
 </template>
 
@@ -104,14 +105,14 @@ created(){
 
 <style scoped>
 
-
-.home-title-view {
-  justify-content: center;
+.title{
   text-align: center;
 }
 
-.classes-container {
-  grid-area: classes;
+.home-container-classes {
+ margin: auto;
+ max-width: 1000px;
+ margin: auto;
 }
 
 .subject-flex{

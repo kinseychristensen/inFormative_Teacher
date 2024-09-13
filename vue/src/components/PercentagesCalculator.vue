@@ -2,7 +2,7 @@
 
     <div v-if="isLoading">Loading...</div>
     <div v-else>
-    {{ lesson.code }} - {{ lesson.description }}
+    <h4>{{ lesson.code }} - {{ lesson.description }}</h4>
   
     <!-- Ensure the chart gets the right data -->
     <PercentChart :data="chartData" :options="options" :chartId="chartId"/>

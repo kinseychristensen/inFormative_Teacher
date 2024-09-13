@@ -3,13 +3,12 @@
     <div class="report-container">
      
           <h1 class="page-title">{{subject.code}} Reports for {{ schoolClass.className}}</h1>
-          <p class="logged-in-title">Want to request a new report type?  Contact us!</p>
+          <p class="logged-in-title">Want to request a new report type?  <RouterLink v-bind:to="{ name: 'contact' }" >Contact us!</RouterLink></p>
       
     <div class="loading" v-if="isLoading">Loading...</div>
     
-    <div v-else class="class-field">
-
-      <div>
+    <div v-else>
+      <div class="reports-form">
       
         <label for="lesson-select" id="lesson-select-label">Filter By Indicator:</label>
           <select id="lesson-select" v-model="searchingLesson">Search Indicators
@@ -19,7 +18,7 @@
       </option>
 
      </select>
-     </div><div>
+     
 
         <label for="group-sel" id="group-sel-label">Filter By Group:</label>
     <select id="group-sel" v-model="groupSel">
@@ -28,29 +27,58 @@
         {{ group.groupName }} : {{ group.description }}</option>
     </select>
 
-    <div>Reports:
+    <div class="report-checks">Reports:
+      <div>
       <input type="checkbox" id="mastery-checkbox" v-model="showMasteryChart"/>
-      <label for="mastery-checkbox">Student Mastery Levels</label>
+      <label for="mastery-checkbox">Student Mastery Levels</label></div>
 
-      <input type="checkbox" id="percent-checkbox" v-model="showPercentChart"/>
-      <label for="percent-checkbox">Class Mastery Level Percentages</label>
-
+      <div>
       <input type="checkbox" id="scatter-checkbox" v-model="showScatterChart"/>
-      <label for="scatter-checkbox">Student Growth by Artifact</label>
+      <label for="scatter-checkbox">Student Growth by Artifact</label></div>
+
+      <div>
+      <input type="checkbox" id="percent-checkbox" v-model="showPercentChart"/>
+      <label for="percent-checkbox">Class Mastery Level Percentages</label></div>
 
     </div>
-
+  </div>
     <button @click="toggleShowNames">{{ showNamesMsg }}</button>
 
-      </div>
-
      
-      <GroupMastery v-if="showMasteryChart" :lessons="lessons" :students="students" :approaching="subject.approaching" :below="subject.below"
+
+
+
+
+      <div v-if="showMasteryChart" >
+     <h3>Student Mastery Levels</h3>
+     <div>Based on the top unwaived score for any artifact for this indicator.</div>
+      <GroupMastery :lessons="lessons" :students="students" :approaching="subject.approaching" :below="subject.below"
       :mastered="subject.mastered" :not-attempted="subject.notAttempted" :proficient="subject.proficient" :showNames="showNames"/>
+
+    </div>
+      <div  v-if="showScatterChart" >
+
+<ArtifactCalculator 
+ 
+  :notAttempted="subject.notAttempted" 
+  :below="subject.below"
+  :approaching="subject.approaching" 
+  :proficient="subject.proficient" 
+  :mastered="subject.mastered"
+  :chartId="1"
+  :artifacts="artifacts" 
+
+/>
+</div>
+
+
+<div v-if="showPercentChart" > 
+  <h3>Class Mastery Percentages</h3>
+  <div>Based off the students that were assessed, these are the percent of students in each mastery band.</div>
 
       <div v-for="lesson in lessons" :key="lesson.id" :value="lesson.id">
   <PercentagesCalculator 
-    v-if="showPercentChart" 
+    
     :lesson="lesson" 
     :students="students" 
     :notAttempted="subject.notAttempted" 
@@ -60,24 +88,9 @@
     :mastered="subject.mastered"
     :chartId="'myChart-' + lesson.id" 
   />
-</div>
+</div></div>
 
 
-<div v-for="lesson in lessons" :key="lesson.id" :value="lesson.id">
-  <ArtifactCalculator 
-    v-if="showScatterChart" 
-    :lesson="lesson" 
-    :students="students" 
-    :notAttempted="subject.notAttempted" 
-    :below="subject.below"
-    :approaching="subject.approaching" 
-    :proficient="subject.proficient" 
-    :mastered="subject.mastered"
-    :chartId="'myScatterChart-' + lesson.id"
-    :artifacts="artifacts" 
-
-  />
-</div>
 
 
     </div>
@@ -98,6 +111,7 @@
     import ArtifactService from '../services/ArtifactService';
     import ArtifactCalculator from '../components/ArtifactCalculator.vue';
     import ScoreService from '../services/ScoreService';
+import { RouterLink } from 'vue-router';
 
     
     export default {
@@ -300,4 +314,16 @@ artifactsWithScores(){
         margin:auto;
         max-width: 1000px;
       }
+      .reports-form{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+
+      }
+
+#report-checks{
+  display: flexbox;
+}
+ 
     </style>

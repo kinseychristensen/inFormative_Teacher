@@ -1,9 +1,9 @@
 <template>
-
+  <div class="title">
     <h1 class="page-title">All Students</h1>
  
     <p class="description">Click on a student name to go to their profile page.</p>
-
+  </div>
 
 <div class="loading" v-if="isLoading">Loading...</div>
 
@@ -81,6 +81,12 @@ created(){
 </script>
 
 <style scoped>
+
+.title{
+  text-align: center;
+}
+
+
 .button-link{
 background-color: #a4c2f4ff;
 color: black;
@@ -102,6 +108,8 @@ grid-area: class;
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
+  max-width: 1000px;
+  margin: auto;
 }
 .student-title{
 color: black;

@@ -1,12 +1,13 @@
 <template>
 
     <div id="create-class">
+      <div class="title">
           <h1 class="page-title">Set Up A Class</h1>
         
           <p class="description">Classes are based on student rosters.  
             Subjects are based on curriculum standards.  Subjects may be cloned to additional classes, so there's no need to place multiple student 
             rosters into a single class. The class name will display on the main menu as a way to identify the course.  We recommend you use an easily 
-            recognizable descriptor such as "3rd Period" or "2023-2024."</p>
+            recognizable descriptor such as "3rd Period" or "2023-2024."</p></div>
 
        
   
@@ -88,11 +89,14 @@
     <style scoped>
    
       
-      .description{
+      #create-class{
        max-width: 1000px;
+       margin: auto;
       
       }
-      
+      .title{
+        text-align: center;
+      }
     
       
       .create-title-view {

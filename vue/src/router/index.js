@@ -22,6 +22,7 @@ import AllSubjectsView from '../views/AllSubjectsView.vue';
 import RootView from '../views/RootView.vue';
 import NewPasswordView from '../views/NewPasswordView.vue';
 import AllStudentsView from '../views/AllStudentsView.vue';
+import ContactUsView from '../views/ContactUsView.vue';
 
 const routes = [
   {
@@ -129,6 +130,11 @@ const routes = [
     path: "/students",
     name: "all-students",
     component: AllStudentsView,
+  },
+  {
+    path: "/contact-us",
+    name: "contact",
+    component: ContactUsView,
   },
 
 

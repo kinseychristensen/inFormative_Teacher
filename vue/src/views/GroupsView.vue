@@ -230,27 +230,7 @@
     </script>
     
     <style scoped>
-    .home-container {
-        display: grid;
-        grid-template-columns: 250px 1fr 1fr;
-        grid-template-areas: 
-          "nav title logo"
-          "nav class class"
-          ". class class"
-          ;
-        gap: 15px;
-      }
-      
-      
-      .home-nav-tool {
-        grid-area: nav;
-        margin-right: 20px;
-      }
-      
-      .home-logo {
-        grid-area: logo;
-        justify-self: right;
-      }
+   
       
       .home-title-view {
         grid-area: title;
@@ -258,8 +238,9 @@
         text-align: center;
       }
       
-      .groups-container {
-        grid-area: class;
+      .groups-field {
+       max-width: 1000px;
+       margin: auto;
  
       }
       #sub-loop-groups{

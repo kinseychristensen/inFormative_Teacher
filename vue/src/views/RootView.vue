@@ -190,39 +190,38 @@
     background-color: #93caef;
     margin: 2px;
     border-radius: 15%;
-}
   
- 
-
-  #login-flex-buttons{
-    text-align: center;
-    max-width: 350px;
-    padding: 20px;
-    background-color: #93caef;
-    margin: auto;
-    border-radius: 15%;
-  }
+}
 
 }
   @media screen and (min-width: 601px){
   .root-view-container{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+   max-width: 1000px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas: 
+    "about ."
+    "about more"
+    "about ."
+    ;
     max-width: 100vw;
-    justify-content: space-around;
-    margin: 10px;;
+    
+    margin: 10px;
+    vertical-align: middle;
   } 
   #root-loop-view{
-    width: 600px;
+    max-width: 600px;
+    grid-area: about;
   }
   #login-flex-buttons{
   
   width: 350px;
-  height: 350px;
     padding: 20px;
     background-color: #93caef;
     border-radius: 15%;
+    grid-area: more;
+    
   }
    
   }

@@ -118,8 +118,7 @@ import SubjectService from '../services/SubjectService';
         max-width: 80vw;
         align-content: center;
         margin: auto;
-        margin-bottom: 5px;
-       
+        margin-bottom: 5px;  
       
     }
 .score-item{
@@ -132,9 +131,6 @@ import SubjectService from '../services/SubjectService';
 
     }
 
-
-
-
     .score-item-flex{
     display: grid;
     grid-template-columns: 3fr 1fr;
@@ -142,8 +138,6 @@ import SubjectService from '../services/SubjectService';
     "artifact score  "
     "comments waived  "
     ;
-   
-       
     }
 
     .score-item:nth-child(odd){
@@ -169,7 +163,7 @@ import SubjectService from '../services/SubjectService';
     text-align: right;
 }
  #lesson-select{
-    width: 80vw;
+    max-width: 80vw;
  }
 @media screen and (max-width: 600px) {
     .score-item{

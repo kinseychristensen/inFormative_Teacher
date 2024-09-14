@@ -28,7 +28,7 @@
       v-bind:to="{name: 'create-artifact', params: {classId: this.classId, subjectId: this.subjectId}}">
         Make a New Artifact</router-link>
       <router-link id="class-mast-link" class="art-button-link"
-      v-bind:to="{name: 'create-artifact', params: {classId: this.classId, subjectId: this.subjectId}}">
+      v-bind:to="{name: 'reports', params: {classId: this.classId, subjectId: this.subjectId}}">
       View Class Mastery</router-link>
       
       <div id="artifact-grid">
@@ -243,9 +243,9 @@
       }
       
       .class-container {
-        grid-area: class;
         max-width: 1000px;
-       margin: auto;
+        margin: auto;
+       
       }
       .class-field{
         display: grid;
@@ -293,6 +293,7 @@
       }
       #artifact-loop{
         display: grid;
+        margin: auto;
         grid-template-columns: 1fr 225px;
         grid-template-areas: 
         "artifact-details score-buttons"

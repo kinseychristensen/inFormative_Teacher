@@ -3,16 +3,17 @@
   
         <div class = "home-title-view">
           <h1 class="page-title">Archived Classes</h1>
-          <p class="logged-in-title">To view details for an archived class or subject, click the coresspoinding icon.  </p>
+          <p class="logged-in-title">To view details for an archived class or subject, click the corresponding icon.  </p>
         </div>
        
     
     <div class="archive-container" v-if="isLoading">Loading...</div>
     
-    <div v-else class="class-field">
+    <div v-else class="archive-container">
    
 
-
+      <h3>Archived Classes</h3>
+      <div v-if="archivedSchoolClasses.length == 0">You have no archived classes.</div>
         <div id="archived-classes-loop" v-for="schoolClass in archivedSchoolClasses" v-bind:key="schoolClass.classId" >
   <div class="one-class">
     <router-link v-bind:to="{name: 'class-page', params:{classId: schoolClass.classId}}" class="class-title">
@@ -21,6 +22,7 @@
 </div>
 
 <div class="subject-flex">
+
  
  <SubjectDisplay class="subject-display" :classId="schoolClass.classId"/>
  
@@ -120,10 +122,15 @@
     </script>
     
     <style scoped>
+    .home-title-view{
+      text-align: center;
+    }
    
     
       .archive-container {
         grid-area: class;
+        max-width: 1000px;
+        margin: auto;
       }
 
       .class-title {
@@ -139,7 +146,7 @@
 }
 
 #current-classes-loop{
-  background-color: rgb(191, 238, 179);
+  background-color: rgb(243, 238, 206);
   padding: 15px;
   border-radius: 25px;
   margin: 20px;

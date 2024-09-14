@@ -142,6 +142,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
+    max-width: 1000px;
   
     }
     

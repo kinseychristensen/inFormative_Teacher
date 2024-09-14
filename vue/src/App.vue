@@ -19,7 +19,10 @@
     
     <div id="nav-2">
       
-      <router-link v-bind:to="{ name: 'home' }">Contact Us</router-link>&nbsp;&nbsp;
+      <router-link v-bind:to="{ name: 'contact' }">Contact Us</router-link>  | 
+      <div><a href="https://www.freepik.com/free-vector/green-apple-fruit-white-background-icon-isolated_169502436.htm#page=2&query=green%20apple%20png&position=1&from_view=keyword&track=ais_hybrid&uuid=d26b36df-1546-40bd-9fff-4953491c108b">Apple Icon by studiogstock on Freepik</a></div>
+       | 
+      <router-link v-bind:to="{ name: 'contact' }">Donations Welcome</router-link> 
      
     </div>
   

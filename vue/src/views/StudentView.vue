@@ -125,8 +125,9 @@
         text-align: center;
       }
       
-      .class-container {
-        grid-area: class;
+      .class-field {
+       max-width: 1000px;
+       margin: auto;
       }
 
       .class-title {

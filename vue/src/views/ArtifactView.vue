@@ -249,7 +249,7 @@
       }
       .class-field{
         display: grid;
-        grid-template-columns: 2fr 1fr 250px;
+        grid-template-columns: 1fr 250px 250px;
         grid-template-areas: 
         "sort-by make-art-link class-mast-link"
         "artifact-grid artifact-grid artifact-grid"
@@ -269,12 +269,14 @@
       }
       #search-box{
         grid-area: search-box;
+        max-width: 600px;
       }
       #lesson-select-label{
         grid-area: lesson-select-label;
       }
       #lesson-select{
         grid-area: lesson-select;
+        max-width: 600px;
       }
       #make-art-link{
         grid-area: make-art-link;
@@ -450,10 +452,6 @@
   width: 150px;
   height: 50px;
 }
-
-
-
-
 
     }
 

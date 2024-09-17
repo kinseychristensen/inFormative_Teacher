@@ -56,7 +56,7 @@
       :mastered="subject.mastered" :not-attempted="subject.notAttempted" :proficient="subject.proficient" :showNames="showNames"/>
 
     </div>
-      <div  v-if="showScatterChart" >
+      <div  v-if="showScatterChart" id="scatterChart">
 
 <ArtifactCalculator 
  
@@ -321,6 +321,7 @@ artifactsWithScores(){
         gap: 8px;
 
       }
+    
 
 #report-checks{
   display: flexbox;

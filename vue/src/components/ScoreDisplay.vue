@@ -111,6 +111,9 @@ import SubjectService from '../services/SubjectService';
     
     </script>
     <style scoped>
+    #lesson-select{
+      width: 600px;
+    }
     
     .score-flex{
         border-radius: 15px;

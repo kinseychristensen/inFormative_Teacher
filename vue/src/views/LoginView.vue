@@ -5,7 +5,7 @@
       <img src="@/assets/inFormativeLogo.png" alt="Logo" class="form-logo" />
       <h1 class="login-title">Please Log In </h1>
       <div class="alert alert-danger" role="alert" v-if="invalidCredentials">
-        Invalid username and password!
+        Invalid username and password! <p><router-link v-bind:to="{ name: 'password-reset' }">Reset Password?</router-link></p> 
       </div>
       <div class="alert alert-success" role="alert" v-if="this.$route.query.registration">
         Thank you for registering, please sign in.
@@ -21,6 +21,7 @@
       <button class="btn btn-primary" type="submit">SIGN IN</button>
       <p class="register-link">
       <router-link v-bind:to="{ name: 'register' }">Need an account? Sign up.</router-link></p>
+ 
    
     </form>
   </div>
